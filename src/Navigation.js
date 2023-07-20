@@ -11,9 +11,15 @@ function Navigation() {
   ]
 
   return (
-    <div>
-      <h1> Yuma RH</h1>
-    </div>
+    <>
+       <Routes>
+        {allComponents.map((component) => {
+          return (
+              <Route path={component.path} element={component.components} key={component.id} />
+          )
+        })}
+       </Routes>
+    </>
   );
 }
 
