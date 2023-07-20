@@ -12,13 +12,13 @@ function Navigation() {
 
   return (
     <>
-       <Routes>
+      <Routes>
         {allComponents.map((component) => {
           return (
               <Route path={component.path} element={component.components} key={component.id} />
           )
         })}
-       </Routes>
+      </Routes>
     </>
   );
 }
