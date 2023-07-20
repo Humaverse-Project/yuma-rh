@@ -1,13 +1,18 @@
 import { createTheme } from '@mui/material/styles';
 
 const palette = {
-    red: "#A7001E"
+    red: "#A7001E",
+    black: "#317AC1",
+    blue: "#317AC1"
 }
 
 const typo = {
     bigTitleBold: {
-        fontSize: 32,
-        fontWeight: "bold"
+        fontSize: 38,
+        fontWeight: "bold",
+    },
+    bigTitle: {
+      fontSize: 42,
     },
     titleBold: {
         fontSize: 24,
@@ -26,15 +31,19 @@ const theme = createTheme({
       // light, dark, contrastText: will be calculated from palette.primary.main,
       main: palette.red,
     },
+    blue: {
+      main: palette.blue
+    },
+    black: {
+      main: palette.black
+    },
     background: {
         default: "#000000",
         paper: palette.red
     },
     secondary: {
-      light: '#0066ff',
-      main: '#0044ff',
-      // dark: will be calculated from palette.secondary.main,
-      contrastText: '#ffcc00',
+      main: palette.blue,
+      //light, dark: will be calculated from palette.secondary.main,
     },
     text: {
         primary: palette.red,

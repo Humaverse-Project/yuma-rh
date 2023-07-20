@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography';
  * 
  */
 
-function Text({variant, children}){
-    return <Typography variant={variant}>{children}</Typography>
+function Text({variant, color, children, ...props}){
+    return <Typography variant={variant} color={color} sx={{fontFamily: "default", ...props}}>{children}</Typography>
 }
 
 export default Text;
