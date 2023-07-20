@@ -8,7 +8,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 function HeaderGlobal() {
   return (
-    <Row justifyContent={"space-between"} py={3}>
+    <Row justifyContent={"space-between"} px={3} height={90}>
         <DynamicHeadNav title={'ACCUEIL'} />
         <Text variant="bigTitleBold" color="blue.main">YUMA</Text>
         <Row width={100} justifyContent={"space-between"}>

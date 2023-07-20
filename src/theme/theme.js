@@ -3,7 +3,8 @@ import { createTheme } from '@mui/material/styles';
 const palette = {
     red: "#A7001E",
     black: "#317AC1",
-    blue: "#317AC1"
+    blue: "#317AC1",
+    grey: "#E5E7E6",
 }
 
 const typo = {
@@ -39,7 +40,7 @@ const theme = createTheme({
     },
     background: {
         default: "#000000",
-        paper: palette.red
+        paper: palette.grey
     },
     secondary: {
       main: palette.blue,

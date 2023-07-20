@@ -1,8 +1,8 @@
 import Container from '@mui/material/Container';
 
-function MainScreen({maxWidth, children}) {
+function MainScreen({maxWidth, children, ...props}) {
   return (
-    <Container maxWidth={maxWidth || ""}>
+    <Container maxWidth={maxWidth || ""} sx={{...props}}>
       {children}
     </Container>
   );
