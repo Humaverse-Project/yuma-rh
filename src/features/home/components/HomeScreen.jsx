@@ -49,11 +49,11 @@ function HomeScreen() {
                         [theme.breakpoints.down('laptop')]: {
                             width: '60%',
                         },
-                        [theme.breakpoints.between('laptop', 'desktop')]: {
+                        [theme.breakpoints.up('laptop')]: {
                             width: '50%',
                         },
-                        [theme.breakpoints.up('laptop')]: {
-                            width: '30%',
+                        [theme.breakpoints.up('desktop')]: {
+                            width: '40%',
                         },
                     }}
                 >
