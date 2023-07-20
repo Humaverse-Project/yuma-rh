@@ -1,6 +1,7 @@
 import HeaderGlobal from '../../header/HeaderGlobal'
 
 import { MainScreen } from '../../../shared'
+import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
 import { useEffect, useState } from 'react'
 import { Card } from '@mui/material'
@@ -15,6 +16,7 @@ import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 
 function HomeScreen() {
     const [divHeight, setDivHeight] = useState(0)
+    const theme = useTheme()
 
     useEffect(() => {
         const headerHeight = 110
@@ -44,7 +46,15 @@ function HomeScreen() {
                         display: 'flex',
                         flexWrap: 'wrap',
                         justifyContent: 'space-between',
-                        width: '25%',
+                        [theme.breakpoints.down('laptop')]: {
+                            width: '60%',
+                        },
+                        [theme.breakpoints.between('laptop', 'desktop')]: {
+                            width: '50%',
+                        },
+                        [theme.breakpoints.up('laptop')]: {
+                            width: '30%',
+                        },
                     }}
                 >
                     {allNavLinkItems.map((navItem) => (
@@ -54,7 +64,13 @@ function HomeScreen() {
                                 sx={{
                                     backgroundColor: 'secondary.dark',
                                     m: 2,
+                                    [theme.breakpoints.up('desktop')]: {
+                                        m: 4,
+                                    },
                                     boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                    [theme.breakpoints.down('tablet')]: {
+                                        width: '100%',
+                                    },
                                 }}
                             >
                                 {CardItem(navItem.icon)}
