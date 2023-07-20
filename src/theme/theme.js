@@ -52,6 +52,7 @@ const theme = createTheme({
   typography: {
     ...typo
   },
+  spacing: 8,
   breakpoints: {
     values: {
       mobile: 0,
