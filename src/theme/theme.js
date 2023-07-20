@@ -4,8 +4,24 @@ const palette = {
     red: "#A7001E"
 }
 
+const typo = {
+    bigTitleBold: {
+        fontSize: 32,
+        fontWeight: "bold"
+    },
+    titleBold: {
+        fontSize: 24,
+        fontWeight: "bold"
+    },
+    normal: {
+        fontSize: 18,
+        fontWeight: "light"
+    }
+}
+
 const theme = createTheme({
   palette: {
+    mode: "light",
     primary: {
       // light, dark, contrastText: will be calculated from palette.primary.main,
       main: palette.red,
@@ -33,6 +49,9 @@ const theme = createTheme({
     contrastThreshold: 3,
     tonalOffset: 0.2,
   },
+  typography: {
+    ...typo
+  }
 });
 
 export default theme;
