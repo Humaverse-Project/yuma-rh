@@ -1,6 +1,6 @@
 import HeaderGlobal from '../../header/HeaderGlobal'
 
-import { Column, MainScreen, Text } from '../../../shared'
+import { MainScreen } from '../../../shared'
 import { Box } from '@mui/system'
 import { useEffect, useState } from 'react'
 import { Card } from '@mui/material'
