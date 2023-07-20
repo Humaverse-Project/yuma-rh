@@ -1,8 +1,10 @@
-function MainScreen({children}) {
+import Container from '@mui/material/Container';
+
+function MainScreen({maxWidth, children}) {
   return (
-    <div>
+    <Container maxWidth={maxWidth || ""}>
       {children}
-    </div>
+    </Container>
   );
 }
 

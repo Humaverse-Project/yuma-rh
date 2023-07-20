@@ -1,8 +1,12 @@
+import { Box } from "@mui/system";
+import { DynamicHeadNav } from "../../shared";
+
 function HeaderGlobal() {
   return (
-    <div>
-      <h1> Header</h1>
-    </div>
+    <Box>
+        <DynamicHeadNav />
+        <h1> Header</h1>
+    </Box>
   );
 }
 
