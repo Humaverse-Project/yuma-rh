@@ -4,13 +4,14 @@ import { Column, MainScreen, Text } from '../../../shared'
 import { Box } from '@mui/system'
 import { useEffect, useState } from 'react'
 import { Card } from '@mui/material'
+import { NavLink } from 'react-router-dom'
 import { CardItem } from './CardNavigation'
 
 //ICONES
-import BuildIcon from '@mui/icons-material/Build'
-import CloudIcon from '@mui/icons-material/Cloud'
-import GroupsIcon from '@mui/icons-material/Groups'
-import ShoppingBagIcon from '@mui/icons-material/ShoppingBag'
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
+import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined'
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
+import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 
 function HomeScreen() {
     const [divHeight, setDivHeight] = useState(0)
@@ -22,10 +23,10 @@ function HomeScreen() {
     }, [])
 
     const allNavLinkItems = [
-        { id: 1, icon: GroupsIcon },
-        { id: 2, icon: BuildIcon },
-        { id: 3, icon: CloudIcon },
-        { id: 4, icon: ShoppingBagIcon },
+        { id: 1, icon: GroupsOutlinedIcon, link: 'test' },
+        { id: 2, icon: BuildOutlinedIcon, link: 'test' },
+        { id: 3, icon: CloudOutlinedIcon, link: 'test' },
+        { id: 4, icon: ShoppingBagOutlinedIcon, link: 'test' },
     ]
 
     return (
@@ -47,16 +48,18 @@ function HomeScreen() {
                     }}
                 >
                     {allNavLinkItems.map((navItem) => (
-                        <Card
-                            key={navItem.id}
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                            }}
-                        >
-                            {CardItem}
-                        </Card>
+                        <NavLink to={navItem.link}>
+                            <Card
+                                key={navItem.id}
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    m: 2,
+                                    boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                }}
+                            >
+                                {CardItem(navItem.icon)}
+                            </Card>
+                        </NavLink>
                     ))}
                 </Box>
             </Box>

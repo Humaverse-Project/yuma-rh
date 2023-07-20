@@ -3,16 +3,13 @@ import { CardActionArea } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
 import { Icon } from '@mui/material'
 
-import GroupsIcon from '@mui/icons-material/Groups'
+import { AccessAlarm, ThreeDRotation } from '@mui/icons-material'
 
-export const CardItem = (
+export const CardItem = (IconItem) => (
     <Fragment>
         <CardActionArea>
             <CardContent sx={{ p: 4 }}>
-                <Icon
-                    sx={{ fontSize: 92, color: 'black.main' }}
-                    component={GroupsIcon}
-                />
+                <IconItem sx={{ fontSize: 92, color: 'black.main' }} />
             </CardContent>
         </CardActionArea>
     </Fragment>
