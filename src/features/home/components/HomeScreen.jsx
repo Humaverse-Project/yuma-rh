@@ -2,7 +2,7 @@ import HeaderGlobal from '../../header/HeaderGlobal'
 
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment } from 'react'
 import { Card, useMediaQuery } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CardItem } from './CardNavigation'
@@ -14,62 +14,119 @@ import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
 import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
 
 function HomeScreen() {
-    const [divHeight, setDivHeight] = useState(0)
     const theme = useTheme()
-
-    useEffect(() => {
-        const headerHeight = 110
-        const remainingHeight = window.innerHeight - headerHeight
-        setDivHeight(remainingHeight)
-    }, [])
-
-    const allNavLinkItems = [
-        { id: 1, icon: GroupsOutlinedIcon, link: 'test' },
-        { id: 2, icon: BuildOutlinedIcon, link: 'test' },
-        { id: 3, icon: CloudOutlinedIcon, link: 'test' },
-        { id: 4, icon: ShoppingBagOutlinedIcon, link: 'test' },
-    ]
 
     return (
         <Fragment>
             <HeaderGlobal />
-            <Box backgroundColor="background.paper" height={'88vh'}>
+            <Box
+                backgroundColor="background.paper"
+                display={'flex'}
+                flexDirection="column"
+                justifyContent="center"
+                alignItems="center"
+                height={'88vh'}
+            >
                 <Box
                     sx={{
                         display: 'flex',
                         flexWrap: 'wrap',
                         justifyContent: 'space-between',
-                        [theme.breakpoints.down('md')]: {
-                            width: '100vw',
+                        [theme.breakpoints.down('sm')]: {
+                            justifyContent: 'center',
                         },
-                        [theme.breakpoints.between('md', 'xl')]: {
-                            width: '100vw',
-                        },
-                        [theme.breakpoints.up('xl')]: {
-                            width: '30%',
-                        },
+                        alignItems: 'center',
                     }}
                 >
-                    {/*allNavLinkItems.map((navItem) => (
-                        <NavLink to={navItem.link}>
-                            <Card
-                                key={navItem.id}
-                                sx={{
-                                    backgroundColor: 'secondary.dark',
-                                    m: 2,
-                                    [theme.breakpoints.up('desktop')]: {
-                                        m: 4,
-                                    },
-                                    boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                    [theme.breakpoints.down('tablet')]: {
-                                        width: '100%',
-                                    },
-                                }}
-                            >
-                                {CardItem(navItem.icon)}
-                            </Card>
-                        </NavLink>
-                    ))*/}
+                    <NavLink to={'/test'}>
+                        <Card
+                            sx={{
+                                backgroundColor: 'secondary.dark',
+                                m: 2,
+                                [theme.breakpoints.up('lg')]: {
+                                    m: 4,
+                                },
+                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                [theme.breakpoints.down('sm')]: {
+                                    width: '100%',
+                                    my: 1,
+                                    mx: 0,
+                                },
+                            }}
+                        >
+                            {CardItem(GroupsOutlinedIcon)}
+                        </Card>
+                    </NavLink>
+                    <NavLink to={'/test'}>
+                        <Card
+                            sx={{
+                                backgroundColor: 'secondary.dark',
+                                m: 2,
+                                [theme.breakpoints.up('lg')]: {
+                                    m: 4,
+                                },
+                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                [theme.breakpoints.down('sm')]: {
+                                    width: '100%',
+                                    my: 1,
+                                    mx: 0,
+                                },
+                            }}
+                        >
+                            {CardItem(BuildOutlinedIcon)}
+                        </Card>
+                    </NavLink>
+                </Box>
+
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-between',
+                        [theme.breakpoints.down('sm')]: {
+                            justifyContent: 'center',
+                        },
+                        alignItems: 'center',
+                    }}
+                >
+                    <NavLink to={'/test'}>
+                        <Card
+                            sx={{
+                                backgroundColor: 'secondary.dark',
+                                m: 2,
+                                [theme.breakpoints.up('lg')]: {
+                                    m: 4,
+                                },
+                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                [theme.breakpoints.down('sm')]: {
+                                    width: '100%',
+                                    my: 1,
+                                    mx: 0,
+                                },
+                            }}
+                        >
+                            {CardItem(CloudOutlinedIcon)}
+                        </Card>
+                    </NavLink>
+                    <NavLink to={'/test'}>
+                        <Card
+                            sx={{
+                                backgroundColor: 'secondary.dark',
+                                m: 2,
+                                [theme.breakpoints.up('lg')]: {
+                                    m: 4,
+                                },
+                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                [theme.breakpoints.down('sm')]: {
+                                    width: '100%',
+                                    my: 1,
+                                    mx: 0,
+                                },
+                            }}
+                        >
+                            {CardItem(ShoppingBagOutlinedIcon)}
+                        </Card>
+                    </NavLink>
                 </Box>
             </Box>
         </Fragment>
