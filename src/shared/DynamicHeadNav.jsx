@@ -6,7 +6,6 @@ import { useTheme } from '@emotion/react'
 
 function DynamicHeadNav({ title, secondSubtitle }) {
     const theme = useTheme()
-    const matcheSM = useMediaQuery(theme.breakpoints.down('sm'))
     const matcheMD = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
