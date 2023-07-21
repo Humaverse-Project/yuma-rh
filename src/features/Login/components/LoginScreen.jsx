@@ -49,7 +49,7 @@ export default function LoginScreen() {
                         />
 
                         <Typography component="h1" variant="h5">
-                            Authentification
+                            Connexion
                         </Typography>
                         <Box
                             sx={{

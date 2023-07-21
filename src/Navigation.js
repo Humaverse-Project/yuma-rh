@@ -12,7 +12,6 @@ function Navigation() {
         {
             id: 1,
             path: '/',
-
             components: <LoginScreen />,
         },
         {
