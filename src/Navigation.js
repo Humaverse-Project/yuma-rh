@@ -24,7 +24,6 @@ function Navigation() {
             id: 3,
             path: '/register',
             components: <RegisterScreen />,
-            components: <HomeScreen />,
         },
         {
             id: 2,

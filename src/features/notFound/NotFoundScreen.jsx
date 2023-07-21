@@ -23,7 +23,7 @@ function NotFoundScreen() {
                 <Text variant={'h4'} color="black">
                     La page n'existe pas
                 </Text>
-                <NavLink to="/" style={{ marginTop: 20 }}>
+                <NavLink to="/home" style={{ marginTop: 20 }}>
                     <Button variant="outlined">Acceuil</Button>
                 </NavLink>
             </Box>
