@@ -26,12 +26,12 @@ function Navigation() {
             components: <RegisterScreen />,
         },
         {
-            id: 2,
+            id: 4,
             path: '/organigramme',
             components: <OrganigrammeScreen />,
         },
         {
-            id: 3,
+            id: 5,
             path: '*',
             components: <NotFoundScreen />,
         },
