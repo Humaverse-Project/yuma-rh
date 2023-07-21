@@ -1,10 +1,9 @@
 import HeaderGlobal from '../../header/HeaderGlobal'
 
-import { MainScreen } from '../../../shared'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
-import { useEffect, useState } from 'react'
-import { Card } from '@mui/material'
+import { Fragment, useEffect, useState } from 'react'
+import { Card, useMediaQuery } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CardItem } from './CardNavigation'
 
@@ -32,32 +31,26 @@ function HomeScreen() {
     ]
 
     return (
-        <MainScreen mx={0} px={0}>
+        <Fragment>
             <HeaderGlobal />
-            <Box
-                backgroundColor="background.paper"
-                display={'flex'}
-                justifyContent="center"
-                alignItems="center"
-                height={divHeight}
-            >
+            <Box backgroundColor="background.paper" height={'88vh'}>
                 <Box
                     sx={{
                         display: 'flex',
                         flexWrap: 'wrap',
                         justifyContent: 'space-between',
-                        [theme.breakpoints.down('laptop')]: {
-                            width: '60%',
+                        [theme.breakpoints.down('md')]: {
+                            width: '100vw',
                         },
-                        [theme.breakpoints.up('laptop')]: {
-                            width: '50%',
+                        [theme.breakpoints.between('md', 'xl')]: {
+                            width: '100vw',
                         },
-                        [theme.breakpoints.up('desktop')]: {
-                            width: '40%',
+                        [theme.breakpoints.up('xl')]: {
+                            width: '30%',
                         },
                     }}
                 >
-                    {allNavLinkItems.map((navItem) => (
+                    {/*allNavLinkItems.map((navItem) => (
                         <NavLink to={navItem.link}>
                             <Card
                                 key={navItem.id}
@@ -76,10 +69,10 @@ function HomeScreen() {
                                 {CardItem(navItem.icon)}
                             </Card>
                         </NavLink>
-                    ))}
+                    ))*/}
                 </Box>
             </Box>
-        </MainScreen>
+        </Fragment>
     )
 }
 

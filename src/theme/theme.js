@@ -14,7 +14,7 @@ const typo = {
         fontWeight: 'bold',
     },
     bigTitle: {
-        fontSize: 42,
+        fontSize: 38,
     },
     titleBold: {
         fontSize: 24,
@@ -67,11 +67,11 @@ const theme = createTheme({
     spacing: 8,
     breakpoints: {
         values: {
-            mobile: 0,
-            tablet: 740,
-            largeTablet: 940,
-            laptop: 1024,
-            desktop: 1200,
+            xs: 0,
+            sm: 600,
+            md: 960,
+            lg: 1280,
+            xl: 1560,
         },
     },
 })
