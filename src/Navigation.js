@@ -1,11 +1,18 @@
 import { Routes, Route } from 'react-router-dom'
-import { HomeScreen, LoginScreen, RegisterScreen } from './features'
+import {
+    HomeScreen,
+    NotFoundScreen,
+    OrganigrammeScreen,
+    LoginScreen,
+    RegisterScreen,
+} from './features'
 
 function Navigation() {
     const allComponents = [
         {
             id: 1,
             path: '/',
+
             components: <LoginScreen />,
         },
         {
@@ -17,6 +24,17 @@ function Navigation() {
             id: 3,
             path: '/register',
             components: <RegisterScreen />,
+            components: <HomeScreen />,
+        },
+        {
+            id: 2,
+            path: '/organigramme',
+            components: <OrganigrammeScreen />,
+        },
+        {
+            id: 3,
+            path: '*',
+            components: <NotFoundScreen />,
         },
     ]
 
