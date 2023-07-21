@@ -1,13 +1,15 @@
 //import SCREENS
-import HomeScreen from "./home/components/HomeScreen";
+import HomeScreen from './home/components/HomeScreen'
+import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
+import NotFoundScreen from './notFound/NotFoundScreen'
 
 //import COMPONENTS REUSABLES
-import HeaderGlobal from "./header/HeaderGlobal";
 
 export {
     //screens
     HomeScreen,
+    OrganigrammeScreen,
+    NotFoundScreen,
 
     //components reusables
-    HeaderGlobal
-};
+}

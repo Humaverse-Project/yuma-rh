@@ -3,6 +3,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import Row from './Row'
 import Text from './Text'
 import { useTheme } from '@emotion/react'
+import { NavLink } from 'react-router-dom'
 
 function DynamicHeadNav({ title, secondSubtitle }) {
     const theme = useTheme()
@@ -10,11 +11,13 @@ function DynamicHeadNav({ title, secondSubtitle }) {
 
     return (
         <Row>
-            <Icon
-                sx={{ fontSize: !matcheMD ? 38 : 30 }}
-                color="primary"
-                component={HomeIcon}
-            />
+            <NavLink to="/">
+                <Icon
+                    sx={{ fontSize: !matcheMD ? 38 : 30 }}
+                    color="primary"
+                    component={HomeIcon}
+                />
+            </NavLink>
             <Text
                 variant={!matcheMD ? 'bigTitleBold' : 'normal'}
                 ml={!matcheMD ? 5 : 1}
