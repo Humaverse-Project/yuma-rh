@@ -3,7 +3,7 @@ import HeaderGlobal from '../../header/HeaderGlobal'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
 import { Fragment } from 'react'
-import { Card, useMediaQuery } from '@mui/material'
+import { Card } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CardItem } from './CardNavigation'
 
