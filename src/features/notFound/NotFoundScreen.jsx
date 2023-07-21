@@ -15,12 +15,15 @@ function NotFoundScreen() {
                 flexDirection="column"
                 justifyContent="center"
                 alignItems="center"
-                height={'88vh'}
+                height={'98vh'}
             >
                 <Text variant={'h1'} color="primary">
-                    Erreur 404 not found
+                    404 error
                 </Text>
-                <NavLink to="/">
+                <Text variant={'h4'} color="black">
+                    La page n'existe pas
+                </Text>
+                <NavLink to="/" style={{ marginTop: 20 }}>
                     <Button variant="outlined">Acceuil</Button>
                 </NavLink>
             </Box>
