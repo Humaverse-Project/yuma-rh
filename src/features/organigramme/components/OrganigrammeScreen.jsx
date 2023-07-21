@@ -8,7 +8,7 @@ import HeaderInScreen from '../../header/HeaderInScreen'
 function OrganigrammeScreen() {
     return (
         <Fragment>
-            <HeaderInScreen />
+            <HeaderInScreen title={'Organigramme'} />
             <Box
                 backgroundColor="background.paper"
                 display={'flex'}
