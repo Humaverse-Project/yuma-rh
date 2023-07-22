@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import HeaderInScreen from '../../header/HeaderInScreen'
 import { useTheme } from '@mui/material/styles'
 import { Box, InputAdornment, TextField, Typography } from '@mui/material'
@@ -94,10 +94,13 @@ const organigrammeData = {
 
 function OrganigrammeScreen() {
     const theme = useTheme()
-
+    const [textToSearh, setTextToSearh] = useState()
     return (
         <Fragment>
-            <HeaderInScreen title={'Organigramme'} />
+            <HeaderInScreen
+                title={'Organigramme'}
+                secondSubtitle={textToSearh && 'Recherche'}
+            />
             <Box
                 backgroundColor="background.paper"
                 display="flex"
@@ -115,6 +118,8 @@ function OrganigrammeScreen() {
                 <Box>
                     <TextField
                         id="outlined-basic"
+                        value={textToSearh}
+                        onChange={(e) => setTextToSearh(e.target.value)}
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
