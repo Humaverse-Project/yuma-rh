@@ -67,7 +67,6 @@ const AllPersonnalWithMetier = [
 
 function MetierList({ textToSearch }) {
     const theme = useTheme()
-
     const renderPostItem = (item) => {
         return (
             <Box
@@ -143,7 +142,15 @@ function MetierList({ textToSearch }) {
                 height: 'auto',
             }}
         >
-            {AllPersonnalWithMetier.map((post) => {
+            {AllPersonnalWithMetier.filter(
+                (item) =>
+                    item.name
+                        .toLowerCase()
+                        .includes(textToSearch.toLowerCase()) ||
+                    item.poste
+                        .toLowerCase()
+                        .includes(textToSearch.toLowerCase())
+            ).map((post) => {
                 return renderPostItem(post)
             })}
             <Row justifyContent="space-between" width={'14vw'} mt={2}>

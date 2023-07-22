@@ -87,7 +87,7 @@ function OrganigrammeScreen() {
                         <OrganigrammeTree isMetierChecked={isMetierChecked} />
                     ) : null}
                     {isMetierChecked && textToSearh && !isPersonnalChecked && (
-                        <MetierList />
+                        <MetierList textToSearch={textToSearh} />
                     )}
                 </Box>
             </Box>
