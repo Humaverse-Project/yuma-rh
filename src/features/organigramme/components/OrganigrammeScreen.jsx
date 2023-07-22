@@ -6,14 +6,14 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import './Organigramme.css'
 import OrganigrammeTree from './OrganigrammeTree'
+import MetierList from './MetierList'
 
 function OrganigrammeScreen() {
     const theme = useTheme()
     const [textToSearh, setTextToSearh] = useState()
     const [isPersonnalChecked, setIsPersonnalChecked] = useState(true)
-    const [isMetierChecked, setIsMetierChecked] = useState(false)
+    const [isMetierChecked, setIsMetierChecked] = useState(true)
 
     return (
         <Fragment>
@@ -24,6 +24,7 @@ function OrganigrammeScreen() {
             <Box
                 backgroundColor="background.paper"
                 display="flex"
+                width="100%"
                 flexDirection="row"
                 sx={{
                     [theme.breakpoints.down('md')]: {
@@ -31,7 +32,7 @@ function OrganigrammeScreen() {
                         alignItems: 'center',
                     },
                 }}
-                justifyContent="center"
+                justifyContent="space-between"
                 alignItems="flex-start"
                 minHeight="80vh"
                 py={6}
@@ -72,9 +73,21 @@ function OrganigrammeScreen() {
                         />
                     </FormGroup>
                 </Box>
-                <Box className="organigramme" sx={{ display: 'flex', flex: 2 }}>
-                    {isPersonnalChecked && !textToSearh && (
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flex: 2,
+                        ml: 6,
+                        [theme.breakpoints.down('md')]: {
+                            ml: 0,
+                        },
+                    }}
+                >
+                    {isPersonnalChecked && !textToSearh ? (
                         <OrganigrammeTree isMetierChecked={isMetierChecked} />
+                    ) : null}
+                    {isMetierChecked && textToSearh && !isPersonnalChecked && (
+                        <MetierList />
                     )}
                 </Box>
             </Box>
