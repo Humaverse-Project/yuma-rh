@@ -1,8 +1,12 @@
 import { Fragment } from 'react'
 import HeaderInScreen from '../../header/HeaderInScreen'
+import { useTheme } from '@mui/material/styles'
 import { Box, InputAdornment, TextField, Typography } from '@mui/material'
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
 import './Organigramme.css'
-import { AccountCircle } from '@mui/icons-material'
 
 const OrganigrammeNode = ({ data }) => (
     <Box
@@ -89,6 +93,8 @@ const organigrammeData = {
 }
 
 function OrganigrammeScreen() {
+    const theme = useTheme()
+
     return (
         <Fragment>
             <HeaderInScreen title={'Organigramme'} />
@@ -96,10 +102,15 @@ function OrganigrammeScreen() {
                 backgroundColor="background.paper"
                 display="flex"
                 flexDirection="row"
+                sx={{
+                    [theme.breakpoints.down('md')]: {
+                        flexDirection: 'column',
+                    },
+                }}
                 justifyContent="center"
-                alignItems="center"
+                alignItems="flex-start"
                 minHeight="88vh"
-                p={2}
+                py={6}
             >
                 <Box>
                     <TextField
@@ -107,14 +118,28 @@ function OrganigrammeScreen() {
                         InputProps={{
                             startAdornment: (
                                 <InputAdornment position="start">
-                                    <AccountCircle />
+                                    <SearchOutlinedIcon />
                                 </InputAdornment>
                             ),
                         }}
                         variant="outlined"
                     />
+                    <FormGroup sx={{ ml: 2, mt: 1 }}>
+                        <FormControlLabel
+                            control={<Checkbox defaultChecked />}
+                            label="PERSONNEL"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            label="METIER"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            label="COMPETENCE"
+                        />
+                    </FormGroup>
                 </Box>
-                <Box className="organigramme" mt={4}>
+                <Box className="organigramme">
                     <OrganigrammeNode data={organigrammeData} />
                 </Box>
             </Box>

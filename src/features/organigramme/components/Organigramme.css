@@ -6,13 +6,11 @@
 
 .node {
   position: relative;
-  border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
   margin: 5px;
   min-width: 150px;
   text-align: center;
-  background-color: #f9f9f9;
 }
 
 .node::before {
@@ -23,7 +21,6 @@
   transform: translateX(-50%);
   width: 0;
   height: 20px;
-  border: 1px solid #ccc;
 }
 
 .name {
