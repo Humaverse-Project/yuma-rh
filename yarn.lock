@@ -1217,11 +1217,6 @@
     react-lifecycles-compat "^3.0.4"
     warning "^3.0.0"
 
-"@capricasoftware/react-org-chart@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@capricasoftware/react-org-chart/-/react-org-chart-0.1.2.tgz#5d688d69f03cc7786f3621852891502fd7c62777"
-  integrity sha512-OTa1I0FYLKdLFeSJ7C6IpS0gwRcGN88YjaBVH0W1rl0JCQqPSq9GLlM6QHFGairiEIfC1TmDsT4ixkJA3C3U6A==
-
 "@colors/colors@1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
