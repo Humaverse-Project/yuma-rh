@@ -7,11 +7,14 @@ import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import './Organigramme.css'
-import StyledTreeExample from './OrganigrammeTree'
+import OrganigrammeTree from './OrganigrammeTree'
 
 function OrganigrammeScreen() {
     const theme = useTheme()
     const [textToSearh, setTextToSearh] = useState()
+    const [isPersonnalChecked, setIsPersonnalChecked] = useState(true)
+    const [isMetierChecked, setIsMetierChecked] = useState(false)
+
     return (
         <Fragment>
             <HeaderInScreen
@@ -52,10 +55,16 @@ function OrganigrammeScreen() {
                         <FormControlLabel
                             control={<Checkbox defaultChecked />}
                             label="PERSONNEL"
+                            onChange={(e) =>
+                                setIsPersonnalChecked(e.target.checked)
+                            }
                         />
                         <FormControlLabel
-                            control={<Checkbox />}
+                            control={<Checkbox defaultChecked />}
                             label="METIER"
+                            onChange={(e) =>
+                                setIsMetierChecked(e.target.checked)
+                            }
                         />
                         <FormControlLabel
                             control={<Checkbox />}
@@ -64,7 +73,9 @@ function OrganigrammeScreen() {
                     </FormGroup>
                 </Box>
                 <Box className="organigramme" sx={{ display: 'flex', flex: 2 }}>
-                    <StyledTreeExample />
+                    {isPersonnalChecked && !textToSearh && (
+                        <OrganigrammeTree isMetierChecked={isMetierChecked} />
+                    )}
                 </Box>
             </Box>
         </Fragment>

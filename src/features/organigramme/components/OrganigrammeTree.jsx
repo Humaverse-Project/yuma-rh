@@ -34,7 +34,7 @@ const DivAdd = styled.div`
     border-radius: 10px;
 `
 
-const StyledTreeExample = () => (
+const OrganigrammeTree = ({ isMetierChecked }) => (
     <Tree
         lineWidth={'2px'}
         lineColor={'#B1BAC7'}
@@ -43,7 +43,9 @@ const StyledTreeExample = () => (
             <StyleLabel>
                 <LabelContainer>
                     <SpanNamed>Lisa PERLANT</SpanNamed>
-                    <SpanPost>Directrice générale</SpanPost>
+                    {isMetierChecked && (
+                        <SpanPost>Directrice générale</SpanPost>
+                    )}
                 </LabelContainer>
             </StyleLabel>
         }
@@ -53,7 +55,9 @@ const StyledTreeExample = () => (
                 <StyleLabel>
                     <LabelContainer>
                         <SpanNamed>Jacques LISIER</SpanNamed>
-                        <SpanPost>Secrétariat général</SpanPost>
+                        {isMetierChecked && (
+                            <SpanPost>Secrétariat général</SpanPost>
+                        )}
                     </LabelContainer>
                 </StyleLabel>
             }
@@ -63,7 +67,9 @@ const StyledTreeExample = () => (
                     <StyleLabel>
                         <LabelContainer>
                             <SpanNamed>Pedro MARTANI</SpanNamed>
-                            <SpanPost>Directeur de production</SpanPost>
+                            {isMetierChecked && (
+                                <SpanPost>Directeur de production</SpanPost>
+                            )}
                         </LabelContainer>
                     </StyleLabel>
                 }
@@ -76,7 +82,9 @@ const StyledTreeExample = () => (
                     <StyleLabel>
                         <LabelContainer>
                             <SpanNamed>Emma MAGOLOU</SpanNamed>
-                            <SpanPost>Directrice RH</SpanPost>
+                            {isMetierChecked && (
+                                <SpanPost>Directrice RH</SpanPost>
+                            )}
                         </LabelContainer>
                     </StyleLabel>
                 }
@@ -88,7 +96,9 @@ const StyledTreeExample = () => (
                     <StyleLabel>
                         <LabelContainer>
                             <SpanNamed>Idris ADARE</SpanNamed>
-                            <SpanPost>Directeur commercial</SpanPost>
+                            {isMetierChecked && (
+                                <SpanPost>Directeur commercial</SpanPost>
+                            )}
                         </LabelContainer>
                     </StyleLabel>
                 }
@@ -100,7 +110,11 @@ const StyledTreeExample = () => (
                     <StyleLabel>
                         <LabelContainer>
                             <SpanNamed>Megane PONTIRO</SpanNamed>
-                            <SpanPost>Directrice admin et juridique</SpanPost>
+                            {isMetierChecked && (
+                                <SpanPost>
+                                    Directrice admin et juridique
+                                </SpanPost>
+                            )}
                         </LabelContainer>
                     </StyleLabel>
                 }
@@ -111,4 +125,4 @@ const StyledTreeExample = () => (
     </Tree>
 )
 
-export default StyledTreeExample
+export default OrganigrammeTree
