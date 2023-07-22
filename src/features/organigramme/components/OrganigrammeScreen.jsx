@@ -78,7 +78,7 @@ function OrganigrammeScreen() {
                         display: 'flex',
                         flex: 2,
                         ml: 6,
-                        [theme.breakpoints.down('md')]: {
+                        [theme.breakpoints.down('lg')]: {
                             ml: 0,
                         },
                     }}
