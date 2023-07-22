@@ -1,6 +1,7 @@
 import { Badge, Box, Button } from '@mui/material'
 import { Row, Text } from '../../../shared'
 import { useTheme } from '@mui/material/styles'
+import { NavLink } from 'react-router-dom'
 
 const AllPersonnalWithMetier = [
     {
@@ -69,88 +70,96 @@ function MetierList({ textToSearch }) {
     const theme = useTheme()
     const renderPostItem = (item) => {
         return (
-            <Box
+            <NavLink
                 key={item.id}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    border: 2,
-                    borderColor: 'blue.main',
-                    borderRadius: 4,
-                    px: 3,
-                    py: 2,
-                    mb: 2,
-                    backgroundColor: '#F8FBF1',
-                    [theme.breakpoints.down('md')]: {
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                    },
-                }}
+                to="/profile"
+                style={{ textDecoration: 'none' }}
             >
-                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                    <Text variant={'normalBold'}>{item.name}</Text>
-                    <Text variant={'normal'} color={'secondary.main'}>
-                        {item.poste}
-                    </Text>
-                </Box>
                 <Box
                     sx={{
                         display: 'flex',
+                        flexDirection: 'row',
                         justifyContent: 'space-between',
-                        [theme.breakpoints.down('lg')]: {
-                            flexDirection: 'column',
-                            justifyContent: 'flex-start',
-                            alignItems: 'flex-end',
-                            width: '100%',
-                        },
+                        alignItems: 'center',
+                        border: 2,
+                        borderColor: 'blue.main',
+                        borderRadius: 4,
+                        px: 3,
+                        py: 2,
+                        mb: 2,
+                        backgroundColor: '#F8FBF1',
                         [theme.breakpoints.down('md')]: {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
-                            width: '100%',
                         },
                     }}
                 >
-                    <Badge badgeContent={item.advanceProgram} color="primary">
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Text variant={'normalBold'}>{item.name}</Text>
+                        <Text variant={'normal'} color={'secondary.main'}>
+                            {item.poste}
+                        </Text>
+                    </Box>
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            [theme.breakpoints.down('lg')]: {
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                alignItems: 'flex-end',
+                                width: '100%',
+                            },
+                            [theme.breakpoints.down('md')]: {
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                width: '100%',
+                            },
+                        }}
+                    >
+                        <Badge
+                            badgeContent={item.advanceProgram}
+                            color="primary"
+                        >
+                            <Button
+                                variant="outlined"
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    mr: 1,
+                                    py: 1,
+                                    borderColor:
+                                        item.advanceProgram > 0
+                                            ? 'primary'
+                                            : '#F0F0F0',
+                                    [theme.breakpoints.down('lg')]: {
+                                        mr: 0,
+                                    },
+                                }}
+                            >
+                                <Text color="black.main">
+                                    Formations programmées
+                                </Text>
+                            </Button>
+                        </Badge>
                         <Button
                             variant="outlined"
                             sx={{
                                 backgroundColor: 'secondary.dark',
-                                mr: 1,
                                 py: 1,
-                                borderColor:
-                                    item.advanceProgram > 0
-                                        ? 'primary'
-                                        : '#F0F0F0',
+                                ml: 1,
+                                borderColor: '#F0F0F0',
                                 [theme.breakpoints.down('lg')]: {
-                                    mr: 0,
+                                    ml: 0,
                                 },
                             }}
                         >
-                            <Text color="black.main">
-                                Formations programmées
-                            </Text>
+                            <Text color="black.main">Evolutions</Text>
                         </Button>
-                    </Badge>
-                    <Button
-                        variant="outlined"
-                        sx={{
-                            backgroundColor: 'secondary.dark',
-                            py: 1,
-                            ml: 1,
-                            borderColor: '#F0F0F0',
-                            [theme.breakpoints.down('lg')]: {
-                                ml: 0,
-                            },
-                        }}
-                    >
-                        <Text color="black.main">Evolutions</Text>
-                    </Button>
+                    </Box>
                 </Box>
-            </Box>
+            </NavLink>
         )
     }
 
