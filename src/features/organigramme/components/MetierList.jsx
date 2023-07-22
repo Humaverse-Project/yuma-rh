@@ -73,7 +73,7 @@ function MetierList({ textToSearch }) {
             <NavLink
                 key={item.id}
                 to="/profile"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', color: 'black' }}
             >
                 <Box
                     sx={{
