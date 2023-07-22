@@ -5,6 +5,7 @@ const palette = {
     black: '#000000',
     blue: '#317AC1',
     grey: '#E5E7E6',
+    greyText: '#7E7E7E',
     greyCard: '#CACACA',
 }
 
@@ -23,6 +24,10 @@ const typo = {
     normal: {
         fontSize: 18,
         fontWeight: 'light',
+    },
+    normalBold: {
+        fontSize: 18,
+        fontWeight: 'bold',
     },
 }
 
@@ -44,7 +49,7 @@ const theme = createTheme({
             paper: palette.grey,
         },
         secondary: {
-            main: palette.blue,
+            main: palette.greyText,
             dark: palette.greyCard,
             //light, dark: will be calculated from palette.secondary.main,
         },
