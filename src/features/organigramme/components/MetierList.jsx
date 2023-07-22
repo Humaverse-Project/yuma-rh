@@ -83,6 +83,11 @@ function MetierList({ textToSearch }) {
                     py: 2,
                     mb: 2,
                     backgroundColor: '#F8FBF1',
+                    [theme.breakpoints.down('md')]: {
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    },
                 }}
             >
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -96,6 +101,12 @@ function MetierList({ textToSearch }) {
                         display: 'flex',
                         justifyContent: 'space-between',
                         width: '18vw',
+                        [theme.breakpoints.down('lg')]: {
+                            flexDirection: 'column',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            width: '100%',
+                        },
                     }}
                 >
                     <Badge badgeContent={item.advanceProgram} color="primary">
