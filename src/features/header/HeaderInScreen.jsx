@@ -7,12 +7,16 @@ import { useTheme } from '@emotion/react'
 function HeaderInScreen({ title, secondSubtitle }) {
     const theme = useTheme()
     const matcheSM = useMediaQuery(theme.breakpoints.up('sm'))
+    const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
 
     return (
         <Row justifyContent={'space-between'} px={3} height={'10vh'}>
             <DynamicHeadNav title={title} secondSubtitle={secondSubtitle} />
             {matcheSM && (
-                <Row width="16vw" justifyContent="space-between">
+                <Row
+                    width={matcheXL ? '22%' : '17%'}
+                    justifyContent="space-between"
+                >
                     <Button
                         variant="contained"
                         color="blue"

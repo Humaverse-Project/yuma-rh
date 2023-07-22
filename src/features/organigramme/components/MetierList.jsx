@@ -100,8 +100,13 @@ function MetierList({ textToSearch }) {
                     sx={{
                         display: 'flex',
                         justifyContent: 'space-between',
-                        width: '18vw',
                         [theme.breakpoints.down('lg')]: {
+                            flexDirection: 'column',
+                            justifyContent: 'flex-start',
+                            alignItems: 'flex-end',
+                            width: '100%',
+                        },
+                        [theme.breakpoints.down('md')]: {
                             flexDirection: 'column',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -114,11 +119,15 @@ function MetierList({ textToSearch }) {
                             variant="outlined"
                             sx={{
                                 backgroundColor: 'secondary.dark',
+                                mr: 1,
                                 py: 1,
                                 borderColor:
                                     item.advanceProgram > 0
                                         ? 'primary'
                                         : '#F0F0F0',
+                                [theme.breakpoints.down('lg')]: {
+                                    mr: 0,
+                                },
                             }}
                         >
                             <Text color="black.main">
@@ -131,7 +140,11 @@ function MetierList({ textToSearch }) {
                         sx={{
                             backgroundColor: 'secondary.dark',
                             py: 1,
+                            ml: 1,
                             borderColor: '#F0F0F0',
+                            [theme.breakpoints.down('lg')]: {
+                                ml: 0,
+                            },
                         }}
                     >
                         <Text color="black.main">Evolutions</Text>
