@@ -1,16 +1,20 @@
 import React from 'react';
-import HeaderInScreen from '../../header/HeaderInScreen';
+import HeaderInOrgan from '../../header/HeaderInOrgan';
 import { Box, Typography } from '@mui/material';
-import './Organigramme.css';
+import '../../../assets/css/Organigramme.css';
 
 const OrganigrammeNode = ({ data }) => (
-  <Box className="node" p={2} m={1}>
-    <Typography variant="h6" color="primary">
-      {data.name}
-    </Typography>
-    <Typography variant="body1" color="textSecondary">
-      {data.position}
-    </Typography>
+  <Box className="node" p={2} m={1} border={1} borderColor="primary.main" borderRadius={4}>
+    <Box>
+      <Typography variant="h6" color="primary">
+        {data.name}
+      </Typography>
+    </Box>
+    <Box>
+      <Typography variant="body1" color="textSecondary">
+        {data.position}
+      </Typography>
+    </Box>
     {data.children && (
       <Box display="flex" flexDirection="row" mt={2}>
         {data.children.map((child) => (
@@ -66,19 +70,16 @@ const organigrammeData = {
 function OrganigrammeScreen() {
   return (
     <React.Fragment>
-      <HeaderInScreen />
+      <HeaderInOrgan />
       <Box
         backgroundColor="background.paper"
-        display={'flex'}
+        display="flex"
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        minHeight={'88vh'}
+        minHeight="88vh"
         p={2}
       >
-        <Typography variant="h4" color="primary">
-          Modèle d'organigramme hiérarchique
-        </Typography>
         <Box className="organigramme" mt={4}>
           <OrganigrammeNode data={organigrammeData} />
         </Box>
@@ -86,4 +87,5 @@ function OrganigrammeScreen() {
     </React.Fragment>
   );
 }
+
 export default OrganigrammeScreen;

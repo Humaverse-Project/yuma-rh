@@ -63,9 +63,6 @@ const theme = createTheme({
     },
     typography: {
         ...typo,
-        button: {
-            textTransform: 'none',
-        },
     },
     spacing: 8,
     breakpoints: {

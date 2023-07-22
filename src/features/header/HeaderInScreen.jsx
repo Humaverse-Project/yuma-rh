@@ -1,24 +1,30 @@
 import { DynamicHeadNav, Text, Row } from '../../shared'
-import { Button } from '@mui/material'
+import { Icon, useMediaQuery } from '@mui/material'
 
 //ICONES
-//import { useTheme } from '@emotion/react'
+import LanguageIcon from '@mui/icons-material/Language'
+import SettingsIcon from '@mui/icons-material/Settings'
+import { useTheme } from '@emotion/react'
 
-function HeaderInScreen({ title, secondSubtitle, rightButton }) {
-    //const theme = useTheme()
-    //const matcheSM = useMediaQuery(theme.breakpoints.up('sm'))
-    //const matcheMD = useMediaQuery(theme.breakpoints.down('md'))
+function HeaderInScreen() {
+    const theme = useTheme()
+    const matcheSM = useMediaQuery(theme.breakpoints.up('sm'))
+    const matcheMD = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
         <Row justifyContent={'space-between'} px={3} height={'10vh'}>
-            <DynamicHeadNav title={title} secondSubtitle={secondSubtitle} />
-            <Row>
-                <Button variant="contained" color="blue">
-                    <Text variant="button" color="white">
-                        Créer un poste
-                    </Text>
-                </Button>
-            </Row>
+            <DynamicHeadNav title={'ACCUEIL'} />
+            {!matcheMD && (
+                <Text variant="bigTitleBold" color="blue.main" mr={20}>
+                    YUMA
+                </Text>
+            )}
+            {matcheSM && (
+                <Row width={100} justifyContent={'space-between'}>
+                    <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
+                    <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
+                </Row>
+            )}
         </Row>
     )
 }
