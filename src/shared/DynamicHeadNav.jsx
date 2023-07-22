@@ -11,7 +11,7 @@ function DynamicHeadNav({ title, secondSubtitle }) {
 
     return (
         <Row>
-            <NavLink to="/">
+            <NavLink to="/home">
                 <Icon
                     sx={{ fontSize: !matcheMD ? 38 : 30 }}
                     color="primary"

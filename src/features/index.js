@@ -1,6 +1,5 @@
 //import SCREENS
 
-import HeaderGlobal from './header/HeaderGlobal'
 import HomeScreen from './home/components/HomeScreen'
 import NotFoundScreen from './notFound/NotFoundScreen'
 import LoginScreen from './Login/components/LoginScreen'
@@ -18,5 +17,4 @@ export {
     NotFoundScreen,
 
     //components reusables
-    HeaderGlobal,
 }

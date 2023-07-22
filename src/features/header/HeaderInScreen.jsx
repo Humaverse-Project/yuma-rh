@@ -1,28 +1,36 @@
-import { DynamicHeadNav, Text, Row } from '../../shared'
-import { Icon, useMediaQuery } from '@mui/material'
+import { DynamicHeadNav, Row, Text } from '../../shared'
+import { Button, useMediaQuery } from '@mui/material'
 
-//ICONES
-import LanguageIcon from '@mui/icons-material/Language'
-import SettingsIcon from '@mui/icons-material/Settings'
+// ICONES
 import { useTheme } from '@emotion/react'
 
-function HeaderInScreen() {
+function HeaderInScreen({ title, secondSubtitle }) {
     const theme = useTheme()
     const matcheSM = useMediaQuery(theme.breakpoints.up('sm'))
-    const matcheMD = useMediaQuery(theme.breakpoints.down('md'))
 
     return (
         <Row justifyContent={'space-between'} px={3} height={'10vh'}>
-            <DynamicHeadNav title={'ACCUEIL'} />
-            {!matcheMD && (
-                <Text variant="bigTitleBold" color="blue.main" mr={20}>
-                    YUMA
-                </Text>
-            )}
+            <DynamicHeadNav title={title} secondSubtitle={secondSubtitle} />
             {matcheSM && (
-                <Row width={100} justifyContent={'space-between'}>
-                    <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
-                    <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
+                <Row width="16vw" justifyContent="space-between">
+                    <Button
+                        variant="contained"
+                        color="blue"
+                        sx={{ px: 2, py: 1 }}
+                    >
+                        <Text variant="button" color="white">
+                            Créer un poste
+                        </Text>
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="blue"
+                        sx={{ px: 2, py: 1 }}
+                    >
+                        <Text variant="button" color="white">
+                            Connection SIRH
+                        </Text>
+                    </Button>
                 </Row>
             )}
         </Row>
