@@ -5,6 +5,7 @@ import {
     OrganigrammeScreen,
     LoginScreen,
     RegisterScreen,
+    ProfilScreen,
 } from './features'
 
 function Navigation() {
@@ -34,6 +35,11 @@ function Navigation() {
             id: 3,
             path: '*',
             components: <NotFoundScreen />,
+        },
+        {
+            id: 4,
+            path: '/profil',
+            components: <ProfilScreen />,
         },
     ]
 

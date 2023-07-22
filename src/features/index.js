@@ -5,6 +5,7 @@ import NotFoundScreen from './notFound/NotFoundScreen'
 import LoginScreen from './Login/components/LoginScreen'
 import RegisterScreen from './Register/components/RegisterScreen'
 import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
+import ProfilScreen from './profil/components/ProfilScreen'
 
 //import COMPONENTS REUSABLES
 
@@ -15,6 +16,7 @@ export {
     RegisterScreen,
     OrganigrammeScreen,
     NotFoundScreen,
+    ProfilScreen,
 
     //components reusables
 }

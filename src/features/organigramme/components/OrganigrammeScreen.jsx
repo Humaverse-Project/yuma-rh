@@ -20,6 +20,10 @@ function OrganigrammeScreen() {
             <HeaderInScreen
                 title={'Organigramme'}
                 secondSubtitle={textToSearh && 'Recherche'}
+                buttonRight={{
+                    first: 'Créer un poste',
+                    second: 'Connection SIRH',
+                }}
             />
             <Box
                 backgroundColor="background.paper"

@@ -4,7 +4,7 @@ import { Button, useMediaQuery } from '@mui/material'
 // ICONES
 import { useTheme } from '@emotion/react'
 
-function HeaderInScreen({ title, secondSubtitle }) {
+function HeaderInScreen({ title, secondSubtitle, buttonRight }) {
     const theme = useTheme()
     const matcheSM = useMediaQuery(theme.breakpoints.up('sm'))
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
@@ -12,7 +12,7 @@ function HeaderInScreen({ title, secondSubtitle }) {
     return (
         <Row justifyContent={'space-between'} px={3} height={'10vh'}>
             <DynamicHeadNav title={title} secondSubtitle={secondSubtitle} />
-            {matcheSM && (
+            {matcheSM && buttonRight && (
                 <Row
                     width={matcheXL ? '22%' : '17%'}
                     justifyContent="space-between"
@@ -23,7 +23,7 @@ function HeaderInScreen({ title, secondSubtitle }) {
                         sx={{ px: 2, py: 1 }}
                     >
                         <Text variant="button" color="white">
-                            Créer un poste
+                            {buttonRight?.first}
                         </Text>
                     </Button>
                     <Button
@@ -32,7 +32,7 @@ function HeaderInScreen({ title, secondSubtitle }) {
                         sx={{ px: 2, py: 1 }}
                     >
                         <Text variant="button" color="white">
-                            Connection SIRH
+                            {buttonRight?.second}
                         </Text>
                     </Button>
                 </Row>
