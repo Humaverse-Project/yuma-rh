@@ -1,9 +1,7 @@
 import * as React from 'react'
-import { useState } from 'react'
 import Box from '@mui/material/Box'
 import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
-import Avatar from '@mui/material/Avatar'
 import { NavLink } from 'react-router-dom'
 import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
@@ -15,7 +13,6 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import Visibility from '@mui/icons-material/Visibility'
 import InputAdornment from '@mui/material/InputAdornment'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
 
 // logo
 import logo from '../../../assets/images/logo.png'
