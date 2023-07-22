@@ -1,7 +1,8 @@
 import { Fragment } from 'react'
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Box, Typography } from '@mui/material'
-import '../../../assets/css/Organigramme.css'
+import { Box, InputAdornment, TextField, Typography } from '@mui/material'
+import './Organigramme.css'
+import { AccountCircle } from '@mui/icons-material'
 
 const OrganigrammeNode = ({ data }) => (
     <Box
@@ -94,12 +95,25 @@ function OrganigrammeScreen() {
             <Box
                 backgroundColor="background.paper"
                 display="flex"
-                flexDirection="column"
+                flexDirection="row"
                 justifyContent="center"
                 alignItems="center"
                 minHeight="88vh"
                 p={2}
             >
+                <Box>
+                    <TextField
+                        id="outlined-basic"
+                        InputProps={{
+                            startAdornment: (
+                                <InputAdornment position="start">
+                                    <AccountCircle />
+                                </InputAdornment>
+                            ),
+                        }}
+                        variant="outlined"
+                    />
+                </Box>
                 <Box className="organigramme" mt={4}>
                     <OrganigrammeNode data={organigrammeData} />
                 </Box>
