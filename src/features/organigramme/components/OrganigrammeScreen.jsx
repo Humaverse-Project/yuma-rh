@@ -25,6 +25,7 @@ function OrganigrammeScreen() {
                 sx={{
                     [theme.breakpoints.down('md')]: {
                         flexDirection: 'column',
+                        alignItems: 'center',
                     },
                 }}
                 justifyContent="center"

@@ -32,7 +32,10 @@ function DynamicHeadNav({ title, secondSubtitle }) {
                 </Text>
             )}
             {secondSubtitle && (
-                <Text variant={!matcheMD ? 'bigTitle' : 'normal'}>
+                <Text
+                    variant={!matcheMD ? 'bigTitle' : 'normal'}
+                    color="primary"
+                >
                     {secondSubtitle}
                 </Text>
             )}
