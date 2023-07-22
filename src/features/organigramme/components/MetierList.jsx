@@ -147,7 +147,7 @@ function MetierList({ textToSearch }) {
                 backgroundColor: 'secondary.dark',
                 display: 'flex',
                 flexDirection: 'column',
-                width: '60vw',
+                width: '90%',
                 borderRadius: '20px',
                 p: 4,
                 height: 'auto',
