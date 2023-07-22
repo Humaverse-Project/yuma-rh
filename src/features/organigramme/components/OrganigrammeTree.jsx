@@ -2,7 +2,8 @@ import { Tree, TreeNode } from 'react-organizational-chart'
 import { styled } from 'styled-components'
 
 const StyleLabel = styled.div`
-    padding: 15px 50px;
+    padding: 15px 40px;
+    margin: 0px 20px;
     display: inline-block;
     border: 2px solid #317ac1;
 `
@@ -23,6 +24,7 @@ const SpanPost = styled.span`
 const DivAdd = styled.div`
     display: flex;
     align-items: center;
+    margin: 0px 20px;
     justify-content: center;
     font-size: 32px;
     color: #9a9fad;
