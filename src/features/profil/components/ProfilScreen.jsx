@@ -44,7 +44,7 @@ function ProfilScreen() {
             <Box
                 sx={{
                     backgroundColor: 'background.paper',
-                    height: '83vh',
+                    height: '88vh',
                     py: 3,
                     px: 5,
                     [theme.breakpoints.down('lg')]: {
@@ -69,7 +69,7 @@ function ProfilScreen() {
                             flexDirection: 'column',
                             justifyContent: 'space-between',
                             alignContent: 'center',
-                            height: '70vh',
+                            height: '80vh',
                             [theme.breakpoints.down('md')]: {
                                 flexDirection: 'row',
                                 mb: 4,
@@ -192,7 +192,7 @@ function ProfilScreen() {
                                 flex: 1,
                                 justifyContent: 'space-around',
                                 alignItems: 'center',
-                                mb: 11,
+                                mb: 5,
                             }}
                         >
                             <Icon
