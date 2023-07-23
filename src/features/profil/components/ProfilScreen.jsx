@@ -44,7 +44,7 @@ function ProfilScreen() {
             <Box
                 sx={{
                     backgroundColor: 'background.paper',
-                    height: '88vh',
+                    height: '90vh',
                     py: 3,
                     px: 5,
                     [theme.breakpoints.down('lg')]: {

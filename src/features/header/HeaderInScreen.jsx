@@ -10,7 +10,12 @@ function HeaderInScreen({ title, secondSubtitle, buttonRight }) {
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
 
     return (
-        <Row justifyContent={'space-between'} px={3} height={'10vh'}>
+        <Row
+            justifyContent={'space-between'}
+            px={3}
+            height={'10vh'}
+            backgroundColor="white"
+        >
             <DynamicHeadNav title={title} secondSubtitle={secondSubtitle} />
             {matcheSM && buttonRight && (
                 <Row
