@@ -1,6 +1,5 @@
 import * as React from 'react'
 import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
 import Grid from '@mui/material/Grid'
 import { NavLink } from 'react-router-dom'
 import Button from '@mui/material/Button'
@@ -16,6 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 // logo
 import logo from '../../../assets/images/logo.png'
+import { Text } from '../../../shared'
 
 export default function LoginScreen() {
     const [showPassword, setShowPassword] = React.useState(false)
@@ -135,14 +135,24 @@ export default function LoginScreen() {
                                 }}
                             >
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
-                                        Mot de passe oublier?
-                                    </Link>
+                                    <NavLink
+                                        to="/passwordReminder"
+                                        style={{ textDecoration: 'none' }}
+                                    >
+                                        <Text color="primary.main">
+                                            Mot de passe oublié?
+                                        </Text>
+                                    </NavLink>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="/register" variant="body2">
-                                        {"Pas du compte? S'inscrire"}
-                                    </Link>
+                                    <NavLink
+                                        to="/register"
+                                        style={{ textDecoration: 'none' }}
+                                    >
+                                        <Text color="primary.main">
+                                            Pas du compte? S'inscrire
+                                        </Text>
+                                    </NavLink>
                                 </Grid>
                             </Grid>
                         </Box>
