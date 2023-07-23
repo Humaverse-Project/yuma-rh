@@ -12,7 +12,7 @@ function LinearProgressWithLabel(props) {
     return (
         <Fragment>
             <Text variant="title">{props.label}</Text>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <Box sx={{ width: '100%', mr: 1 }}>
                     <LinearProgress
                         variant="determinate"
@@ -44,7 +44,7 @@ function ProfilScreen() {
             <Box
                 sx={{
                     backgroundColor: 'background.paper',
-                    height: '90vh',
+                    height: 100 - 15 + 'vh',
                     py: 3,
                     px: 5,
                     [theme.breakpoints.down('lg')]: {
@@ -301,7 +301,7 @@ function ProfilScreen() {
                                 <Row
                                     justifyContent="space-between"
                                     width={matcheXL ? '100%' : '14vw'}
-                                    mt={2}
+                                    mt={matcheXL ? 0 : 2}
                                 >
                                     <Button
                                         variant="outlined"
