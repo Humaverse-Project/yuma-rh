@@ -1,4 +1,4 @@
-import { Fragment } from 'react'
+import { Fragment, useState } from 'react'
 import { Row, Text } from '../../../shared'
 import HeaderInScreen from '../../header/HeaderInScreen'
 import {
@@ -6,6 +6,7 @@ import {
     Button,
     Icon,
     LinearProgress,
+    Radio,
     TextField,
     useMediaQuery,
 } from '@mui/material'
@@ -13,27 +14,41 @@ import { useTheme } from '@mui/material/styles'
 import PersonIcon from '@mui/icons-material/Person'
 
 function LinearProgressWithLabel(props) {
+    const [selectedValue, setSelectedValue] = useState('')
+
+    const handleChange = (event) => {
+        setSelectedValue(event.target.value)
+    }
     return (
-        <Fragment>
-            <Text variant="title">{props.label}</Text>
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Box sx={{ width: '100%', mr: 1 }}>
-                    <LinearProgress
-                        variant="determinate"
-                        color="success"
-                        sx={{
-                            color: 'success',
-                        }}
-                        {...props}
-                    />
-                </Box>
-                <Box sx={{ minWidth: 35 }}>
-                    <Text variant="normalBold" color="black">{`${Math.round(
-                        props.value
-                    )}%`}</Text>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
+            <Radio
+                checked={selectedValue === props.label}
+                onChange={handleChange}
+                value={props.label}
+                name="radio-buttons"
+                inputProps={{ 'aria-label': props.label }}
+            />
+            <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                <Text variant="title">{props.label}</Text>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                    <Box sx={{ width: '100%', mr: 1 }}>
+                        <LinearProgress
+                            variant="determinate"
+                            color="success"
+                            sx={{
+                                color: 'success',
+                            }}
+                            {...props}
+                        />
+                    </Box>
+                    <Box sx={{ minWidth: 35 }}>
+                        <Text variant="normalBold" color="black">{`${Math.round(
+                            props.value
+                        )}%`}</Text>
+                    </Box>
                 </Box>
             </Box>
-        </Fragment>
+        </Box>
     )
 }
 
