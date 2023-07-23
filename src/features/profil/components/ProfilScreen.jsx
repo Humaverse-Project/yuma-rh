@@ -158,7 +158,17 @@ function ProfilScreen() {
                                     },
                                 }}
                             >
-                                <Text fontSize={18}>Choisir une formation</Text>
+                                <NavLink
+                                    to="/manageCompetence"
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'black',
+                                    }}
+                                >
+                                    <Text fontSize={18}>
+                                        Choisir une formation
+                                    </Text>
+                                </NavLink>
                             </Button>
                             <Button
                                 variant="contained"

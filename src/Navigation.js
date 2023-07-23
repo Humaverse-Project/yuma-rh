@@ -6,6 +6,7 @@ import {
     LoginScreen,
     RegisterScreen,
     ProfilScreen,
+    ManageCompetence,
 } from './features'
 
 function Navigation() {
@@ -40,6 +41,11 @@ function Navigation() {
             id: 4,
             path: '/profil',
             components: <ProfilScreen />,
+        },
+        {
+            id: 5,
+            path: '/manageCompetence',
+            components: <ManageCompetence />,
         },
     ]
 
