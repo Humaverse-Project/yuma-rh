@@ -192,7 +192,7 @@ function ProfilScreen() {
                                 flex: 1,
                                 justifyContent: 'space-around',
                                 alignItems: 'center',
-                                mb: 8,
+                                mb: 11,
                             }}
                         >
                             <Icon
