@@ -29,14 +29,32 @@ function ProfilScreen() {
                 <Box
                     sx={{
                         display: 'flex',
-                        alignItems: 'center',
+                        alignItems: 'flex-start',
+                        [theme.breakpoints.down('md')]: {
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                        },
                     }}
                 >
                     <Box
                         sx={{
                             display: 'flex',
                             flex: 0.5,
-                            justifyContent: 'center',
+                            flexDirection: 'column',
+                            justifyContent: 'space-between',
+                            alignContent: 'center',
+                            height: '80vh',
+                            [theme.breakpoints.down('md')]: {
+                                flexDirection: 'row',
+                                mb: 4,
+                                height: 'auto',
+                            },
+                            [theme.breakpoints.down('sm')]: {
+                                flexDirection: 'column',
+                                height: 'auto',
+                                alignItems: 'center',
+                                alignContent: 'center',
+                            },
                         }}
                     >
                         <Button
@@ -47,6 +65,10 @@ function ProfilScreen() {
                                 py: 1.5,
                                 borderRadius: 2,
                                 width: '100%',
+                                mt: 3,
+                                [theme.breakpoints.down('md')]: {
+                                    mt: 0,
+                                },
                             }}
                         >
                             <NavLink
@@ -59,6 +81,77 @@ function ProfilScreen() {
                                 <Text fontSize={18}>RETOUR</Text>
                             </NavLink>
                         </Button>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                flex: 0.55,
+                                [theme.breakpoints.down('md')]: {
+                                    flexDirection: 'row',
+                                },
+                                [theme.breakpoints.down('sm')]: {
+                                    flexDirection: 'column',
+                                    height: 'auto',
+                                    alignItems: 'center',
+                                    alignContent: 'center',
+                                },
+                                [theme.breakpoints.up('xl')]: {
+                                    flex: 0.3,
+                                },
+                            }}
+                        >
+                            <Button
+                                variant="contained"
+                                color="background"
+                                sx={{
+                                    px: 6,
+                                    py: 1.5,
+                                    borderRadius: 2,
+                                    width: '100%',
+                                    [theme.breakpoints.down('sm')]: {
+                                        mt: 2,
+                                    },
+                                }}
+                            >
+                                <Text fontSize={18}>
+                                    Vérifier la compatibilité sur un poste
+                                </Text>
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="background"
+                                sx={{
+                                    px: 6,
+                                    py: 2.5,
+                                    borderRadius: 2,
+                                    width: '100%',
+                                    [theme.breakpoints.down('sm')]: {
+                                        mt: 2,
+                                    },
+                                }}
+                            >
+                                <Text fontSize={18}>Choisir une formation</Text>
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="background"
+                                sx={{
+                                    px: 6,
+                                    py: 1.5,
+                                    borderRadius: 2,
+                                    width: '100%',
+                                    [theme.breakpoints.down('sm')]: {
+                                        mt: 2,
+                                        mb: 4,
+                                    },
+                                }}
+                            >
+                                <Text fontSize={18}>
+                                    Formation déjà attribuées
+                                </Text>
+                            </Button>
+                        </Box>
                     </Box>
                     <Box
                         sx={{
