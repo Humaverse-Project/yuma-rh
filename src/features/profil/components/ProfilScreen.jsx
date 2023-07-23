@@ -6,6 +6,7 @@ import { useTheme } from '@mui/material/styles'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import PersonIcon from '@mui/icons-material/Person'
+import { NavLink } from 'react-router-dom'
 
 function ProfilScreen() {
     const theme = useTheme()
@@ -43,12 +44,20 @@ function ProfilScreen() {
                             color="background"
                             sx={{
                                 px: 6,
-                                py: 1,
+                                py: 1.5,
                                 borderRadius: 2,
                                 width: '100%',
                             }}
                         >
-                            <Text>Retour</Text>
+                            <NavLink
+                                to="/organigramme"
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'black',
+                                }}
+                            >
+                                <Text fontSize={18}>RETOUR</Text>
+                            </NavLink>
                         </Button>
                     </Box>
                     <Box
@@ -108,7 +117,7 @@ function ProfilScreen() {
                                         color="primary"
                                         textDecoration="underline"
                                         fontStyle="italic"
-                                        ml={matcheLG ? 0 : 1}
+                                        ml={matcheLG ? 0 : 2}
                                     >
                                         Modifier
                                     </Text>
