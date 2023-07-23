@@ -1,7 +1,14 @@
 import { Fragment } from 'react'
 import { Row, Text } from '../../../shared'
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Box, Button, Icon, LinearProgress, useMediaQuery } from '@mui/material'
+import {
+    Box,
+    Button,
+    Icon,
+    LinearProgress,
+    TextField,
+    useMediaQuery,
+} from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import PersonIcon from '@mui/icons-material/Person'
 
@@ -50,6 +57,7 @@ function ManageCompetence() {
                     },
                 }}
             >
+                {/**profil and competences */}
                 <Box
                     sx={{
                         display: 'flex',
@@ -65,28 +73,41 @@ function ManageCompetence() {
                             mb: 5,
                         }}
                     >
-                        <Icon
-                            sx={{
-                                fontSize: 100,
-                                border: 1,
-                                borderColor: 'blue.main',
-                                borderRadius: 2,
-                            }}
-                            component={PersonIcon}
-                        />
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'flex-start',
-                                justifyContent: 'center',
-                                ml: 3,
-                            }}
-                        >
-                            <Text variant="titleBold">Louis Dubrant</Text>
-                            <Text variant="normal">
-                                Assistant commercial junior
-                            </Text>
+                        <Box>
+                            {/**icon and name person */}
+                            <Box sx={{ display: 'flex', mb: 2 }}>
+                                <Icon
+                                    sx={{
+                                        fontSize: 100,
+                                        border: 1,
+                                        borderColor: 'blue.main',
+                                        borderRadius: 2,
+                                    }}
+                                    component={PersonIcon}
+                                />
+                                <Box
+                                    sx={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'center',
+                                        ml: 3,
+                                    }}
+                                >
+                                    <Text variant="titleBold">
+                                        Louis Dubrant
+                                    </Text>
+                                    <Text variant="normal">
+                                        Assistant commercial junior
+                                    </Text>
+                                </Box>
+                            </Box>
+                            {/**search bar */}
+                            <TextField
+                                label="Poste ciblé: "
+                                variant="outlined"
+                                fullWidth
+                            />
                         </Box>
                     </Box>
                     {/**Competence section */}
@@ -141,6 +162,7 @@ function ManageCompetence() {
                         </Box>
                     </Box>
                 </Box>
+                {/**choice avalaible competences */}
                 <Box
                     sx={{
                         display: 'flex',
