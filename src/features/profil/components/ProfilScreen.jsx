@@ -86,7 +86,7 @@ function ProfilScreen() {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'space-between',
-                                flex: 0.55,
+                                flex: 0.45,
                                 [theme.breakpoints.down('md')]: {
                                     flexDirection: 'row',
                                 },
@@ -97,7 +97,7 @@ function ProfilScreen() {
                                     alignContent: 'center',
                                 },
                                 [theme.breakpoints.up('xl')]: {
-                                    flex: 0.3,
+                                    flex: 0.38,
                                 },
                             }}
                         >
