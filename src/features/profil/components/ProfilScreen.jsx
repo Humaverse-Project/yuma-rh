@@ -36,6 +36,7 @@ function LinearProgressWithLabel(props) {
 function ProfilScreen() {
     const theme = useTheme()
     const matcheLG = useMediaQuery(theme.breakpoints.down('lg'))
+    const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
 
     return (
         <Fragment>
@@ -299,7 +300,7 @@ function ProfilScreen() {
                                 </Box>
                                 <Row
                                     justifyContent="space-between"
-                                    width={'14vw'}
+                                    width={matcheXL ? '100%' : '14vw'}
                                     mt={2}
                                 >
                                     <Button
