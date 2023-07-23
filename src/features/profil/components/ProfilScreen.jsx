@@ -83,6 +83,7 @@ function ProfilScreen() {
                             },
                         }}
                     >
+                        {/**Return button */}
                         <Button
                             variant="contained"
                             color="background"
@@ -107,12 +108,12 @@ function ProfilScreen() {
                                 <Text fontSize={18}>RETOUR</Text>
                             </NavLink>
                         </Button>
+                        {/**button for other action */}
                         <Box
                             sx={{
                                 display: 'flex',
                                 flexDirection: 'column',
                                 justifyContent: 'space-between',
-                                flex: 0.45,
                                 [theme.breakpoints.down('md')]: {
                                     flexDirection: 'row',
                                 },
@@ -123,7 +124,7 @@ function ProfilScreen() {
                                     alignContent: 'center',
                                 },
                                 [theme.breakpoints.up('xl')]: {
-                                    flex: 0.38,
+                                    flex: 0.4,
                                 },
                             }}
                         >
@@ -186,6 +187,7 @@ function ProfilScreen() {
                             flexDirection: 'column',
                         }}
                     >
+                        {/**Change profil section */}
                         <Box
                             sx={{
                                 display: 'flex',
@@ -263,6 +265,7 @@ function ProfilScreen() {
                                 component={ChevronRightIcon}
                             />
                         </Box>
+                        {/**Competence section */}
                         <Box
                             sx={{
                                 display: 'flex',
