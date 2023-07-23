@@ -1,12 +1,37 @@
 import { Fragment } from 'react'
-import { Text } from '../../../shared'
+import { Row, Text } from '../../../shared'
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Box, Button, Icon, useMediaQuery } from '@mui/material'
+import { Box, Button, Icon, LinearProgress, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
 import ChevronRightIcon from '@mui/icons-material/ChevronRight'
 import PersonIcon from '@mui/icons-material/Person'
 import { NavLink } from 'react-router-dom'
+
+function LinearProgressWithLabel(props) {
+    return (
+        <Fragment>
+            <Text variant="title">{props.label}</Text>
+            <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+                <Box sx={{ width: '100%', mr: 1 }}>
+                    <LinearProgress
+                        variant="determinate"
+                        color="success"
+                        sx={{
+                            color: 'success',
+                        }}
+                        {...props}
+                    />
+                </Box>
+                <Box sx={{ minWidth: 35 }}>
+                    <Text variant="normalBold" color="black">{`${Math.round(
+                        props.value
+                    )}%`}</Text>
+                </Box>
+            </Box>
+        </Fragment>
+    )
+}
 
 function ProfilScreen() {
     const theme = useTheme()
@@ -157,75 +182,136 @@ function ProfilScreen() {
                         sx={{
                             display: 'flex',
                             flex: 2.5,
-                            justifyContent: 'space-around',
-                            alignItems: 'center',
+                            flexDirection: 'column',
                         }}
                     >
-                        <Icon
-                            sx={{
-                                fontSize: 38,
-                                border: 1,
-                                borderColor: 'secondary.main',
-                                borderRadius: 2,
-                            }}
-                            component={ChevronLeftIcon}
-                        />
                         <Box
                             sx={{
                                 display: 'flex',
-                                flex: 0.5,
+                                flex: 1,
+                                justifyContent: 'space-around',
+                                alignItems: 'center',
+                                mb: 5,
                             }}
                         >
                             <Icon
                                 sx={{
-                                    fontSize: 100,
+                                    fontSize: 38,
                                     border: 1,
-                                    borderColor: 'blue.main',
+                                    borderColor: 'secondary.main',
                                     borderRadius: 2,
                                 }}
-                                component={PersonIcon}
+                                component={ChevronLeftIcon}
                             />
                             <Box
                                 sx={{
                                     display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'flex-start',
-                                    justifyContent: 'center',
-                                    ml: 3,
+                                    flex: 0.5,
                                 }}
                             >
-                                <Text variant="titleBold">Louis Dubrant</Text>
+                                <Icon
+                                    sx={{
+                                        fontSize: 100,
+                                        border: 1,
+                                        borderColor: 'blue.main',
+                                        borderRadius: 2,
+                                    }}
+                                    component={PersonIcon}
+                                />
                                 <Box
                                     sx={{
                                         display: 'flex',
-                                        [theme.breakpoints.down('lg')]: {
-                                            flexDirection: ' column',
-                                        },
+                                        flexDirection: 'column',
+                                        alignItems: 'flex-start',
+                                        justifyContent: 'center',
+                                        ml: 3,
                                     }}
                                 >
-                                    <Text variant="normal">
-                                        Assistant commercial junior
+                                    <Text variant="titleBold">
+                                        Louis Dubrant
                                     </Text>
-                                    <Text
-                                        color="primary"
-                                        textDecoration="underline"
-                                        fontStyle="italic"
-                                        ml={matcheLG ? 0 : 2}
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            [theme.breakpoints.down('lg')]: {
+                                                flexDirection: ' column',
+                                            },
+                                        }}
                                     >
-                                        Modifier
-                                    </Text>
+                                        <Text variant="normal">
+                                            Assistant commercial junior
+                                        </Text>
+                                        <Text
+                                            color="primary"
+                                            textDecoration="underline"
+                                            fontStyle="italic"
+                                            ml={matcheLG ? 0 : 2}
+                                        >
+                                            Modifier
+                                        </Text>
+                                    </Box>
                                 </Box>
                             </Box>
+                            <Icon
+                                sx={{
+                                    fontSize: 38,
+                                    border: 1,
+                                    borderColor: 'secondary.main',
+                                    borderRadius: 2,
+                                }}
+                                component={ChevronRightIcon}
+                            />
                         </Box>
-                        <Icon
+                        <Box
                             sx={{
-                                fontSize: 38,
-                                border: 1,
-                                borderColor: 'secondary.main',
-                                borderRadius: 2,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
                             }}
-                            component={ChevronRightIcon}
-                        />
+                        >
+                            <Box
+                                sx={{
+                                    width: '85%',
+                                    border: 2,
+                                    borderColor: 'secondary.dark',
+                                    borderRadius: 6,
+                                    backgroundColor: 'white',
+                                    p: 5,
+                                }}
+                            >
+                                <Box>
+                                    <LinearProgressWithLabel
+                                        label="Communication"
+                                        value={58}
+                                    />
+                                    <LinearProgressWithLabel
+                                        label="Répondre aux appels téléphoniques"
+                                        value={52}
+                                    />
+                                    <LinearProgressWithLabel
+                                        label="Gérer les dossiers clients et fournisseurs"
+                                        value={37}
+                                    />
+                                    <LinearProgressWithLabel
+                                        label="Gestion de stress"
+                                        value={31}
+                                    />
+                                </Box>
+                                <Row
+                                    justifyContent="space-between"
+                                    width={'14vw'}
+                                    mt={2}
+                                >
+                                    <Button
+                                        variant="outlined"
+                                        color="secondary"
+                                    >
+                                        <Text variant={'titleBold'}>+</Text>
+                                    </Button>
+                                    <Text>2 autres compétences</Text>
+                                </Row>
+                            </Box>
+                        </Box>
                     </Box>
                 </Box>
             </Box>

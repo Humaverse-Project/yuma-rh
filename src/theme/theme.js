@@ -21,6 +21,9 @@ const typo = {
         fontSize: 24,
         fontWeight: 'bold',
     },
+    title: {
+        fontSize: 24,
+    },
     normal: {
         fontSize: 18,
         fontWeight: 'light',
