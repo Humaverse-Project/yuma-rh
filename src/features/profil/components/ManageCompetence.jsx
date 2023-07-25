@@ -361,7 +361,11 @@ function ManageCompetence() {
                                         className="imageStyle"
                                     />
                                 </Box>
-                                <Column ml={1} justifyContent="space-between">
+                                <Column
+                                    ml={1}
+                                    justifyContent="space-between"
+                                    height={200}
+                                >
                                     <Column>
                                         <Text variant={'normalBold'}>
                                             Formation
