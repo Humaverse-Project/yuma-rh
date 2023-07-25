@@ -22,50 +22,37 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
 import imageJS from '../../../assets/images/js.png'
 
-function LinearProgressWithLabel(props) {
-    const [selectedValue, setSelectedValue] = useState('')
-
-    const handleChange = (event) => {
-        setSelectedValue(event.target.value)
-    }
-    return (
-        <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
-            <Radio
-                checked={selectedValue === props.label}
-                onChange={handleChange}
-                value={props.label}
-                name="radio-buttons"
-                inputProps={{ 'aria-label': props.label }}
-            />
-            <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
-                <Text variant="title">{props.label}</Text>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                    <Box sx={{ width: '100%', mr: 1 }}>
-                        <LinearProgress
-                            variant="determinate"
-                            color="success"
-                            sx={{
-                                color: 'success',
-                            }}
-                            {...props}
-                        />
-                    </Box>
-                    <Box sx={{ minWidth: 35 }}>
-                        <Text variant="normalBold" color="black">{`${Math.round(
-                            props.value
-                        )}%`}</Text>
-                    </Box>
-                </Box>
-            </Box>
-        </Box>
-    )
-}
-
 function ManageCompetence() {
     const theme = useTheme()
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
     const matcheLG = useMediaQuery(theme.breakpoints.down('lg'))
-    const chooseFormation = true
+    const [chooseFormation, setchooseFormation] = useState('')
+    const [competences] = useState([
+        {
+            id: 1,
+            label: 'Communication',
+            value: 50,
+            isSelected: false,
+        },
+        {
+            id: 2,
+            label: 'Répondre aux appels téléphoniques',
+            value: 48,
+            isSelected: false,
+        },
+        {
+            id: 3,
+            label: 'Gérer les dossiers clients et fournisseurs',
+            value: 56,
+            isSelected: false,
+        },
+        {
+            id: 4,
+            label: 'Gestion de stress',
+            value: 44,
+            isSelected: false,
+        },
+    ])
 
     return (
         <Fragment>
@@ -315,22 +302,72 @@ function ManageCompetence() {
                         }}
                     >
                         <Box>
-                            <LinearProgressWithLabel
-                                label="Communication"
-                                value={58}
-                            />
-                            <LinearProgressWithLabel
-                                label="Répondre aux appels téléphoniques"
-                                value={52}
-                            />
-                            <LinearProgressWithLabel
-                                label="Gérer les dossiers clients et fournisseurs"
-                                value={37}
-                            />
-                            <LinearProgressWithLabel
-                                label="Gestion de stress"
-                                value={31}
-                            />
+                            {competences &&
+                                competences.map((item) => (
+                                    <Box
+                                        key={item.id}
+                                        sx={{
+                                            display: 'flex',
+                                            alignItems: 'flex-start',
+                                        }}
+                                    >
+                                        <Radio
+                                            checked={
+                                                item.label === chooseFormation
+                                            }
+                                            onChange={() => {
+                                                setchooseFormation(item.label)
+                                            }}
+                                            value={item.label}
+                                            name="radio-buttons"
+                                            inputProps={{
+                                                'aria-label': item.label,
+                                            }}
+                                        />
+                                        <Box
+                                            sx={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                flex: 1,
+                                            }}
+                                        >
+                                            <Text variant="title">
+                                                {item.label}
+                                            </Text>
+                                            <Box
+                                                sx={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    mb: 1,
+                                                }}
+                                            >
+                                                <Box
+                                                    sx={{
+                                                        width: '100%',
+                                                        mr: 1,
+                                                    }}
+                                                >
+                                                    <LinearProgress
+                                                        variant="determinate"
+                                                        color="success"
+                                                        sx={{
+                                                            color: 'success',
+                                                        }}
+                                                        value={item.value}
+                                                    />
+                                                </Box>
+                                                <Box sx={{ minWidth: 35 }}>
+                                                    <Text
+                                                        variant="normalBold"
+                                                        color="black"
+                                                    >{`${Math.round(
+                                                        item.value
+                                                    )}%`}</Text>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                ))}
                         </Box>
                         <Row
                             justifyContent="space-between"
@@ -412,7 +449,7 @@ function ManageCompetence() {
                                                 Validité
                                             </Text>
                                             <Text variant={'caption'}>
-                                                8 ans
+                                                4 ans
                                             </Text>
                                         </Column>
                                         <Rating name="javascript" value={4} />
@@ -436,8 +473,7 @@ function ManageCompetence() {
                                                 Formation
                                             </Text>
                                             <Text variant={'body2'}>
-                                                Gestion des clients et
-                                                fournisseurs
+                                                Gestion client
                                             </Text>
                                         </Column>
                                         <Column>
@@ -459,7 +495,7 @@ function ManageCompetence() {
                                                 Validité
                                             </Text>
                                             <Text variant={'caption'}>
-                                                8 ans
+                                                10 ans
                                             </Text>
                                         </Column>
                                         <Rating name="javascript" value={4} />
@@ -483,8 +519,7 @@ function ManageCompetence() {
                                                 Formation
                                             </Text>
                                             <Text variant={'body2'}>
-                                                Gestion des clients et
-                                                fournisseurs
+                                                Gestion d'un dossier commercial
                                             </Text>
                                         </Column>
                                         <Column>
