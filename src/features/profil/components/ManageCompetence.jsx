@@ -60,7 +60,7 @@ function ManageCompetence() {
             <Box
                 sx={{
                     backgroundColor: 'background.paper',
-                    height: 100 - 15 + 'vh',
+                    height: '90vh',
                     py: 3,
                     px: 5,
                     display: 'flex',
