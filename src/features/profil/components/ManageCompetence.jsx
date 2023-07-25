@@ -68,7 +68,7 @@ function ManageCompetence() {
                         px: 2,
                         flexDirection: 'column',
                         justifyContent: 'flex-start',
-                        height: 'auto',
+                        height: '100vh',
                     },
                 }}
             >
