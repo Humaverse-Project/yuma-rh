@@ -2,7 +2,7 @@ import { Tree, TreeNode } from 'react-organizational-chart'
 import { styled } from 'styled-components'
 
 const StyleLabel = styled.div`
-    padding: 15px 40px;
+    padding: 15px 35px;
     margin: 0px 20px;
     display: inline-block;
     border: 2px solid #317ac1;

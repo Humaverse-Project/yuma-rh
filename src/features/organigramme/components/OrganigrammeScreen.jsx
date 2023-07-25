@@ -80,6 +80,13 @@ function OrganigrammeScreen() {
                 <Box
                     sx={{
                         display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        [theme.breakpoints.down('md')]: {
+                            alignItems: 'flex-start',
+                            mt: 8,
+                            width: '100%',
+                        },
                         flex: 2,
                         ml: 6,
                         [theme.breakpoints.down('lg')]: {
