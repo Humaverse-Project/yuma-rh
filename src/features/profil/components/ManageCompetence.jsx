@@ -64,6 +64,7 @@ function LinearProgressWithLabel(props) {
 function ManageCompetence() {
     const theme = useTheme()
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
+    const matcheLG = useMediaQuery(theme.breakpoints.down('lg'))
     const chooseFormation = true
 
     return (
@@ -80,6 +81,7 @@ function ManageCompetence() {
                         px: 2,
                         flexDirection: 'column',
                         justifyContent: 'flex-start',
+                        height: 'auto',
                     },
                 }}
             >
@@ -347,56 +349,170 @@ function ManageCompetence() {
                     sx={{
                         display: 'flex',
                         justifyContent: 'center',
-                        alignItems: 'center',
+                        alignItems: chooseFormation ? 'flex-start' : 'center',
                         flex: 1,
+                        [theme.breakpoints.down('lg')]: {
+                            mt: 4,
+                            mb: 3,
+                        },
                     }}
                 >
                     {chooseFormation ? (
                         <Box>
-                            <Row alignItems="">
-                                <Box>
-                                    <img
-                                        src={imageJS}
-                                        alt="Javascript"
-                                        className="imageStyle"
-                                    />
-                                </Box>
-                                <Column
-                                    ml={1}
-                                    justifyContent="space-between"
-                                    height={200}
-                                >
-                                    <Column>
-                                        <Text variant={'normalBold'}>
-                                            Formation
-                                        </Text>
-                                        <Text variant={'body2'}>
-                                            Gestion des clients et fournisseurs
-                                        </Text>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    [theme.breakpoints.down('lg')]: {
+                                        flexDirection: 'row',
+                                    },
+                                    [theme.breakpoints.down('md')]: {
+                                        flexDirection: 'column',
+                                    },
+                                }}
+                            >
+                                <Row alignItems="">
+                                    <Box>
+                                        <img
+                                            src={imageJS}
+                                            alt="Javascript"
+                                            className="imageStyle"
+                                        />
+                                    </Box>
+                                    <Column
+                                        ml={1}
+                                        justifyContent="space-around"
+                                        height={200}
+                                    >
+                                        <Column>
+                                            <Text variant={'normalBold'}>
+                                                Formation
+                                            </Text>
+                                            <Text variant={'body2'}>
+                                                Gestion des clients et
+                                                fournisseurs
+                                            </Text>
+                                        </Column>
+                                        <Column>
+                                            <Text
+                                                variant={'subtitle2'}
+                                                fontWeight="bold"
+                                            >
+                                                Catégorie
+                                            </Text>
+                                            <Text variant={'caption'}>
+                                                Professionalisante / Commerciale
+                                            </Text>
+                                        </Column>
+                                        <Column>
+                                            <Text
+                                                variant={'caption'}
+                                                fontWeight="bold"
+                                            >
+                                                Validité
+                                            </Text>
+                                            <Text variant={'caption'}>
+                                                8 ans
+                                            </Text>
+                                        </Column>
+                                        <Rating name="javascript" value={4} />
                                     </Column>
-                                    <Column>
-                                        <Text
-                                            variant={'subtitle2'}
-                                            fontWeight="bold"
-                                        >
-                                            Catégorie
-                                        </Text>
-                                        <Text variant={'caption'}>
-                                            Professionalisante / Commerciale
-                                        </Text>
+                                </Row>
+                                <Row alignItems="">
+                                    <Box>
+                                        <img
+                                            src={imageJS}
+                                            alt="Javascript"
+                                            className="imageStyle"
+                                        />
+                                    </Box>
+                                    <Column
+                                        ml={1}
+                                        justifyContent="space-around"
+                                        height={200}
+                                    >
+                                        <Column>
+                                            <Text variant={'normalBold'}>
+                                                Formation
+                                            </Text>
+                                            <Text variant={'body2'}>
+                                                Gestion des clients et
+                                                fournisseurs
+                                            </Text>
+                                        </Column>
+                                        <Column>
+                                            <Text
+                                                variant={'subtitle2'}
+                                                fontWeight="bold"
+                                            >
+                                                Catégorie
+                                            </Text>
+                                            <Text variant={'caption'}>
+                                                Professionalisante / Commerciale
+                                            </Text>
+                                        </Column>
+                                        <Column>
+                                            <Text
+                                                variant={'caption'}
+                                                fontWeight="bold"
+                                            >
+                                                Validité
+                                            </Text>
+                                            <Text variant={'caption'}>
+                                                8 ans
+                                            </Text>
+                                        </Column>
+                                        <Rating name="javascript" value={4} />
                                     </Column>
-                                    <Column>
-                                        <Text
-                                            variant={'caption'}
-                                            fontWeight="bold"
-                                        >
-                                            Validité
-                                        </Text>
-                                        <Text variant={'caption'}>8 ans</Text>
+                                </Row>
+                                <Row alignItems="">
+                                    <Box>
+                                        <img
+                                            src={imageJS}
+                                            alt="Javascript"
+                                            className="imageStyle"
+                                        />
+                                    </Box>
+                                    <Column
+                                        ml={1}
+                                        justifyContent="space-around"
+                                        height={200}
+                                    >
+                                        <Column>
+                                            <Text variant={'normalBold'}>
+                                                Formation
+                                            </Text>
+                                            <Text variant={'body2'}>
+                                                Gestion des clients et
+                                                fournisseurs
+                                            </Text>
+                                        </Column>
+                                        <Column>
+                                            <Text
+                                                variant={'subtitle2'}
+                                                fontWeight="bold"
+                                            >
+                                                Catégorie
+                                            </Text>
+                                            <Text variant={'caption'}>
+                                                Professionalisante / Commerciale
+                                            </Text>
+                                        </Column>
+                                        <Column>
+                                            <Text
+                                                variant={'caption'}
+                                                fontWeight="bold"
+                                            >
+                                                Validité
+                                            </Text>
+                                            <Text variant={'caption'}>
+                                                8 ans
+                                            </Text>
+                                        </Column>
+                                        <Rating name="javascript" value={4} />
                                     </Column>
-                                    <Rating name="javascript" value={4} />
-                                </Column>
-                            </Row>
+                                </Row>
+                            </Box>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -406,7 +522,7 @@ function ManageCompetence() {
                             >
                                 <Row
                                     justifyContent="space-between"
-                                    width={'50%'}
+                                    width={matcheLG ? '100%' : '50%'}
                                 >
                                     <Button variant={'contained'} color="blue">
                                         <Text color={'white'}>Choisir</Text>
