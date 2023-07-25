@@ -146,6 +146,9 @@ function ManageCompetence() {
                                 borderColor: 'secondary.dark',
                                 borderRadius: 3,
                                 width: '30%',
+                                [theme.breakpoints.down('xl')]: {
+                                    width: '40%',
+                                },
                                 [theme.breakpoints.down('md')]: {
                                     width: 'auto',
                                 },
