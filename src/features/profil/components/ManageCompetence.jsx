@@ -7,9 +7,11 @@ import {
     Icon,
     LinearProgress,
     Radio,
+    Rating,
     TextField,
     useMediaQuery,
 } from '@mui/material'
+import './Profil.css'
 import { useTheme } from '@mui/material/styles'
 import PersonIcon from '@mui/icons-material/Person'
 import InputLabel from '@mui/material/InputLabel'
@@ -18,6 +20,7 @@ import NativeSelect from '@mui/material/NativeSelect'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
+import imageJS from '../../../assets/images/js.png'
 
 function LinearProgressWithLabel(props) {
     const [selectedValue, setSelectedValue] = useState('')
@@ -61,6 +64,7 @@ function LinearProgressWithLabel(props) {
 function ManageCompetence() {
     const theme = useTheme()
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
+    const chooseFormation = true
 
     return (
         <Fragment>
@@ -139,9 +143,11 @@ function ManageCompetence() {
                                 label="Poste ciblé: "
                                 variant="outlined"
                                 fullWidth
+                                focused
+                                color="blue"
                             />
                         </Box>
-
+                        {/**critère */}
                         <Box
                             backgroundColor="white"
                             sx={{
@@ -345,9 +351,54 @@ function ManageCompetence() {
                         flex: 1,
                     }}
                 >
-                    <Text variant="normal" color="secondary.main">
-                        Choisissez une compétences
-                    </Text>
+                    {chooseFormation ? (
+                        <Box>
+                            <Row alignItems="">
+                                <Box>
+                                    <img
+                                        src={imageJS}
+                                        alt="Javascript"
+                                        className="imageStyle"
+                                    />
+                                </Box>
+                                <Column ml={1} justifyContent="space-between">
+                                    <Column>
+                                        <Text variant={'normalBold'}>
+                                            Formation
+                                        </Text>
+                                        <Text variant={'body2'}>
+                                            Gestion des clients et fournisseurs
+                                        </Text>
+                                    </Column>
+                                    <Column>
+                                        <Text
+                                            variant={'subtitle2'}
+                                            fontWeight="bold"
+                                        >
+                                            Catégorie
+                                        </Text>
+                                        <Text variant={'caption'}>
+                                            Professionalisante / Commerciale
+                                        </Text>
+                                    </Column>
+                                    <Column>
+                                        <Text
+                                            variant={'caption'}
+                                            fontWeight="bold"
+                                        >
+                                            Validité
+                                        </Text>
+                                        <Text variant={'caption'}>8 ans</Text>
+                                    </Column>
+                                    <Rating name="javascript" value={4} />
+                                </Column>
+                            </Row>
+                        </Box>
+                    ) : (
+                        <Text variant="normal" color="secondary.main">
+                            Choisissez une compétences
+                        </Text>
+                    )}
                 </Box>
             </Box>
         </Fragment>

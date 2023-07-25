@@ -1,11 +1,18 @@
-import { Box } from "@mui/system";
+import { Box } from '@mui/system'
 
-function Column({children, ...props}){
+function Column({ children, ...props }) {
     return (
-        <Box sx={{display: "flex", flexDirection: "column", justifyContent: "center", ...props}}>
+        <Box
+            sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                ...props,
+            }}
+        >
             {children}
         </Box>
     )
 }
 
-export default Column;
+export default Column
