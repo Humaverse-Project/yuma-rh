@@ -504,52 +504,6 @@ function ManageCompetence() {
                                         <Rating name="javascript" value={4} />
                                     </Column>
                                 </Row>
-                                <Row alignItems="">
-                                    <Box>
-                                        <img
-                                            src={imageJS}
-                                            alt="Javascript"
-                                            className="imageStyle"
-                                        />
-                                    </Box>
-                                    <Column
-                                        ml={1}
-                                        justifyContent="space-around"
-                                        height={200}
-                                    >
-                                        <Column>
-                                            <Text variant={'normalBold'}>
-                                                Formation
-                                            </Text>
-                                            <Text variant={'body2'}>
-                                                Gestion d'un dossier commercial
-                                            </Text>
-                                        </Column>
-                                        <Column>
-                                            <Text
-                                                variant={'subtitle2'}
-                                                fontWeight="bold"
-                                            >
-                                                Catégorie
-                                            </Text>
-                                            <Text variant={'caption'}>
-                                                Professionalisante / Commerciale
-                                            </Text>
-                                        </Column>
-                                        <Column>
-                                            <Text
-                                                variant={'caption'}
-                                                fontWeight="bold"
-                                            >
-                                                Validité
-                                            </Text>
-                                            <Text variant={'caption'}>
-                                                8 ans
-                                            </Text>
-                                        </Column>
-                                        <Rating name="javascript" value={4} />
-                                    </Column>
-                                </Row>
                             </Box>
                             <Box
                                 sx={{
