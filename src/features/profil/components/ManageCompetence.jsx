@@ -397,6 +397,25 @@ function ManageCompetence() {
                                     <Rating name="javascript" value={4} />
                                 </Column>
                             </Row>
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    mt: 2,
+                                }}
+                            >
+                                <Row
+                                    justifyContent="space-between"
+                                    width={'50%'}
+                                >
+                                    <Button variant={'contained'} color="blue">
+                                        <Text color={'white'}>Choisir</Text>
+                                    </Button>
+                                    <Button variant={'outlined'} color="blue">
+                                        <Text color={'blue'}>Annuler</Text>
+                                    </Button>
+                                </Row>
+                            </Box>
                         </Box>
                     ) : (
                         <Text variant="normal" color="secondary.main">
