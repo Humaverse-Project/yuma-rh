@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react'
-import { Row, Text } from '../../../shared'
+import { Column, Row, Text } from '../../../shared'
 import HeaderInScreen from '../../header/HeaderInScreen'
 import {
     Box,
@@ -12,6 +12,12 @@ import {
 } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import PersonIcon from '@mui/icons-material/Person'
+import InputLabel from '@mui/material/InputLabel'
+import FormControl from '@mui/material/FormControl'
+import NativeSelect from '@mui/material/NativeSelect'
+import FormGroup from '@mui/material/FormGroup'
+import FormControlLabel from '@mui/material/FormControlLabel'
+import Checkbox from '@mui/material/Checkbox'
 
 function LinearProgressWithLabel(props) {
     const [selectedValue, setSelectedValue] = useState('')
@@ -69,6 +75,7 @@ function ManageCompetence() {
                     [theme.breakpoints.down('lg')]: {
                         px: 2,
                         flexDirection: 'column',
+                        justifyContent: 'flex-start',
                     },
                 }}
             >
@@ -80,15 +87,25 @@ function ManageCompetence() {
                         flexDirection: 'column',
                     }}
                 >
-                    {/**profil section */}
+                    {/**profil section  && critère*/}
                     <Box
                         sx={{
                             display: 'flex',
-                            alignItems: 'center',
+                            justifyContent: 'space-between',
                             mb: 5,
+                            [theme.breakpoints.down('md')]: {
+                                flexDirection: 'column',
+                                my: 3,
+                            },
                         }}
                     >
-                        <Box>
+                        <Box
+                            sx={{
+                                [theme.breakpoints.down('md')]: {
+                                    mb: 3,
+                                },
+                            }}
+                        >
                             {/**icon and name person */}
                             <Box sx={{ display: 'flex', mb: 2 }}>
                                 <Icon
@@ -124,57 +141,199 @@ function ManageCompetence() {
                                 fullWidth
                             />
                         </Box>
+
+                        <Box
+                            backgroundColor="white"
+                            sx={{
+                                py: 1,
+                                px: 4,
+                                border: 1,
+                                borderColor: 'secondary.dark',
+                                borderRadius: 3,
+                                width: '30%',
+                                [theme.breakpoints.down('md')]: {
+                                    width: 'auto',
+                                },
+                            }}
+                        >
+                            <Column alignItems="center">
+                                <Text
+                                    variant={'titleBold'}
+                                    color="secondary.main"
+                                >
+                                    Critères de formation
+                                </Text>
+                                <Box width="100%">
+                                    {/**Durée */}
+                                    <Row
+                                        flex={1}
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Text>Durée : </Text>
+                                        <FormControl
+                                            sx={{
+                                                width: 100,
+                                            }}
+                                        >
+                                            <InputLabel
+                                                variant="standard"
+                                                htmlFor="uncontrolled-native"
+                                            >
+                                                min
+                                            </InputLabel>
+                                            <NativeSelect
+                                                defaultValue={30}
+                                                inputProps={{
+                                                    name: 'min',
+                                                    id: 'uncontrolled-native',
+                                                }}
+                                            >
+                                                <option value={1}>1</option>
+                                                <option value={2}>2</option>
+                                                <option value={3}>3</option>
+                                            </NativeSelect>
+                                        </FormControl>
+                                        <FormControl
+                                            sx={{
+                                                width: 100,
+                                            }}
+                                        >
+                                            <InputLabel
+                                                variant="standard"
+                                                htmlFor="uncontrolled-native"
+                                            >
+                                                max
+                                            </InputLabel>
+                                            <NativeSelect
+                                                defaultValue={30}
+                                                inputProps={{
+                                                    name: 'max',
+                                                    id: 'uncontrolled-native',
+                                                }}
+                                            >
+                                                <option value={1}>1</option>
+                                                <option value={2}>2</option>
+                                                <option value={3}>3</option>
+                                            </NativeSelect>
+                                        </FormControl>
+                                    </Row>
+                                    {/**Budget */}
+                                    <Row
+                                        flex={1}
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Text>Budget: </Text>
+                                        <FormControl
+                                            sx={{
+                                                width: 100,
+                                            }}
+                                        >
+                                            <InputLabel
+                                                variant="standard"
+                                                htmlFor="uncontrolled-native"
+                                            >
+                                                min
+                                            </InputLabel>
+                                            <NativeSelect
+                                                defaultValue={30}
+                                                inputProps={{
+                                                    name: 'min',
+                                                    id: 'uncontrolled-native',
+                                                }}
+                                            >
+                                                <option value={1}>1</option>
+                                                <option value={2}>2</option>
+                                                <option value={3}>3</option>
+                                            </NativeSelect>
+                                        </FormControl>
+                                        <FormControl
+                                            sx={{
+                                                width: 100,
+                                            }}
+                                        >
+                                            <InputLabel
+                                                variant="standard"
+                                                htmlFor="uncontrolled-native"
+                                            >
+                                                max
+                                            </InputLabel>
+                                            <NativeSelect
+                                                defaultValue={30}
+                                                inputProps={{
+                                                    name: 'max',
+                                                    id: 'uncontrolled-native',
+                                                }}
+                                            >
+                                                <option value={100}>100</option>
+                                                <option value={200}>200</option>
+                                                <option value={300}>300</option>
+                                            </NativeSelect>
+                                        </FormControl>
+                                    </Row>
+                                    {/**Type */}
+                                    <Row
+                                        flex={1}
+                                        justifyContent="space-between"
+                                        alignItems="center"
+                                    >
+                                        <Text>Type: </Text>
+                                        <FormGroup row={true}>
+                                            <FormControlLabel
+                                                control={
+                                                    <Checkbox defaultChecked />
+                                                }
+                                                label="En présentiel"
+                                            />
+                                            <FormControlLabel
+                                                control={<Checkbox />}
+                                                label="A distance"
+                                            />
+                                        </FormGroup>
+                                    </Row>
+                                </Box>
+                            </Column>
+                        </Box>
                     </Box>
                     {/**Competence section */}
                     <Box
                         sx={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'flex-start',
-                            [theme.breakpoints.down('md')]: {
-                                alignItems: 'center',
-                            },
+                            border: 2,
+                            borderColor: 'secondary.dark',
+                            borderRadius: 6,
+                            backgroundColor: 'white',
+                            p: 5,
                         }}
                     >
-                        <Box
-                            sx={{
-                                width: '85%',
-                                border: 2,
-                                borderColor: 'secondary.dark',
-                                borderRadius: 6,
-                                backgroundColor: 'white',
-                                p: 5,
-                            }}
-                        >
-                            <Box>
-                                <LinearProgressWithLabel
-                                    label="Communication"
-                                    value={58}
-                                />
-                                <LinearProgressWithLabel
-                                    label="Répondre aux appels téléphoniques"
-                                    value={52}
-                                />
-                                <LinearProgressWithLabel
-                                    label="Gérer les dossiers clients et fournisseurs"
-                                    value={37}
-                                />
-                                <LinearProgressWithLabel
-                                    label="Gestion de stress"
-                                    value={31}
-                                />
-                            </Box>
-                            <Row
-                                justifyContent="space-between"
-                                width={matcheXL ? '100%' : '14vw'}
-                                mt={matcheXL ? 0 : 2}
-                            >
-                                <Button variant="outlined" color="secondary">
-                                    <Text variant={'titleBold'}>+</Text>
-                                </Button>
-                                <Text>2 autres compétences</Text>
-                            </Row>
+                        <Box>
+                            <LinearProgressWithLabel
+                                label="Communication"
+                                value={58}
+                            />
+                            <LinearProgressWithLabel
+                                label="Répondre aux appels téléphoniques"
+                                value={52}
+                            />
+                            <LinearProgressWithLabel
+                                label="Gérer les dossiers clients et fournisseurs"
+                                value={37}
+                            />
+                            <LinearProgressWithLabel
+                                label="Gestion de stress"
+                                value={31}
+                            />
                         </Box>
+                        <Row
+                            justifyContent="space-between"
+                            width={matcheXL ? '100%' : '14vw'}
+                            mt={matcheXL ? 0 : 2}
+                        >
+                            <Button variant="outlined" color="secondary">
+                                <Text variant={'titleBold'}>+</Text>
+                            </Button>
+                            <Text>2 autres compétences</Text>
+                        </Row>
                     </Box>
                 </Box>
                 {/**choice avalaible competences */}
