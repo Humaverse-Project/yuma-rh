@@ -1,0 +1,12 @@
+.imageStyle {
+    height: 200px;
+    width: 160px;
+    border: 3px solid #CACACA;
+    transition: 1s;
+}
+
+.imageStyle:hover {
+    transition: 1s;
+    width: 180px;
+
+}

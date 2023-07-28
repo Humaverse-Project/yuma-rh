@@ -1,20 +1,69 @@
-import { Routes, Route } from 'react-router-dom';
-import {HomeScreen} from './features';
+import { Routes, Route } from 'react-router-dom'
+import {
+    HomeScreen,
+    NotFoundScreen,
+    OrganigrammeScreen,
+    LoginScreen,
+    RegisterScreen,
+    ProfilScreen,
+    ManageCompetence,
+} from './features'
 
 function Navigation() {
-  const allComponents = [
-    {
-      id: 1,
-      path: "/",
-      components: <HomeScreen />
-    }
-  ]
+    const allComponents = [
+        {
+            id: 1,
+            path: '/',
 
-  return (
-    <div>
-      <h1> Yuma RH</h1>
-    </div>
-  );
+            components: <LoginScreen />,
+        },
+        {
+            id: 2,
+            path: '/home',
+            components: <HomeScreen />,
+        },
+        {
+            id: 3,
+            path: '/register',
+            components: <RegisterScreen />,
+        },
+        {
+            id: 2,
+            path: '/organigramme',
+            components: <OrganigrammeScreen />,
+        },
+        {
+            id: 3,
+            path: '*',
+            components: <NotFoundScreen />,
+        },
+        {
+            id: 4,
+            path: '/profil',
+            components: <ProfilScreen />,
+        },
+        {
+            id: 5,
+            path: '/manageCompetence',
+            components: <ManageCompetence />,
+        },
+    ]
+
+    return (
+        <>
+            <Routes>
+                {allComponents.map((component) => {
+                    return (
+                        <Route
+                            path={component.path}
+                            element={component.components}
+                            key={component.id}
+                        />
+                    )
+                })}
+            </Routes>
+        </>
+    )
 }
 
-export default Navigation;
+export default Navigation
