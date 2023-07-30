@@ -108,7 +108,7 @@ function HomeScreen() {
                             {CardItem(CloudOutlinedIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/test'}>
+                    <NavLink to={'/store'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',

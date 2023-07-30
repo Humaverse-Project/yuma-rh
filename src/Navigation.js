@@ -10,6 +10,7 @@ import {
     ParametreScreen,
     MetierForm,
     PostForm,
+    StoreScreen,
 } from './features'
 
 function Navigation() {
@@ -64,6 +65,11 @@ function Navigation() {
             id: 8,
             path: '/poste',
             components: <PostForm />,
+        },
+        {
+            id: 9,
+            path: '/store',
+            components: <StoreScreen />,
         },
     ]
 
