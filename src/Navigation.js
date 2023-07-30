@@ -7,6 +7,7 @@ import {
     RegisterScreen,
     ProfilScreen,
     ManageCompetence,
+    ParametreScreen,
 } from './features'
 
 function Navigation() {
@@ -46,6 +47,11 @@ function Navigation() {
             id: 5,
             path: '/manageCompetence',
             components: <ManageCompetence />,
+        },
+        {
+            id: 6,
+            path: '/setting',
+            components: <ParametreScreen />,
         },
     ]
 

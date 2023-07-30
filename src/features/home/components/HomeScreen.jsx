@@ -57,7 +57,7 @@ function HomeScreen() {
                             {CardItem(GroupsOutlinedIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/test'}>
+                    <NavLink to={'/setting'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',

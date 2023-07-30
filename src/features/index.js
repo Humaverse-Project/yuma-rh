@@ -7,6 +7,7 @@ import RegisterScreen from './Register/components/RegisterScreen'
 import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
 import ProfilScreen from './profil/components/ProfilScreen'
 import ManageCompetence from './profil/components/ManageCompetence'
+import ParametreScreen from './parametre/components/ParametreScreen'
 
 //import COMPONENTS REUSABLES
 
@@ -19,6 +20,7 @@ export {
     NotFoundScreen,
     ProfilScreen,
     ManageCompetence,
+    ParametreScreen,
 
     //components reusables
 }
