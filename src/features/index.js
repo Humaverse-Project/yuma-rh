@@ -8,7 +8,7 @@ import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
 import ProfilScreen from './profil/components/ProfilScreen'
 import ManageCompetence from './profil/components/ManageCompetence'
 import ParametreScreen from './parametre/components/ParametreScreen'
-import PostForm from './parametre/components/PostForm'
+import MetierForm from './parametre/components/MetierForm'
 
 //import COMPONENTS REUSABLES
 
@@ -22,7 +22,7 @@ export {
     ProfilScreen,
     ManageCompetence,
     ParametreScreen,
-    PostForm,
+    MetierForm,
 
     //components reusables
 }

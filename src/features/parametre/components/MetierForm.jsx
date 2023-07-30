@@ -5,7 +5,7 @@ import { useTheme } from '@mui/material/styles'
 import { NavLink } from 'react-router-dom'
 import { Text } from '../../../shared'
 
-export default function PostForm() {
+export default function MetierForm() {
     const theme = useTheme()
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
     return (

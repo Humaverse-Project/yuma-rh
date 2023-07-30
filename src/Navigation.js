@@ -8,7 +8,7 @@ import {
     ProfilScreen,
     ManageCompetence,
     ParametreScreen,
-    PostForm,
+    MetierForm,
 } from './features'
 
 function Navigation() {
@@ -57,7 +57,7 @@ function Navigation() {
         {
             id: 7,
             path: '/metier',
-            components: <PostForm />,
+            components: <MetierForm />,
         },
     ]
 
