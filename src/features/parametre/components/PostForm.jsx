@@ -1,13 +1,12 @@
 import { Fragment } from 'react'
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Box, Button, Input, TextField, useMediaQuery } from '@mui/material'
+import { Box, Button, TextField, useMediaQuery } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { NavLink } from 'react-router-dom'
-import { Row, Text } from '../../../shared'
+import { Text } from '../../../shared'
 
 export default function PostForm() {
     const theme = useTheme()
-    const matcheLG = useMediaQuery(theme.breakpoints.down('lg'))
     const matcheXL = useMediaQuery(theme.breakpoints.down('xl'))
     return (
         <Fragment>
