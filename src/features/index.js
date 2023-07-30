@@ -9,6 +9,7 @@ import ProfilScreen from './profil/components/ProfilScreen'
 import ManageCompetence from './profil/components/ManageCompetence'
 import ParametreScreen from './parametre/components/ParametreScreen'
 import MetierForm from './parametre/components/MetierForm'
+import PostForm from './parametre/components/PostForm'
 
 //import COMPONENTS REUSABLES
 
@@ -23,6 +24,7 @@ export {
     ManageCompetence,
     ParametreScreen,
     MetierForm,
+    PostForm,
 
     //components reusables
 }
