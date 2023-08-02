@@ -1,8 +1,7 @@
 
-export const data = [
+export const formation = [
   {
     "id": 1,
-    "nom_formateur": "John Doe",
     "date_heure_debut": "2023-08-15T09:00:00",
     "duree_en_minutes": 180,
     "nom_formation": "Formation avancée en ReactJS",
@@ -13,7 +12,6 @@ export const data = [
   },
   {
     "id": 2,
-    "nom_formateur": "Jane Smith",
     "date_heure_debut": "2023-08-22T13:30:00",
     "duree_en_minutes": 240,
     "nom_formation": "Introduction à Python",
@@ -24,7 +22,6 @@ export const data = [
   },
   {
     "id": 3,
-    "nom_formateur": "Alice Johnson",
     "date_heure_debut": "2023-09-05T10:15:00",
     "duree_en_minutes": 120,
     "nom_formation": "Atelier de développement iOS",
@@ -35,7 +32,6 @@ export const data = [
   },
   {
     "id": 4,
-    "nom_formateur": "Bob Williams",
     "date_heure_debut": "2023-09-12T14:00:00",
     "duree_en_minutes": 90,
     "nom_formation": "Introduction à la cybersécurité",
@@ -46,7 +42,6 @@ export const data = [
   },
   {
     "id": 5,
-    "nom_formateur": "Laura Garcia",
     "date_heure_debut": "2023-10-02T11:00:00",
     "duree_en_minutes": 150,
     "nom_formation": "Web Design avancé",
@@ -57,7 +52,6 @@ export const data = [
   },
   {
     "id": 6,
-    "nom_formateur": "Michael Lee",
     "date_heure_debut": "2023-10-16T09:30:00",
     "duree_en_minutes": 120,
     "nom_formation": "Introduction à la Data Science",
@@ -68,7 +62,6 @@ export const data = [
   },
   {
     "id": 7,
-    "nom_formateur": "John Doe",
     "date_heure_debut": "2023-11-06T14:15:00",
     "duree_en_minutes": 180,
     "nom_formation": "Gestion de projet agile",
@@ -79,7 +72,6 @@ export const data = [
   },
   {
     "id": 8,
-    "nom_formateur": "Jane Smith",
     "date_heure_debut": "2023-11-20T13:00:00",
     "duree_en_minutes": 210,
     "nom_formation": "Développement Android",
@@ -90,7 +82,6 @@ export const data = [
   },
   {
     "id": 9,
-    "nom_formateur": "Alice Johnson",
     "date_heure_debut": "2023-12-04T10:30:00",
     "duree_en_minutes": 150,
     "nom_formation": "Introduction à l'IA",
@@ -101,7 +92,6 @@ export const data = [
   },
   {
     "id": 10,
-    "nom_formateur": "Bob Williams",
     "date_heure_debut": "2023-12-18T09:45:00",
     "duree_en_minutes": 240,
     "nom_formation": "Développement Full Stack avec MERN",
@@ -112,7 +102,6 @@ export const data = [
   },
   {
     "id": 11,
-    "nom_formateur": "Laura Garcia",
     "date_heure_debut": "2024-01-08T10:00:00",
     "duree_en_minutes": 180,
     "nom_formation": "Sécurité informatique avancée",
@@ -123,7 +112,6 @@ export const data = [
   },
   {
     "id": 12,
-    "nom_formateur": "Michael Lee",
     "date_heure_debut": "2024-01-22T14:30:00",
     "duree_en_minutes": 120,
     "nom_formation": "Introduction au Cloud Computing",
@@ -134,7 +122,6 @@ export const data = [
   },
   {
     "id": 13,
-    "nom_formateur": "John Doe",
     "date_heure_debut": "2024-02-05T09:15:00",
     "duree_en_minutes": 210,
     "nom_formation": "Développement iOS avancé",
@@ -145,7 +132,6 @@ export const data = [
   },
   {
     "id": 14,
-    "nom_formateur": "Jane Smith",
     "date_heure_debut": "2024-02-19T13:45:00",
     "duree_en_minutes": 150,
     "nom_formation": "Data Visualization avec D3.js",
@@ -156,7 +142,6 @@ export const data = [
   },
   {
     "id": 15,
-    "nom_formateur": "Alice Johnson",
     "date_heure_debut": "2024-03-04T11:30:00",
     "duree_en_minutes": 180,
     "nom_formation": "Introduction à la Blockchain",
@@ -166,3 +151,55 @@ export const data = [
     "mois": "mars"
   }
 ];
+export const salarie = [
+  {
+    "id": 1,
+    "nom_salarie": "John Doe",
+    "formations_suivies": [1, 3, 10]
+  },
+  {
+    "id": 2,
+    "nom_salarie": "Jane Smith",
+    "formations_suivies": [2, 6, 14]
+  },
+  {
+    "id": 3,
+    "nom_salarie": "Alice Johnson",
+    "formations_suivies": [1, 4, 15]
+  },
+  {
+    "id": 4,
+    "nom_salarie": "Bob Williams",
+    "formations_suivies": [3, 5]
+  },
+  {
+    "id": 5,
+    "nom_salarie": "Laura Garcia",
+    "formations_suivies": [2, 4, 6]
+  },
+  {
+    "id": 6,
+    "nom_salarie": "Michael Lee",
+    "formations_suivies": [1, 5, 13]
+  },
+  {
+    "id": 7,
+    "nom_salarie": "Micka Yary",
+    "formations_suivies": []
+  },
+  {
+    "id": 8,
+    "nom_salarie": "Eril Ramses",
+    "formations_suivies": []
+  },
+  {
+    "id": 9,
+    "nom_salarie": "Jose Rubben",
+    "formations_suivies": [8, 9, 10]
+  },
+  {
+    "id": 10,
+    "nom_salarie": "Omoy Rakkuten",
+    "formations_suivies": [4, 13, 15]
+  }
+]
