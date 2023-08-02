@@ -11,6 +11,7 @@ import {
     MetierForm,
     PostForm,
     StoreScreen,
+    PlaningFormationScreen
 } from './features'
 
 function Navigation() {
@@ -70,6 +71,11 @@ function Navigation() {
             id: 9,
             path: '/store',
             components: <StoreScreen />,
+        },
+        {
+          id: 10,
+          path: '/planing',
+          components: <PlaningFormationScreen />,
         },
     ]
 
