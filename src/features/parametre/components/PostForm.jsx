@@ -81,6 +81,8 @@ export default function PostForm() {
                         <TextField
                             id="post-description"
                             multiline
+                            rows={6}
+                            maxRows={Infinity}
                             label="Description du poste"
                             variant="outlined"
                             sx={{ width: matcheXL ? '100%' : '50%', my: 1 }}

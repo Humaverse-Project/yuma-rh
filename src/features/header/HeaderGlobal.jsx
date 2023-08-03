@@ -1,5 +1,5 @@
 import { DynamicHeadNav, Text, Row } from '../../shared'
-import { Icon, useMediaQuery } from '@mui/material'
+import { Icon, useMediaQuery, Button, Box } from '@mui/material'
 
 //ICONES
 import LanguageIcon from '@mui/icons-material/Language'
@@ -20,10 +20,36 @@ function HeaderGlobal() {
                 </Text>
             )}
             {matcheSM && (
-                <Row width={100} justifyContent={'space-between'}>
-                    <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
-                    <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
-                </Row>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'line',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
+                >
+                    <Row width={100} justifyContent={'space-between'}>
+                        <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
+                        <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
+                    </Row>
+                    <Row marginLeft={3}>
+                        <Button
+                            sx={{
+                                backgroundColor: 'blue.main',
+                                color: 'white',
+                                borderRadius: 2,
+                                px: 3,
+                                py: 1.5,
+                                '&:hover': {
+                                    backgroundColor: 'blue.main',
+                                },
+                            }}
+                            variant="contained"
+                        >
+                            BAOBAB+
+                        </Button>
+                    </Row>
+                </Box>
             )}
         </Row>
     )

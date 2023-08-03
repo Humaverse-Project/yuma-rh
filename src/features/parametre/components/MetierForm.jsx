@@ -81,6 +81,8 @@ export default function MetierForm() {
                         <TextField
                             id="metier-description"
                             multiline
+                            rows={6}
+                            maxRows={Infinity}
                             label="Description du métier"
                             variant="outlined"
                             sx={{ width: matcheXL ? '100%' : '50%', my: 1 }}
