@@ -64,6 +64,10 @@ export default function ScreenTwo() {
                                 name="password"
                                 type="number"
                                 label="Effectif de l'entreprise"
+                                inputProps={{
+                                    min: 0,
+                                    step: 1,
+                                }}
                             />
                         </FormControl>
                         <FormLabel
