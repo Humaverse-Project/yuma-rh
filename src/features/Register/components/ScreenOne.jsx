@@ -25,6 +25,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
         { label: 'Royaume-Uni' },
         { label: 'Autre' },
     ]
+    const suggestions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
     const [formData, setLocalFormData] = useState({
         siret: '',
         nom_entreprise: '',
@@ -52,13 +53,16 @@ export default function ScreenOne({ setScreen, setFormData }) {
                     ville: data.etablissement.libelle_commune
                 });
                 setFormData(formData);
-                getNaflist().then((data) => {
-                    console.log(data)
-                })
+                
             })
             .catch((error) => {
                 console.error('Authentication error:', error.message);
             });
+        }
+        if(name === "naf"){
+            getNaflist(value).then((data) => {
+                console.log(data)
+            })
         }
     };
     
@@ -123,11 +127,18 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 APE/NAF
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                name="naf"
                                 type="text"
                                 label="APE/NAF"
+                                list="suggestionsList"
+                                autoComplete="off"
                             />
                         </FormControl>
+                        <datalist id="suggestionsList">
+                            {suggestions.map((option) => (
+                            <option value={option} key={option} />
+                            ))}
+                        </datalist>
                     </Grid>
                     <Grid
                         item
