@@ -1,22 +1,24 @@
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import Card from '@mui/material/Card'
-import Radio from '@mui/material/Radio'
 import Button from '@mui/material/Button'
 import { NavLink } from 'react-router-dom'
 import Container from '@mui/material/Container'
-import FormLabel from '@mui/material/FormLabel'
-import RadioGroup from '@mui/material/RadioGroup'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import FormControlLabel from '@mui/material/FormControlLabel'
 
+import FormLabel from '@mui/material/FormLabel'
+import RadioGroup from '@mui/material/RadioGroup'
+import Radio from '@mui/material/Radio'
 // logo
 import qrcodeImage from '../../../assets/images/qrcode.png'
 
-export default function ScreenTwo() {
+export default function ScreenTwo({ formData }) {
+    console.log(formData)
+    
     return (
         <Card
             sx={{
