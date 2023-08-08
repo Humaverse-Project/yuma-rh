@@ -1,0 +1,36 @@
+
+.table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    max-width: 98vw;
+    overflow-x: auto;
+}
+
+
+.table-header-row {
+    position: sticky;
+    top: 0;
+    background-color: #f5f5f5;
+    z-index: 1;
+}
+
+.table-cell-first {
+    position: sticky;
+    left: 0;
+    background-color: #f5f5f5;
+    z-index: 1;
+}
+.table-cell-first-prime
+{
+    position: sticky;
+    left: 0;
+    z-index: 20 !important;
+}
+
+.table-cell {
+    color: rgb(12, 5, 5) !important;
+}
+
+.cell-header {
+    color: #f5f5f5 !important;
+}

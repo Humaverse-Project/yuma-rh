@@ -1,24 +1,22 @@
-import HeaderGlobal from '../../header/HeaderGlobal'
-
-import { useTheme } from '@mui/material/styles'
-import { Box } from '@mui/system'
 import { Fragment } from 'react'
+import { Box } from '@mui/system'
 import { Card } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { CardItem } from './CardNavigation'
+import { useTheme } from '@mui/material/styles'
+import { CardItem } from '../../home/components/CardNavigation'
 
 //ICONES
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
-import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined'
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
+import WorkIcon from '@mui/icons-material/Work'
+import ReceiptIcon from '@mui/icons-material/Receipt'
+import HeaderInScreen from '../../header/HeaderInScreen'
+import DescriptionIcon from '@mui/icons-material/Description'
 
-function HomeScreen() {
+function ParametreScreen() {
     const theme = useTheme()
 
     return (
         <Fragment>
-            <HeaderGlobal />
+            <HeaderInScreen title={'Paramètre'} />
             <Box
                 backgroundColor="background.paper"
                 display={'flex'}
@@ -38,7 +36,7 @@ function HomeScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/organigramme'}>
+                    <NavLink to={'/metier'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -54,10 +52,10 @@ function HomeScreen() {
                                 },
                             }}
                         >
-                            {CardItem(GroupsOutlinedIcon)}
+                            {CardItem(DescriptionIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/setting'}>
+                    <NavLink to={'/poste'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -73,23 +71,10 @@ function HomeScreen() {
                                 },
                             }}
                         >
-                            {CardItem(BuildOutlinedIcon)}
+                            {CardItem(WorkIcon)}
                         </Card>
                     </NavLink>
-                </Box>
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-between',
-                        [theme.breakpoints.down('sm')]: {
-                            justifyContent: 'center',
-                        },
-                        alignItems: 'center',
-                    }}
-                >
-                    <NavLink to={'/test'}>
+                    <NavLink to={'/planing'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -105,26 +90,7 @@ function HomeScreen() {
                                 },
                             }}
                         >
-                            {CardItem(CloudOutlinedIcon)}
-                        </Card>
-                    </NavLink>
-                    <NavLink to={'/store'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            {CardItem(ShoppingBagOutlinedIcon)}
+                            {CardItem(ReceiptIcon)}
                         </Card>
                     </NavLink>
                 </Box>
@@ -133,4 +99,4 @@ function HomeScreen() {
     )
 }
 
-export default HomeScreen
+export default ParametreScreen
