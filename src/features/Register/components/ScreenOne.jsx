@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import Button from '@mui/material/Button'
@@ -10,7 +10,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { getInfoSirret, getNaflist } from './api';
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-
+import { Snackbar, Alert } from '@mui/material';
 
 export default function ScreenOne({ setScreen, setFormData }) {
     const select = [
@@ -25,7 +25,24 @@ export default function ScreenOne({ setScreen, setFormData }) {
         { label: 'Royaume-Uni' },
         { label: 'Autre' },
     ]
-    const suggestions = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+    const [naflist, setNaflist] = useState(null);
+    useEffect(() => {
+        getNaflist("0").then((data) => {
+            setNaflist(data.results.map((data) => {return {'label': data.code_naf}}))
+        }).catch((error) => {
+            console.error('API error:', error.message);
+            setShowError(true);
+        });
+    }, []);
+    const [showError, setShowError] = useState(false);
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+        setShowError(false);
+    };
+
     const [formData, setLocalFormData] = useState({
         siret: '',
         nom_entreprise: '',
@@ -56,13 +73,17 @@ export default function ScreenOne({ setScreen, setFormData }) {
                 
             })
             .catch((error) => {
-                console.error('Authentication error:', error.message);
+                console.error('API error:', error.message);
+                setShowError(true);
             });
         }
         if(name === "naf"){
             getNaflist(value).then((data) => {
-                console.log(data)
-            })
+                setNaflist(data.results.map((data) => {return {'label': data.code_naf}}))
+            }).catch((error) => {
+                console.error('API error:', error.message);
+                setShowError(true);
+            });
         }
     };
     
@@ -70,12 +91,13 @@ export default function ScreenOne({ setScreen, setFormData }) {
         <Card
             sx={{
                 m: -1,
+                minHeight: '100vh'
             }}
         >
             <form>
                 <Container
                     component="main"
-                    maxWidth="xs"
+                    minWidth="xs"
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -87,6 +109,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                         variant="h5"
                         sx={{
                             mt: 8,
+                            mb: 2
                         }}
                     >
                         Formulaire Inscription YUMA utilisateur RH page 1
@@ -116,29 +139,23 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 onChange={handleChange}
                             />
                         </FormControl>
-                        <FormControl
-                            variant="outlined"
+                        <Autocomplete
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                APE/NAF
-                            </InputLabel>
-                            <OutlinedInput
-                                name="naf"
-                                type="text"
-                                label="APE/NAF"
-                                list="suggestionsList"
-                                autoComplete="off"
-                            />
-                        </FormControl>
-                        <datalist id="suggestionsList">
-                            {suggestions.map((option) => (
-                            <option value={option} key={option} />
-                            ))}
-                        </datalist>
+                            disablePortal
+                            options={naflist}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    required
+                                    label="APE/NAF" 
+                                    name="naf"
+                                    variant="outlined"
+                                />
+                            )}
+                        />
                     </Grid>
                     <Grid
                         item
@@ -326,6 +343,18 @@ export default function ScreenOne({ setScreen, setFormData }) {
                     </Grid>
                 </Container>
             </form>
+            <div>
+                <Snackbar 
+                    open={showError}
+                    autoHideDuration={6000}
+                    onClose={handleCloseAlert}
+                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                >
+                    <Alert onClose={handleCloseAlert} severity="error">
+                        Une erreur s'est produite lors de la connexion à l'API.
+                    </Alert>
+                </Snackbar>
+            </div>
         </Card>
     )
 }

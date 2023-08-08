@@ -23,12 +23,13 @@ export default function ScreenTwo({ formData }) {
         <Card
             sx={{
                 m: -1,
+                minHeight: '100vh'
             }}
         >
             <form>
                 <Container
                     component="main"
-                    maxWidth="xs"
+                    minWidth="xs"
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -38,7 +39,8 @@ export default function ScreenTwo({ formData }) {
                     <Typography
                         variant="h6"
                         sx={{
-                            mt: 0,
+                            mt: 8,
+                            mb: 2
                         }}
                     >
                         Formulaire Inscription YUMA utilisateur RH page 2
@@ -52,52 +54,72 @@ export default function ScreenTwo({ formData }) {
                             marginRight: '5px',
                         }}
                     >
-                        <FormControl
-                            variant="outlined"
+                        <Grid
+                            item
+                            xs={6}
+                            sm={6}
                             sx={{
-                                m: 2,
-                                width: '30ch',
+                                display: 'flex',
+                                marginRight: '5px',
                             }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                Effectif de l'entreprise
-                            </InputLabel>
-                            <OutlinedInput
-                                name="password"
-                                type="number"
-                                label="Effectif de l'entreprise"
-                                inputProps={{
-                                    min: 0,
-                                    step: 1,
+                        >  
+                            <FormControl
+                                variant="outlined"
+                                sx={{
+                                    m: 2
                                 }}
-                            />
-                        </FormControl>
-                        <FormLabel
-                            id="demo-controlled-radio-buttons-group"
+                            >
+                             
+                                <InputLabel htmlFor="outlined-adornment-password">
+                                    Effectif de l'entreprise
+                                </InputLabel>
+                                <OutlinedInput
+                                    name="password"
+                                    type="number"
+                                    label="Effectif de l'entreprise"
+                                    inputProps={{
+                                        min: 0,
+                                        step: 1,
+                                    }}
+                                />
+                            </FormControl>
+                        </Grid>
+                        <Grid
+                            item
+                            xs={6}
+                            sm={6}
                             sx={{
-                                m: 2,
-                                width: '15ch',
+                                display: 'flex',
+                                marginRight: '5px',
                             }}
                         >
-                            Etablissement
-                        </FormLabel>
-                        <FormControl>
-                            <RadioGroup
-                                aria-labelledby="demo-controlled-radio-buttons-group"
-                                name="controlled-radio-buttons-group"
+                            <FormLabel
+                                id="demo-controlled-radio-buttons-group"
+                                sx={{
+                                    m: 2,
+                                    width: '15ch',
+                                }}
                             >
-                                <FormControlLabel
-                                    value="principal"
-                                    control={<Radio />}
-                                    label="principal"
-                                />
-                                <FormControlLabel
-                                    value="secondaire"
-                                    control={<Radio />}
-                                    label="secondaire"
-                                />
-                            </RadioGroup>
-                        </FormControl>
+                                Etablissement
+                            </FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                    aria-labelledby="demo-controlled-radio-buttons-group"
+                                    name="controlled-radio-buttons-group"
+                                >
+                                    <FormControlLabel
+                                        value="principal"
+                                        control={<Radio />}
+                                        label="principal"
+                                    />
+                                    <FormControlLabel
+                                        value="secondaire"
+                                        control={<Radio />}
+                                        label="secondaire"
+                                    />
+                                </RadioGroup>
+                            </FormControl>
+                        </Grid>
                     </Grid>
                     <Grid
                         item
