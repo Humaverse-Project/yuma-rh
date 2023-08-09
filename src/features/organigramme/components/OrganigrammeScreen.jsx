@@ -1,4 +1,6 @@
-import { Fragment, useState } from 'react'
+import React, { useState, useEffect, Fragment } from 'react';
+import { OrgChartComponent } from './OrgChart';
+import * as d3 from 'd3';
 import HeaderInScreen from '../../header/HeaderInScreen'
 import { useTheme } from '@mui/material/styles'
 import { Box, InputAdornment, TextField } from '@mui/material'
@@ -6,104 +8,91 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 import FormGroup from '@mui/material/FormGroup'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import Checkbox from '@mui/material/Checkbox'
-import OrganigrammeTree from './OrganigrammeTree'
-import MetierList from './MetierList'
+import Grid from '@mui/material/Grid';
+import './mylink.css'
 
 function OrganigrammeScreen() {
-    const theme = useTheme()
-    const [textToSearh, setTextToSearh] = useState()
-    const [isPersonnalChecked, setIsPersonnalChecked] = useState(true)
-    const [isMetierChecked, setIsMetierChecked] = useState(true)
+  const theme = useTheme()
+  const [textToSearh, setTextToSearh] = useState()
+  const [data, setData] = useState(null);
+  let addNodeChildFunc = null;
+  function onNodeClick(nodeId) {
+    alert('clicked ' + nodeId);
+  }
 
-    return (
-        <Fragment>
-            <HeaderInScreen
-                title={'Organigramme'}
-                secondSubtitle={textToSearh && 'Recherche'}
-                buttonRight={{
-                    first: 'Créer un poste',
-                    second: 'Connection SIRH',
-                }}
+  function onNodeDrop(source, target){
+    console.log(source, target)
+  }
+
+  useEffect(() => {
+    d3.csv(
+      'https://raw.githubusercontent.com/bumbeishvili/sample-data/main/org.csv'
+    ).then((data) => {
+      setData(data);
+    });
+  }, [true]);
+  return (
+    <Fragment>
+      <HeaderInScreen
+          title={'Organigramme'}
+          secondSubtitle={textToSearh && 'Recherche'}
+      />
+      <Box
+          backgroundColor="background.paper"
+          display="flex"
+          width="100%"
+          flexDirection="row"
+          sx={{
+              [theme.breakpoints.down('md')]: {
+                  flexDirection: 'column',
+                  alignItems: 'center',
+              },
+          }}
+          justifyContent="space-between"
+          alignItems="flex-start"
+          minHeight="80vh"
+          py={6}
+          px={4}
+      >
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={2}>
+            <TextField
+              id="outlined-basic"
+              value={textToSearh}
+              onChange={(e) => setTextToSearh(e.target.value)}
+              InputProps={{
+                  startAdornment: (
+                      <InputAdornment position="start">
+                          <SearchOutlinedIcon />
+                      </InputAdornment>
+                  ),
+              }}
+              variant="outlined"
             />
-            <Box
-                backgroundColor="background.paper"
-                display="flex"
-                width="100%"
-                flexDirection="row"
+            </Grid>
+            <Grid item xs={12} md={10}
                 sx={{
-                    [theme.breakpoints.down('md')]: {
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                    [theme.breakpoints.up('lg')]: {
+                        mt: 2,
+                    },
+                    [theme.breakpoints.down('sm')]: {
+                        my: 1,
+                        mx: 0,
                     },
                 }}
-                justifyContent="space-between"
-                alignItems="flex-start"
-                minHeight="80vh"
-                py={6}
-                px={4}
             >
-                <Box>
-                    <TextField
-                        id="outlined-basic"
-                        value={textToSearh}
-                        onChange={(e) => setTextToSearh(e.target.value)}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchOutlinedIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                        variant="outlined"
-                    />
-                    <FormGroup sx={{ ml: 2, mt: 1 }}>
-                        <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label="PERSONNEL"
-                            onChange={(e) =>
-                                setIsPersonnalChecked(e.target.checked)
-                            }
-                        />
-                        <FormControlLabel
-                            control={<Checkbox defaultChecked />}
-                            label="METIER"
-                            onChange={(e) =>
-                                setIsMetierChecked(e.target.checked)
-                            }
-                        />
-                        <FormControlLabel
-                            control={<Checkbox />}
-                            label="COMPETENCE"
-                        />
-                    </FormGroup>
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        [theme.breakpoints.down('md')]: {
-                            alignItems: 'flex-start',
-                            mt: 8,
-                            width: '100%',
-                        },
-                        flex: 2,
-                        ml: 6,
-                        [theme.breakpoints.down('lg')]: {
-                            ml: 0,
-                        },
-                    }}
-                >
-                    {isPersonnalChecked && !textToSearh ? (
-                        <OrganigrammeTree isMetierChecked={isMetierChecked} />
-                    ) : null}
-                    {isMetierChecked && textToSearh && !isPersonnalChecked && (
-                        <MetierList textToSearch={textToSearh} />
-                    )}
-                </Box>
-            </Box>
-        </Fragment>
-    )
+              <OrgChartComponent
+                setClick={(click) => (addNodeChildFunc = click)}
+                onNodeClick={onNodeClick}
+                data={data}
+                onNodeDrop={onNodeDrop}
+                svgWidth ={200}
+              />
+            </Grid>
+        </Grid>
+      </Box>
+    </Fragment>
+  );
 }
 
 export default OrganigrammeScreen
