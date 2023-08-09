@@ -3,13 +3,24 @@ import { OrgChartComponent } from './OrgChart';
 import * as d3 from 'd3';
 import HeaderInScreen from '../../header/HeaderInScreen'
 import { useTheme } from '@mui/material/styles'
-import { Box, InputAdornment, TextField } from '@mui/material'
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
+import { Button, Box, Modal } from '@mui/material'
 import Grid from '@mui/material/Grid';
 import './mylink.css'
+import Backdrop from '@mui/material/Backdrop';
+import Fade from '@mui/material/Fade';
+import Typography from '@mui/material/Typography';
+
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: 'background.paper',
+  border: '2px solid #000',
+  boxShadow: 24,
+  p: 4,
+};
 
 function OrganigrammeScreen() {
   const theme = useTheme()
@@ -31,6 +42,15 @@ function OrganigrammeScreen() {
       setData(data);
     });
   }, [true]);
+  const [open, setOpen] = useState(false);
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Fragment>
       <HeaderInScreen
@@ -55,20 +75,10 @@ function OrganigrammeScreen() {
           px={4}
       >
         <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <TextField
-              id="outlined-basic"
-              value={textToSearh}
-              onChange={(e) => setTextToSearh(e.target.value)}
-              InputProps={{
-                  startAdornment: (
-                      <InputAdornment position="start">
-                          <SearchOutlinedIcon />
-                      </InputAdornment>
-                  ),
-              }}
-              variant="outlined"
-            />
+            <Grid item xs={12} md={2}>
+            <Button variant="contained" color="primary" onClick={handleOpen}>
+              Ajouter un poste
+            </Button>
             </Grid>
             <Grid item xs={12} md={10}
                 sx={{
@@ -88,6 +98,25 @@ function OrganigrammeScreen() {
                 onNodeDrop={onNodeDrop}
                 svgWidth ={200}
               />
+              <Modal
+                aria-labelledby="transition-modal-title"
+                aria-describedby="transition-modal-description"
+                open={open}
+                onClose={handleClose}
+                closeAfterTransition
+                slots={{ backdrop: Backdrop }}
+                slotProps={{
+                  backdrop: {
+                    timeout: 500,
+                  },
+                }}
+              >
+                <Fade in={open}>
+                  <Box sx={style}>
+                    
+                  </Box>
+                </Fade>
+              </Modal>
             </Grid>
         </Grid>
       </Box>
