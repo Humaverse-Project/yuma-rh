@@ -1,22 +1,29 @@
-import React, { useLayoutEffect, useRef, useEffect } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import { OrgChart } from 'd3-org-chart';
 
 export const OrgChartComponent = (props, ref) => {
   const d3Container = useRef(null);
-  let chart = null;
+  const [mychart, setChart] = useState(null);
 
   function addNode(node) {
-    chart.addNode(node);
+    console.log(node)
+    mychart.addNode(node);
+    mychart.render();
   }
-
+  function deleteNode(node){
+    if(node.nodeId !== "0"){
+      mychart.removeNode(node.nodeId)
+    } else{
+      alert("le node parent ne peut pas être supprimer")
+    }
+    mychart.render();
+  }
   props.setClick(addNode);
-
+  props.setDeletefonction(deleteNode);
   // We need to manipulate DOM
   useLayoutEffect(() => {
-    if (props.data && d3Container.current) {
-      if (!chart) {
-        chart = new OrgChart();
-      }
+    if (d3Container.current) {
+      const chart = new OrgChart();
       chart
         .container(d3Container.current)
         .data(props.data)
@@ -29,14 +36,24 @@ export const OrgChartComponent = (props, ref) => {
           .compactMarginBetween((d) => 75)
           .compactMarginPair((d) => 80)
           .onNodeClick((d, i, arr) => {
-            console.log(d, 'Id of clicked node ');
-            props.onNodeClick(d);
-           })
+            chart.render()
+            //props.onNodeClick(d);
+            props.deleteNode(d, true)
+          })
           .onNodeDrop((source, target)=>{
             console.log(source, target)
+            chart.removeNode(source.nodeId)
+            chart.addNode({
+              "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
+              "name": source.name,
+              "parentNodeId": target.nodeId,
+              "nodeId": source.nodeId,
+              "metier": source.metier
+            })
+            chart.setExpanded(target.nodeId)
+            chart.render()
           })
           .nodeContent(function (d, i, arr, state) {
-            console.log(d)
             const colors = [
               '#6E6B6F',
               '#18A8B6',
@@ -50,7 +67,7 @@ export const OrgChartComponent = (props, ref) => {
             const lightCircleDim = 95;
             const outsideCircleDim = 110;
 
-            return `
+            return (`
                 <div style="background-color:white; position:absolute;width:${
                   d.width
                 }px;height:${d.height}px;">
@@ -68,14 +85,15 @@ export const OrgChartComponent = (props, ref) => {
                           ${d.data.name} 
                       </div>
                       <div style="background-color:#F0EDEF;height:28px;text-align:center;padding-top:10px;color:#424142;font-size:16px">
-                          ${d.data.positionName} 
+                          ${d.data.metier} 
                       </div>
                    </div>
                </div>
-            `;
-          })
+            `);
+      })
           
-        .render();
+      .render()
+      setChart(chart)
     }
   }, [props.data, d3Container.current]);
 
