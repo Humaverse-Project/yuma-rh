@@ -95,7 +95,7 @@ export const OrgChartComponent = (props, ref) => {
       .render()
       setChart(chart)
     }
-  }, [props.data, d3Container.current]);
+  }, [props]);
 
   return (
     <div>

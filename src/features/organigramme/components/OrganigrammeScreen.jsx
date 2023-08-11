@@ -28,7 +28,7 @@ const style = {
 
 function OrganigrammeScreen() {
   const theme = useTheme()
-  const [data, setData] = useState([
+  const [data] = useState([
     {
       "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
       "name": "DG",
@@ -37,13 +37,6 @@ function OrganigrammeScreen() {
       "metier": "PDG"
     }
   ]);
-  // useEffect(() => {
-  //   d3.csv(
-  //     'https://raw.githubusercontent.com/bumbeishvili/sample-data/main/org.csv'
-  //   ).then((data) => {
-  //     setData(data);
-  //   });
-  // }, []);
   const [dataPersonne, setDataPersonne] = useState(null);
   const [dataPersonneafficher, setDataPersonneafficher] = useState(null);
   const [datametier, setDataMetier] = useState(null);
@@ -179,13 +172,13 @@ function OrganigrammeScreen() {
         </div>
         <Grid container spacing={2}>
             <Grid item xs={12} md={2}>
-              <Button variant="contained" color="primary" onClick={handleOpen} md={2} disabled={datametier == null} size="large" fullWidth color="blue">
+              <Button variant="contained" onClick={handleOpen} md={2} disabled={datametier == null} size="large" fullWidth color="blue">
                 Ajouter un poste
               </Button>
               {/* <Button variant="contained" color="primary" sx={{m: 2}}>
                 Importer
               </Button> */}
-              <Button variant="contained" color="primary" sx={{mt: 2}} size="large" disabled={!etat} onClick={handleDeletenode} fullWidth color="blue">
+              <Button variant="contained" sx={{mt: 2}} size="large" disabled={!etat} onClick={handleDeletenode} fullWidth color="blue">
                 Supprimer { nodeselected.name }
               </Button>
             </Grid>

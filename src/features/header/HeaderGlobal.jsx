@@ -1,5 +1,6 @@
 import { DynamicHeadNav, Text, Row } from '../../shared'
 import { Icon, useMediaQuery, Button, Box } from '@mui/material'
+import { NavLink } from 'react-router-dom'
 
 //ICONES
 import LanguageIcon from '@mui/icons-material/Language'
@@ -29,8 +30,10 @@ function HeaderGlobal() {
                     }}
                 >
                     <Row width={100} justifyContent={'space-between'}>
-                        <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
-                        <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
+                        <NavLink to={'/nomenclature'}>
+                            <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
+                        </NavLink>
+                            <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
                     </Row>
                     <Row marginLeft={3}>
                         <Button

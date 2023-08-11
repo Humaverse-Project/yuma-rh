@@ -12,6 +12,11 @@ import ManageCompetence from './profil/components/ManageCompetence'
 import ParametreScreen from './parametre/components/ParametreScreen'
 import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
 import PlaningFormationScreen from './planing/components/PlaningFormationScreen'
+import NomenclatureHomeScreen from './nomenclature/components/NomenclatureHomeScreen'
+import MetierScreen from './nomenclature/components/MetierScreen'
+import MetierDetailScreen from './nomenclature/components/MetierDetailScreen'
+import CompetanceScreen from './nomenclature/components/CompetanceScreen'
+import CompetanceDetailScreen from './nomenclature/components/CompetanceDetailScreen'
 //import COMPONENTS REUSABLES
 
 export {
@@ -27,5 +32,10 @@ export {
     MetierForm,
     PostForm,
     StoreScreen,
-    PlaningFormationScreen
+    PlaningFormationScreen,
+    NomenclatureHomeScreen,
+    MetierScreen,
+    MetierDetailScreen,
+    CompetanceScreen,
+    CompetanceDetailScreen
 }
