@@ -32,13 +32,12 @@ function MetierScreen() {
               setLoading(false);
             })
             .catch((error) => {
-              setError(error.message);
+              setError(true);
               setLoading(false);
             });
         })
         .catch((error) => {
           console.error('Authentication error:', error.message);
-          setLoading(false);
         });
     }, []);
   

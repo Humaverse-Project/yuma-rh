@@ -58,13 +58,12 @@ function MetierDetailScreen() {
               setLoading(false);
             })
             .catch((error) => {
-              setError(error.message);
-              setLoading(false);
+                setError(true);
+                setLoading(false);
             });
         })
         .catch((error) => {
           console.error('Authentication error:', error.message);
-          setLoading(false);
         });
     }, []);
   
