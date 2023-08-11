@@ -7,7 +7,8 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { MRT_Localization_FR } from 'material-react-table/locales/fr';
-import { useParams } from 'react-router-dom'; // Importez useParams pour récupérer les paramètres d'URL
+import { useParams } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material';
 
 function MetierDetailScreen() {
     const { code } = useParams();
@@ -20,11 +21,8 @@ function MetierDetailScreen() {
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      // Appel d'authentification client pour obtenir l'access token
       authenticateClient()
         .then((data) => {
-  
-          // Utilisation de l'access token pour l'appel API GET avec Authorization
           getFicheMetierDataCode(data.access_token, code)
             .then((data) => {
                 var groupedData = []
@@ -103,21 +101,21 @@ function MetierDetailScreen() {
     );
     
 
-    if (loading) {
-      return (
-        <Fragment>
-            <HeaderInScreen
-                title={'Détail métier '+code}
-            />
-            <Box
-                backgroundColor="background.paper"
-                display={'flex'}
-                flexDirection="column"
-                justifyContent="center"
-                alignItems="center"
-                height={'auto'}
-                minHeight="80vh"
-            >
+    if (loading || error) {
+        return (
+          <Fragment>
+              <HeaderInScreen
+                  title={'Détail métier '+code}
+              />
+              <Box
+                  backgroundColor="background.paper"
+                  display={'flex'}
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={'auto'}
+                  minHeight="80vh"
+              >
                 <Grid container spacing={2}>
                     <Grid item xs={12} md={9}
                         sx={{
@@ -130,50 +128,37 @@ function MetierDetailScreen() {
                             },
                         }}
                     >
-                        <div>Loading...</div>
+                        <div>
+                            {error && (
+                                <Snackbar 
+                                    open={error || loading}
+                                    autoHideDuration={6000}
+                                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                                >
+                                    <Alert severity="error">
+                                        Une erreur s'est produite lors de la connexion à l'API.
+                                    </Alert>
+                                </Snackbar>
+                            )}
+                            {loading && (
+                                <Snackbar 
+                                    open={error || loading}
+                                    autoHideDuration={6000}
+                                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                                >
+                                    <Alert severity="warning" >
+                                        chargement de donné depuis l'API.
+                                    </Alert>
+                                </Snackbar>
+                            )}
+                        </div>
                     </Grid>
                 </Grid>
-            </Box>
-        </Fragment>
-      );
+                
+              </Box>
+          </Fragment>
+        );
     }
-  
-    if (error) {
-        return (
-            <Fragment>
-                <HeaderInScreen
-                    title={'Détail métier '+code}
-                />
-                <Box
-                    backgroundColor="background.paper"
-                    display={'flex'}
-                    flexDirection="column"
-                    justifyContent="center"
-                    alignItems="center"
-                    height={'auto'}
-                    minHeight="80vh"
-                >
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} md={9}
-                            sx={{
-                                [theme.breakpoints.up('lg')]: {
-                                    mt: 5,
-                                },
-                                [theme.breakpoints.down('sm')]: {
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            <div>Error: {error}</div>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Fragment>
-        )
-    }
-  
-    // Affichez les données récupérées
     return (
       <Fragment>
         <HeaderInScreen
@@ -188,8 +173,8 @@ function MetierDetailScreen() {
             height={'auto'}
             minHeight="80vh"
         >
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={9}
+            <Grid container spacing={2}  pl={5} pr={5}>
+                <Grid item xs={12} md={12}
                     sx={{
                         [theme.breakpoints.up('lg')]: {
                             mt: 5,
@@ -200,7 +185,7 @@ function MetierDetailScreen() {
                         },
                     }}
                 >
-                    <h4>Tableau groupesCompetencesMobilisees</h4>
+                    <h4>Tableau Competance</h4>
                     <Paper sx={{ mt: 2, width: '100%'}}>
                         <MaterialReactTable
                             enableGrouping
@@ -243,7 +228,7 @@ function MetierDetailScreen() {
                             initialState={{ density: 'compact', grouping: ['enjeu'],expanded: true, }}
                         />
                     </Paper>
-                    <h4>Tableau groupesSavoirs</h4>
+                    <h4>Tableau Savoir</h4>
                     <Paper sx={{ mt: 2, width: '100%'}}>
                         <MaterialReactTable
                             enableGrouping

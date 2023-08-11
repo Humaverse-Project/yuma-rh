@@ -8,12 +8,13 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { MRT_Localization_FR } from 'material-react-table/locales/fr';
 import { Link } from 'react-router-dom';
+import { Snackbar, Alert } from '@mui/material';
 
 function MetierScreen() {
     const theme = useTheme()
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
   
     useEffect(() => {
@@ -57,8 +58,64 @@ function MetierScreen() {
         ],
         [],
     );
-
-    // Affichez les données récupérées
+    if (loading || error) {
+        return (
+          <Fragment>
+              <HeaderInScreen
+                  title={'Liste fiche métier'}
+              />
+              <Box
+                  backgroundColor="background.paper"
+                  display={'flex'}
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                  height={'auto'}
+                  minHeight="80vh"
+              >
+                <Grid container spacing={2}>
+                    <Grid item xs={12} md={9}
+                        sx={{
+                            [theme.breakpoints.up('lg')]: {
+                                mt: 5,
+                            },
+                            [theme.breakpoints.down('sm')]: {
+                                my: 1,
+                                mx: 0,
+                            },
+                        }}
+                    >
+                        <div>
+                            {error && (
+                                <Snackbar 
+                                    open={error || loading}
+                                    autoHideDuration={6000}
+                                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                                >
+                                    <Alert severity="error">
+                                        Une erreur s'est produite lors de la connexion à l'API.
+                                    </Alert>
+                                </Snackbar>
+                            )}
+                            {loading && (
+                                <Snackbar 
+                                    open={error || loading}
+                                    autoHideDuration={6000}
+                                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                                >
+                                    <Alert severity="warning" >
+                                        chargement de donné depuis l'API.
+                                    </Alert>
+                                </Snackbar>
+                            )}
+                        </div>
+                    </Grid>
+                </Grid>
+                
+              </Box>
+          </Fragment>
+        );
+    }
     return (
       <Fragment>
         <HeaderInScreen
@@ -73,11 +130,11 @@ function MetierScreen() {
             height={'auto'}
             minHeight="80vh"
         >
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={9}
+            <Grid container spacing={2} pl={5} pr={5}>
+                <Grid item xs={12} md={12}
                     sx={{
                         [theme.breakpoints.up('lg')]: {
-                            mt: 5,
+                            mt: 2,
                         },
                         [theme.breakpoints.down('sm')]: {
                             my: 1,
@@ -85,7 +142,7 @@ function MetierScreen() {
                         },
                     }}
                 >
-                    <Paper sx={{ mt: 2, width: '100%'}}>
+                    <Paper sx={{width: '100%'}}>
                         <MaterialReactTable
                             columns={columns}
                             data={data}
