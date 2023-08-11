@@ -1,12 +1,9 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { authenticateClient, getFicheMetierData } from './api';
-import MaterialReactTable from 'material-react-table';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { MRT_Localization_FR } from 'material-react-table/locales/fr';
 import { Link } from 'react-router-dom';
 import { LoadingMetier, TableMetier } from '../../../shared'
 
