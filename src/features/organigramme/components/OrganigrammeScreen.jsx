@@ -28,7 +28,7 @@ const style = {
 
 function OrganigrammeScreen() {
   const theme = useTheme()
-  const [data, setData] = useState([
+  const [data] = useState([
     {
       "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
       "name": "DG",
@@ -37,13 +37,6 @@ function OrganigrammeScreen() {
       "metier": "PDG"
     }
   ]);
-  // useEffect(() => {
-  //   d3.csv(
-  //     'https://raw.githubusercontent.com/bumbeishvili/sample-data/main/org.csv'
-  //   ).then((data) => {
-  //     setData(data);
-  //   });
-  // }, []);
   const [dataPersonne, setDataPersonne] = useState(null);
   const [dataPersonneafficher, setDataPersonneafficher] = useState(null);
   const [datametier, setDataMetier] = useState(null);

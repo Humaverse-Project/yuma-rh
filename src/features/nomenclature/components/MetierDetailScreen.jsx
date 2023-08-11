@@ -62,7 +62,7 @@ function MetierDetailScreen() {
         .catch((error) => {
           console.error('Authentication error:', error.message);
         });
-    }, []);
+    }, [code]);
   
     const columns = useMemo(
         () =>[

@@ -12,12 +12,10 @@ function MetierScreen() {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
-    const [accessToken, setAccessToken] = useState(null);
   
     useEffect(() => {
       authenticateClient()
         .then((data) => {
-          setAccessToken(data.access_token);
           getFicheMetierData(data.access_token)
             .then((data) => {
               console.log(data)

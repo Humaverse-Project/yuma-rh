@@ -16,6 +16,7 @@ import NomenclatureHomeScreen from './nomenclature/components/NomenclatureHomeSc
 import MetierScreen from './nomenclature/components/MetierScreen'
 import MetierDetailScreen from './nomenclature/components/MetierDetailScreen'
 import CompetanceScreen from './nomenclature/components/CompetanceScreen'
+import CompetanceDetailScreen from './nomenclature/components/CompetanceDetailScreen'
 //import COMPONENTS REUSABLES
 
 export {
@@ -35,5 +36,6 @@ export {
     NomenclatureHomeScreen,
     MetierScreen,
     MetierDetailScreen,
-    CompetanceScreen
+    CompetanceScreen,
+    CompetanceDetailScreen
 }

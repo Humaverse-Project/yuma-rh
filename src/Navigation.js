@@ -8,14 +8,14 @@ import {
     ProfilScreen,
     ManageCompetence,
     ParametreScreen,
-    MetierForm,
     PostForm,
     StoreScreen,
     PlaningFormationScreen,
     NomenclatureHomeScreen,
     MetierDetailScreen,
     MetierScreen,
-    CompetanceScreen
+    CompetanceScreen,
+    CompetanceDetailScreen
 } from './features'
 
 function Navigation() {
@@ -95,7 +95,12 @@ function Navigation() {
             id: 13,
             path: '/competance',
             components: <CompetanceScreen />,
-        }
+        },
+        {
+            id: 12,
+            path: '/competancedetail/:code',
+            components: <CompetanceDetailScreen />,
+        },
     ]
 
     return (
