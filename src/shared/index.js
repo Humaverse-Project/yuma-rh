@@ -3,5 +3,6 @@ import Text from './Text'
 import Row from './Row'
 import Column from './Column'
 import CardItem from './CardNavigation'
-
-export { DynamicHeadNav, Text, Row, Column, CardItem }
+import LoadingMetier from './LoadingMetier'
+import TableMetier from './TableMetier'
+export { DynamicHeadNav, Text, Row, Column, CardItem, LoadingMetier, TableMetier }

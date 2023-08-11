@@ -1,12 +1,9 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { authenticateClient, getListeCompetance } from './api';
-import MaterialReactTable from 'material-react-table';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
-import { MRT_Localization_FR } from 'material-react-table/locales/fr';
 import { Link } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
 import { Card } from '@mui/material'
@@ -14,11 +11,13 @@ import CardContent from '@mui/material/CardContent'
 import Button from '@mui/material/Button'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
+import { LoadingMetier, TableMetier } from '../../../shared'
 
 function CompetanceScreen() {
     const theme = useTheme()
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [errortokken, setErrortokken] = useState(false);
     const [error, setError] = useState(false);
     const [accessToken, setAccessToken] = useState(null);
     const [valuefiltre, setValueFiltre] = useState(null);
@@ -28,32 +27,37 @@ function CompetanceScreen() {
         {label: "competence détaillée", valeur: "competence-detaillee"},
         {label: "Macro savoir être professionnel", valeur: "macro-savoir-etre-professionnel"},
     ]
+    useEffect(() => {
+        authenticateClient()
+          .then((data) => {
+            setAccessToken(data.access_token);
+            setErrortokken(false);
+            setLoading(false);
+          })
+          .catch((error) => {
+            setErrortokken(true);
+            console.error('Authentication error:', error.message);
+          });
+    }, []);
     const afficherDonnees = () => {
         setLoading(true);
-        authenticateClient()
+        getListeCompetance(accessToken, valuefiltre)
         .then((data) => {
-          setAccessToken(data.access_token);
-          getListeCompetance(data.access_token, valuefiltre)
-            .then((data) => {
-              console.log(data)
-              const formattedData = data.map((item) => ({
-                code: item.code,
-                nom: item.libelle,
-                type: item.type,
-              }));
-              setData(formattedData);
-              setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error)
-                setError(true);
-                setLoading(false);
-            });
+            console.log(data)
+            const formattedData = data.map((item) => ({
+            code: item.code,
+            nom: item.libelle,
+            type: item.type,
+            }));
+            setData(formattedData);
+            setLoading(false);
         })
         .catch((error) => {
-          console.error('Authentication error:', error.message);
+            console.log(error)
+            setError(true);
+            setLoading(false);
         });
-    };
+    }
     const columns = useMemo(
         () =>[
             { 
@@ -71,49 +75,14 @@ function CompetanceScreen() {
     const handleChangelabel = (event, value) => {
         setValueFiltre(value.valeur)
     };
-    if (loading) {
+    if (loading || errortokken) {
         return (
-          <Fragment>
-              <HeaderInScreen
-                  title={'Liste competance'}
-              />
-              <Box
-                  backgroundColor="background.paper"
-                  display={'flex'}
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems="center"
-                  height={'auto'}
-                  minHeight="80vh"
-              >
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={9}
-                        sx={{
-                            [theme.breakpoints.up('lg')]: {
-                                mt: 5,
-                            },
-                            [theme.breakpoints.down('sm')]: {
-                                my: 1,
-                                mx: 0,
-                            },
-                        }}
-                    >
-                        <div>
-                            <Snackbar 
-                                open={loading}
-                                autoHideDuration={6000}
-                                anchorOrigin={{ vertical:'top', horizontal:'right' }}
-                            >
-                                <Alert severity="warning" >
-                                    chargement de donné depuis l'API.
-                                </Alert>
-                            </Snackbar>
-                        </div>
-                    </Grid>
-                </Grid>
-                
-              </Box>
-          </Fragment>
+            <Fragment>
+                <HeaderInScreen
+                    title={'Liste competance'}
+                />
+                {LoadingMetier(loading, errortokken)}
+            </Fragment>
         );
     }
     return (
@@ -205,47 +174,7 @@ function CompetanceScreen() {
                         },
                     }}
                 >
-                    <Paper sx={{width: '100%'}}>
-                        <MaterialReactTable
-                            columns={columns}
-                            data={data}
-                            rowsPerPageOptions={[5, 10, 20]}
-                            pagination
-                            autoHeight
-                            localization={MRT_Localization_FR}
-                            enableStickyHeader
-                            muiTableBodyProps={{
-                                sx: {
-                                    '& tr:nth-of-type(odd)': {
-                                    backgroundColor: '#f5f5f5',
-                                    },
-                                },
-                            }}
-                            muiTableBodyCellProps={{
-                                sx: {
-                                    color: 'black.main'
-                                },
-                            }}
-                            enableTopToolbar={false}
-                            muiTableHeadCellProps={{
-                                sx: {
-                                    color: 'black.main'
-                                },
-                            }}
-                            muiTableHeadRowProps={{
-                                sx: {
-                                    backgroundColor: "unset"
-                                },
-                            }}
-                            muiTableBodyRowProps={{
-                                sx: {
-                                    backgroundColor: "unset"
-                                },
-                                hover: false
-                            }}
-                            initialState={{ density: 'compact' }}
-                        />
-                    </Paper>
+                    {TableMetier(columns,data)}
                 </Grid>
             </Grid>
         </Box>
