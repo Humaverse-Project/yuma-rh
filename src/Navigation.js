@@ -12,7 +12,9 @@ import {
     PostForm,
     StoreScreen,
     PlaningFormationScreen,
-    NomenclatureHomeScreen
+    NomenclatureHomeScreen,
+    MetierDetailScreen,
+    MetierScreen
 } from './features'
 
 function Navigation() {
@@ -60,29 +62,34 @@ function Navigation() {
         },
         {
             id: 7,
-            path: '/metier',
-            components: <MetierForm />,
-        },
-        {
-            id: 8,
             path: '/poste',
             components: <PostForm />,
         },
         {
-            id: 9,
+            id: 8,
             path: '/store',
             components: <StoreScreen />,
         },
         {
-          id: 10,
+          id: 9,
           path: '/planing',
           components: <PlaningFormationScreen />,
         },
         {
-            id: 11,
+            id: 10,
             path: '/nomenclature',
             components: <NomenclatureHomeScreen />,
         },
+        {
+            id: 11,
+            path: '/metier',
+            components: <MetierScreen />,
+        },
+        {
+            id: 12,
+            path: '/metierdetail/:code',
+            components: <MetierDetailScreen />,
+        }
     ]
 
     return (

@@ -13,6 +13,8 @@ import ParametreScreen from './parametre/components/ParametreScreen'
 import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
 import PlaningFormationScreen from './planing/components/PlaningFormationScreen'
 import NomenclatureHomeScreen from './nomenclature/components/NomenclatureHomeScreen'
+import MetierScreen from './nomenclature/components/MetierScreen'
+import MetierDetailScreen from './nomenclature/components/MetierDetailScreen'
 //import COMPONENTS REUSABLES
 
 export {
@@ -29,5 +31,7 @@ export {
     PostForm,
     StoreScreen,
     PlaningFormationScreen,
-    NomenclatureHomeScreen
+    NomenclatureHomeScreen,
+    MetierScreen,
+    MetierDetailScreen
 }

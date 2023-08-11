@@ -38,7 +38,7 @@ function NomenclatureHomeScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/organigramme'}>
+                    <NavLink to={'/metier'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
