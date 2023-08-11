@@ -11,7 +11,8 @@ import {
     MetierForm,
     PostForm,
     StoreScreen,
-    PlaningFormationScreen
+    PlaningFormationScreen,
+    NomenclatureHomeScreen
 } from './features'
 
 function Navigation() {
@@ -76,6 +77,11 @@ function Navigation() {
           id: 10,
           path: '/planing',
           components: <PlaningFormationScreen />,
+        },
+        {
+            id: 11,
+            path: '/nomenclature',
+            components: <NomenclatureHomeScreen />,
         },
     ]
 

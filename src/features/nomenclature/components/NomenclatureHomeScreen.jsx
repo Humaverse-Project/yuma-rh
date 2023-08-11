@@ -1,22 +1,24 @@
-import { Fragment } from 'react'
+import HeaderInScreen from '../../header/HeaderInScreen'
+
+import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
+import { Fragment } from 'react'
 import { Card } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { useTheme } from '@mui/material/styles'
 import { CardItem } from '../../../shared'
 
 //ICONES
-import WorkIcon from '@mui/icons-material/Work'
-import ReceiptIcon from '@mui/icons-material/Receipt'
-import HeaderInScreen from '../../header/HeaderInScreen'
-import DescriptionIcon from '@mui/icons-material/Description'
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
+import TuneIcon from '@mui/icons-material/Tune';
+import SearchIcon from '@mui/icons-material/Search';
 
-function ParametreScreen() {
+function NomenclatureHomeScreen() {
     const theme = useTheme()
-
     return (
         <Fragment>
-            <HeaderInScreen title={'Paramètre'} />
+            <HeaderInScreen
+                title={'Nomenclature'}
+            />
             <Box
                 backgroundColor="background.paper"
                 display={'flex'}
@@ -36,7 +38,7 @@ function ParametreScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/metier'}>
+                    <NavLink to={'/organigramme'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -52,10 +54,10 @@ function ParametreScreen() {
                                 },
                             }}
                         >
-                            {CardItem(DescriptionIcon)}
+                            {CardItem(ReceiptLongIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/poste'}>
+                    <NavLink to={'/setting'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -71,10 +73,10 @@ function ParametreScreen() {
                                 },
                             }}
                         >
-                            {CardItem(WorkIcon)}
+                            {CardItem(TuneIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/planing'}>
+                    <NavLink to={'/test'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -90,7 +92,7 @@ function ParametreScreen() {
                                 },
                             }}
                         >
-                            {CardItem(ReceiptIcon)}
+                            {CardItem(SearchIcon)}
                         </Card>
                     </NavLink>
                 </Box>
@@ -99,4 +101,4 @@ function ParametreScreen() {
     )
 }
 
-export default ParametreScreen
+export default NomenclatureHomeScreen

@@ -5,7 +5,7 @@ import { Box } from '@mui/system'
 import { Fragment } from 'react'
 import { Card } from '@mui/material'
 import { NavLink } from 'react-router-dom'
-import { CardItem } from './CardNavigation'
+import { CardItem } from '../../../shared'
 
 //ICONES
 import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'

@@ -1,7 +1,7 @@
 import { createTheme } from '@mui/material/styles'
 
 const palette = {
-    red: '#A7001E',
+    red: '#ff2600',
     black: '#000000',
     blue: '#317AC1',
     grey: '#E5E7E6',
