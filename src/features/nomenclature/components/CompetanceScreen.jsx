@@ -1,60 +1,34 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
-import { authenticateClient, getFicheMetierDataCode } from './api';
+import { authenticateClient, getFicheMetierData } from './api';
 import MaterialReactTable from 'material-react-table';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import { MRT_Localization_FR } from 'material-react-table/locales/fr';
-import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Snackbar, Alert } from '@mui/material';
 
-function MetierDetailScreen() {
-    const { code } = useParams();
-
+function CompetanceScreen() {
     const theme = useTheme()
     const [data, setData] = useState(null);
-    const [GroupesSavoirs, setGroupesSavoirs] = useState(null);
-    
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState(false);
+    const [accessToken, setAccessToken] = useState(null);
   
     useEffect(() => {
       authenticateClient()
         .then((data) => {
-          getFicheMetierDataCode(data.access_token, code)
+          setAccessToken(data.access_token);
+          getFicheMetierData(data.access_token)
             .then((data) => {
-                var groupedData = []
-                for (let index = 0; index < data.groupesCompetencesMobilisees.length; index++) {
-                    const competences = data.groupesCompetencesMobilisees[index].competences;
-                    for (let kaelo = 0; kaelo < competences.length; kaelo++) {
-                        const element = competences[kaelo];
-                        groupedData.push(
-                            {
-                                enjeu: data.groupesCompetencesMobilisees[index].enjeu.libelle,
-                                nom_competences: element.libelle,
-                                type_competences: element.type,
-                            }
-                        )
-                    }
-                }
-                var GroupesSavoirsdata = []
-                for (let index = 0; index < data.groupesSavoirs.length; index++) {
-                    const savoirs = data.groupesSavoirs[index].savoirs;
-                    for (let kaelo = 0; kaelo < savoirs.length; kaelo++) {
-                        const element = savoirs[kaelo];
-                        GroupesSavoirsdata.push(
-                            {
-                                categorieSavoirs: data.groupesSavoirs[index].categorieSavoirs.libelle,
-                                nom_savoirs: element.libelle,
-                                type_savoirs: element.type,
-                            }
-                        )
-                    }
-                }
-                setGroupesSavoirs(GroupesSavoirsdata)
-              setData(groupedData);
+              console.log(data)
+              const formattedData = data.map((item) => ({
+                code: item.code,
+                libelle: item.metier.libelle,
+              }));
+              setData(formattedData);
               setLoading(false);
             })
             .catch((error) => {
@@ -70,42 +44,22 @@ function MetierDetailScreen() {
   
     const columns = useMemo(
         () =>[
-        { 
-            accessorKey: 'enjeu', header: 'Enjeu' 
-        },
-        {
-            accessorKey: 'nom_competences',
-            header: 'Nom Compétences'
-        },
-        {
-            accessorKey: 'type_competences',
-            header: 'type Compétences'
-        },
-        ],[],
+            { 
+                accessorKey: 'code',
+                header: 'Code',
+                Cell: ({ cell, column }) => (
+                    <Link to={`/metierdetail/${cell.getValue()}`}>{cell.getValue()}</Link>
+                ),
+            },
+            { accessorKey: 'libelle', header: 'Libellé' },
+        ],
+        [],
     );
-
-    const columnsGroupesSavoirs = useMemo(
-        () =>[
-        { 
-            accessorKey: 'categorieSavoirs', header: 'Categorie Savoirs' 
-        },
-        {
-            accessorKey: 'nom_savoirs',
-            header: 'Libellé savoir'
-        },
-        {
-            accessorKey: 'type_savoirs',
-            header: 'type savoir'
-        },
-        ],[],
-    );
-    
-
     if (loading || error) {
         return (
           <Fragment>
               <HeaderInScreen
-                  title={'Détail métier '+code}
+                  title={'Liste competance'}
               />
               <Box
                   backgroundColor="background.paper"
@@ -162,7 +116,7 @@ function MetierDetailScreen() {
     return (
       <Fragment>
         <HeaderInScreen
-            title={'Détail métier '+code}
+            title={'Liste competance'}
         />
         <Box
             backgroundColor="background.paper"
@@ -173,11 +127,11 @@ function MetierDetailScreen() {
             height={'auto'}
             minHeight="80vh"
         >
-            <Grid container spacing={2}  pl={5} pr={5}>
+            <Grid container spacing={2} pl={5} pr={5}>
                 <Grid item xs={12} md={12}
                     sx={{
                         [theme.breakpoints.up('lg')]: {
-                            mt: 5,
+                            mt: 2,
                         },
                         [theme.breakpoints.down('sm')]: {
                             my: 1,
@@ -185,10 +139,8 @@ function MetierDetailScreen() {
                         },
                     }}
                 >
-                    <h4>Tableau Competences Mobilisées</h4>
-                    <Paper sx={{ mt: 2, width: '100%'}}>
+                    <Paper sx={{width: '100%'}}>
                         <MaterialReactTable
-                            enableGrouping
                             columns={columns}
                             data={data}
                             rowsPerPageOptions={[5, 10, 20]}
@@ -208,7 +160,7 @@ function MetierDetailScreen() {
                                     color: 'black.main'
                                 },
                             }}
-                            enableTopToolbar={false}
+                            enableTopToolbar={false} //hide top toolbar
                             muiTableHeadCellProps={{
                                 sx: {
                                     color: 'black.main'
@@ -225,50 +177,7 @@ function MetierDetailScreen() {
                                 },
                                 hover: false
                             }}
-                            initialState={{ density: 'compact', grouping: ['enjeu'],expanded: true, }}
-                        />
-                    </Paper>
-                    <h4>Tableau Savoirs</h4>
-                    <Paper sx={{ mt: 2, width: '100%'}}>
-                        <MaterialReactTable
-                            enableGrouping
-                            columns={columnsGroupesSavoirs}
-                            data={GroupesSavoirs}
-                            rowsPerPageOptions={[5, 10, 20]}
-                            pagination
-                            autoHeight
-                            localization={MRT_Localization_FR}
-                            enableStickyHeader
-                            muiTableBodyProps={{
-                                sx: {
-                                    '& tr:nth-of-type(odd)': {
-                                    backgroundColor: '#f5f5f5',
-                                    },
-                                },
-                            }}
-                            muiTableBodyCellProps={{
-                                sx: {
-                                    color: 'black.main'
-                                },
-                            }}
-                            enableTopToolbar={false}
-                            muiTableHeadCellProps={{
-                                sx: {
-                                    color: 'black.main'
-                                },
-                            }}
-                            muiTableHeadRowProps={{
-                                sx: {
-                                    backgroundColor: "unset"
-                                },
-                            }}
-                            muiTableBodyRowProps={{
-                                sx: {
-                                    backgroundColor: "unset"
-                                },
-                                hover: false
-                            }}
-                            initialState={{ density: 'compact', grouping: ['categorieSavoirs'],expanded: true, }}
+                            initialState={{ density: 'compact' }}
                         />
                     </Paper>
                 </Grid>
@@ -278,4 +187,4 @@ function MetierDetailScreen() {
     );
 }
 
-export default MetierDetailScreen
+export default CompetanceScreen

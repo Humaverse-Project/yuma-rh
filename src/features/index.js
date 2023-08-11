@@ -15,6 +15,7 @@ import PlaningFormationScreen from './planing/components/PlaningFormationScreen'
 import NomenclatureHomeScreen from './nomenclature/components/NomenclatureHomeScreen'
 import MetierScreen from './nomenclature/components/MetierScreen'
 import MetierDetailScreen from './nomenclature/components/MetierDetailScreen'
+import CompetanceScreen from './nomenclature/components/CompetanceScreen'
 //import COMPONENTS REUSABLES
 
 export {
@@ -33,5 +34,6 @@ export {
     PlaningFormationScreen,
     NomenclatureHomeScreen,
     MetierScreen,
-    MetierDetailScreen
+    MetierDetailScreen,
+    CompetanceScreen
 }

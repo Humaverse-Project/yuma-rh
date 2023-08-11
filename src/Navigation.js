@@ -14,7 +14,8 @@ import {
     PlaningFormationScreen,
     NomenclatureHomeScreen,
     MetierDetailScreen,
-    MetierScreen
+    MetierScreen,
+    CompetanceScreen
 } from './features'
 
 function Navigation() {
@@ -89,6 +90,11 @@ function Navigation() {
             id: 12,
             path: '/metierdetail/:code',
             components: <MetierDetailScreen />,
+        },
+        {
+            id: 13,
+            path: '/competance',
+            components: <CompetanceScreen />,
         }
     ]
 

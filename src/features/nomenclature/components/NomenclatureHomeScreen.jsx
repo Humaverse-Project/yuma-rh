@@ -57,7 +57,7 @@ function NomenclatureHomeScreen() {
                             {CardItem(ReceiptLongIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/setting'}>
+                    <NavLink to={'/competance'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',

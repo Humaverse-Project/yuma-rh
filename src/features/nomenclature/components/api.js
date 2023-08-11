@@ -58,4 +58,20 @@ export async function getFicheMetierDataCode(accessToken, code) {
   
     return await response.json();
 }
-  
+
+export async function getListeCompetance(accessToken) {
+  const url = `https://api.pole-emploi.io/partenaire/rome-competences/v1/competences/competence`;
+
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error('Network response was not ok');
+  }
+
+  return await response.json();
+}
