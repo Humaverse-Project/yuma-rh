@@ -17,6 +17,9 @@ import MetierScreen from './nomenclature/components/MetierScreen'
 import MetierDetailScreen from './nomenclature/components/MetierDetailScreen'
 import CompetanceScreen from './nomenclature/components/CompetanceScreen'
 import CompetanceDetailScreen from './nomenclature/components/CompetanceDetailScreen'
+import SearchCompetanceScreen from './nomenclature/components/SearchCompetanceScreen'
+import PropositionHomeScreen from './proposition/components/PropositionHomeScreen'
+import PropositionPageScreen from './proposition/components/PropositionPageScreen'
 //import COMPONENTS REUSABLES
 
 export {
@@ -37,5 +40,8 @@ export {
     MetierScreen,
     MetierDetailScreen,
     CompetanceScreen,
-    CompetanceDetailScreen
+    CompetanceDetailScreen,
+    SearchCompetanceScreen,
+    PropositionHomeScreen,
+    PropositionPageScreen
 }

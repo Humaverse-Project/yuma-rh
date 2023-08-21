@@ -1,99 +1,99 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
-import { authenticateClient, getFicheMetierDataCode } from './api';
+import { getpostbymetierid } from  '../../../services/PosteService';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { useParams } from 'react-router-dom';
 import { LoadingMetier, TableMetier } from '../../../shared'
+import { Link } from 'react-router-dom';
+import { Card } from '@mui/material'
+import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography'
 
 function MetierDetailScreen() {
     const { code } = useParams();
 
     const theme = useTheme()
     const [data, setData] = useState(null);
-    const [GroupesSavoirs, setGroupesSavoirs] = useState(null);
+    const [metieractive, setDataMetier] = useState(null);
     
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
   
     useEffect(() => {
-      authenticateClient()
-        .then((data) => {
-          getFicheMetierDataCode(data.access_token, code)
-            .then((data) => {
-                var groupedData = []
-                for (let index = 0; index < data.groupesCompetencesMobilisees.length; index++) {
-                    const competences = data.groupesCompetencesMobilisees[index].competences;
-                    for (let kaelo = 0; kaelo < competences.length; kaelo++) {
-                        const element = competences[kaelo];
-                        groupedData.push(
-                            {
-                                enjeu: data.groupesCompetencesMobilisees[index].enjeu.libelle,
-                                nom_competences: element.libelle,
-                                type_competences: element.type,
-                            }
-                        )
+        const fetchData = async () => {
+            try {
+                const datametierexistant = await getpostbymetierid(code);
+                const reponsemetie = await datametierexistant;
+                var datatraitre = reponsemetie.map(item=> {
+                    return {
+                        competanceid: item.competance.id,
+                        niveau: item.niveauCompetance,
+                        codeRome: item.competance.code,
+                        descriptionL: item.competance.descriptionL,
+                        descriptionC: item.competance.descriptionC,
+                        class: item.competance.class,
+                        creation: item.creation
                     }
-                }
-                var GroupesSavoirsdata = []
-                for (let index = 0; index < data.groupesSavoirs.length; index++) {
-                    const savoirs = data.groupesSavoirs[index].savoirs;
-                    for (let kaelo = 0; kaelo < savoirs.length; kaelo++) {
-                        const element = savoirs[kaelo];
-                        GroupesSavoirsdata.push(
-                            {
-                                categorieSavoirs: data.groupesSavoirs[index].categorieSavoirs.libelle,
-                                nom_savoirs: element.libelle,
-                                type_savoirs: element.type,
-                            }
-                        )
-                    }
-                }
-                setGroupesSavoirs(GroupesSavoirsdata)
-              setData(groupedData);
-              setLoading(false);
-            })
-            .catch((error) => {
-                setError(true);
+                })
+                setData(datatraitre);
+                setDataMetier(reponsemetie[0].metier)
                 setLoading(false);
-            });
-        })
-        .catch((error) => {
-          console.error('Authentication error:', error.message);
-        });
+            } catch (error) {
+              console.error('Une erreur s\'est produite :', error);
+              setError("Une erreur s'est produite lors de l'appele serveur");
+              setLoading(false);
+            }
+        };
+        fetchData();
     }, [code]);
   
     const columns = useMemo(
-        () =>[
-        { 
-            accessorKey: 'enjeu', header: 'Enjeu' 
-        },
-        {
-            accessorKey: 'nom_competences',
-            header: 'Nom Compétences'
-        },
-        {
-            accessorKey: 'type_competences',
-            header: 'type Compétences'
-        },
-        ],[],
-    );
-
-    const columnsGroupesSavoirs = useMemo(
-        () =>[
-        { 
-            accessorKey: 'categorieSavoirs', header: 'Categorie Savoirs' 
-        },
-        {
-            accessorKey: 'nom_savoirs',
-            header: 'Libellé savoir'
-        },
-        {
-            accessorKey: 'type_savoirs',
-            header: 'type savoir'
-        },
-        ],[],
+        () => [
+          {
+            accessorKey: 'competanceid',
+            header: 'ID Competance',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true,
+            size: 80,
+            Cell: ({ cell }) => 
+                (<Link to={`/competancedetail/${cell.getValue()}`}>{cell.getValue()}</Link>),
+            },
+          {
+            accessorKey: 'codeRome',
+            header: 'Code',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'niveau',
+            header: 'Niveau requit',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'descriptionC',
+            header: 'Décription courte',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'descriptionL',
+            header: 'Decription longue',
+            size: 140,
+            enableEditing: true,
+          },
+          {
+            accessorKey: 'creation',
+            header: 'Date création',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true,
+          }
+        ],
+        [],
     );
     
 
@@ -110,18 +110,79 @@ function MetierDetailScreen() {
     return (
       <Fragment>
         <HeaderInScreen
-            title={'Détail métier '+code}
+            title={'Détail métier '+metieractive.code}
         />
         <Box
             backgroundColor="background.paper"
             display={'flex'}
             flexDirection="column"
-            justifyContent="center"
             alignItems="center"
             height={'auto'}
-            minHeight="80vh"
+            minHeight={'80vh'}
         >
-            <Grid container spacing={2}  pl={5} pr={5}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    [theme.breakpoints.down('sm')]: {
+                        justifyContent: 'center',
+                    },
+                    mx: 2,
+                }}
+                width={'100%'}
+            >
+                <Card
+                    sx={{
+                        display: 'flex',
+                        width: 'auto',
+                        mt: 2,
+                        mx: 5,
+                        [theme.breakpoints.up('lg')]: {
+                            width: '70%',
+                        },
+                        [theme.breakpoints.down('sm')]: {
+                            my: 1,
+                            mx: 0,
+                            width: '90%',
+                        },
+                    }}
+                >
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <CardContent
+                            sx={{
+                                flex: '1 0 auto',
+                                color: 'black.main',
+                            }}
+                        >
+                            <Typography component="div">
+                                <b>Nom:</b> {metieractive.nom}
+                            </Typography>
+                            <Typography component="div">
+                                <b>code:</b> {metieractive.code}
+                            </Typography>
+                            <Typography component="div">
+                                <b>Classe:</b> {metieractive.class}
+                            </Typography>
+                            <Typography component="div">
+                                <b>Description courte:</b> {metieractive.descriptionC}
+                            </Typography>
+                            <Typography component="div">
+                                <b>Description longue:</b> {metieractive.descriptionL}
+                            </Typography>
+                            <Typography component="div">
+                                <b>creation:</b> {metieractive.creation}
+                            </Typography>
+                        </CardContent>
+                    </Box>
+                </Card>
+            </Box>
+            <Grid container spacing={2} px={5}>
                 <Grid item xs={12} md={12}
                     sx={{
                         [theme.breakpoints.up('lg')]: {
@@ -133,10 +194,8 @@ function MetierDetailScreen() {
                         },
                     }}
                 >
-                    <h4>Tableau Competences Mobilisées</h4>
+                    <h4>Liste competance liée au métier</h4>
                     {TableMetier(columns,data)}
-                    <h4>Tableau Savoirs</h4>
-                    {TableMetier(columnsGroupesSavoirs,GroupesSavoirs)}
                 </Grid>
             </Grid>
         </Box>

@@ -76,7 +76,7 @@ function NomenclatureHomeScreen() {
                             {CardItem(TuneIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/test'}>
+                    <NavLink to={'/searchcompetance'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',

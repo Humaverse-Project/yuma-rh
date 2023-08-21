@@ -15,7 +15,10 @@ import {
     MetierDetailScreen,
     MetierScreen,
     CompetanceScreen,
-    CompetanceDetailScreen
+    CompetanceDetailScreen,
+    SearchCompetanceScreen,
+    PropositionHomeScreen,
+    PropositionPageScreen
 } from './features'
 
 function Navigation() {
@@ -97,10 +100,25 @@ function Navigation() {
             components: <CompetanceScreen />,
         },
         {
-            id: 12,
+            id: 14,
             path: '/competancedetail/:code',
             components: <CompetanceDetailScreen />,
         },
+        {
+            id: 15,
+            path: '/searchcompetance',
+            components: <SearchCompetanceScreen />,
+        },
+        {
+            id: 16,
+            path: '/propositionhome',
+            components: <PropositionHomeScreen />,
+        },
+        {
+            id: 17,
+            path: '/propositionpage',
+            components: <PropositionPageScreen/>
+        }
     ]
 
     return (
