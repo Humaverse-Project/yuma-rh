@@ -1,9 +1,8 @@
-import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, Stack, TextField, Typography } from "@mui/material"
+import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material"
 import { useState } from "react"
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onClose}) {
-    const [titre, setTitre] = useState(null)
     const [newproposition, setNewproposition] = useState(null)
     const [listnommetier, setNewnommetier] = useState([])
     const [ postedata, setPostedata ] = useState([])
@@ -13,18 +12,6 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
         }
         return list
     }, [])
-    const style = {
-        position: 'absolute',
-        top: '20%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 800,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-        alignItems: 'center',
-    };
     const formatCometance = listCompetance.reduce((list, item) => {
         if (!list.includes(item.code)) {
             list.push(item.code)
@@ -48,7 +35,7 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
             setNewproposition({ ...newproposition, metier_code: value })
             format = listmetier.reduce((list, item) => {
                 if (!list.includes(item.nom)) {
-                    if (item.code == value){
+                    if (item.code === value){
                         list.push(item.nom)
                     }
                 }
@@ -65,16 +52,15 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
         setNewnommetier(format)
     }
     const selectMetierNom = (e, value) => {
-        var format = []
         if (value !== null){
             setNewproposition({ ...newproposition, metier_nom: value })
             let metierid = listmetier.filter(metier=>{
-                if(metier.nom == value && metier.code == newproposition.metier_code) return true
+                if(metier.nom === value && metier.code === newproposition.metier_code) return true
                 return false
             })
             if(metierid.length > 0){
                 let poste = listposte.filter(poste=>{
-                    if(poste.metier.id == metierid[0].id) return { id: poste.id, competancecode: poste.competance.code, competanceid: poste.competance.id, niveauCompetance: poste.niveauCompetance.toString() }
+                    if(poste.metier.id === metierid[0].id) return { id: poste.id, competancecode: poste.competance.code, competanceid: poste.competance.id, niveauCompetance: poste.niveauCompetance.toString() }
                     return false
                 })
                 setPostedata(poste)

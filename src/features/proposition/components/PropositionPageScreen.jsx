@@ -7,8 +7,7 @@ import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'
 import { LoadingMetier, TableMetier } from '../../../shared'
-import { Button, Fade, Modal, Typography } from '@mui/material';
-import Backdrop from '@mui/material/Backdrop';
+import { Button, Typography } from '@mui/material';
 import ModalEdit from './ModalEdit';
 
 function PropositionPageScreen() {
@@ -49,6 +48,7 @@ function PropositionPageScreen() {
                 setDataMetiercode(reponsemetie);
                 setDataCompetance(reponsecompetance);
                 setDataPropositionexistant(reponsedatacompetanceaapi)
+                setData([])
                 setLoading(false);
             } catch (error) {
               console.error('Une erreur s\'est produite :', error);
