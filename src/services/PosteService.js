@@ -24,6 +24,18 @@ export async function getpostbymetierid(id) {
     return await response.json();
 }
 
+export async function getpostbycompetanceid(id) {
+    const url = `${base_url}/poste/GetListByCompetanceID/${id}`;
+
+    const response = await fetch(url, {
+        method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('erreur backend');
+    }
+    return await response.json();
+}
+
 export async function postPoste(formdata) {
     const url = `${base_url}/poste/new`;
 

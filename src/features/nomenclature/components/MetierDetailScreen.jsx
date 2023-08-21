@@ -58,8 +58,8 @@ function MetierDetailScreen() {
             enableEditing: false,
             enableSorting: true,
             size: 80,
-            Cell: ({ cell, column }) => 
-                    (<Link to={`/competancedetail/${cell.getValue()}`}>{cell.getValue()}</Link>),
+            Cell: ({ cell }) => 
+                (<Link to={`/competancedetail/${cell.getValue()}`}>{cell.getValue()}</Link>),
             },
           {
             accessorKey: 'codeRome',
@@ -70,6 +70,12 @@ function MetierDetailScreen() {
           {
             accessorKey: 'niveau',
             header: 'Niveau requit',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'class',
+            header: 'Classe',
             size: 140,
             enableEditing: false,
           },
