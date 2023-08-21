@@ -89,7 +89,7 @@ function HomeScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/test'}>
+                    <NavLink to={'/propositionhome'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
