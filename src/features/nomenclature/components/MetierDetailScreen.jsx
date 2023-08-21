@@ -74,12 +74,6 @@ function MetierDetailScreen() {
             enableEditing: false,
           },
           {
-            accessorKey: 'class',
-            header: 'Classe',
-            size: 140,
-            enableEditing: false,
-          },
-          {
             accessorKey: 'descriptionC',
             header: 'Décription courte',
             size: 140,
@@ -171,6 +165,9 @@ function MetierDetailScreen() {
                             </Typography>
                             <Typography component="div">
                                 <b>code:</b> {metieractive.code}
+                            </Typography>
+                            <Typography component="div">
+                                <b>Classe:</b> {metieractive.class}
                             </Typography>
                             <Typography component="div">
                                 <b>Description courte:</b> {metieractive.descriptionC}

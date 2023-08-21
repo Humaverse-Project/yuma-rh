@@ -1,184 +1,121 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
-import { authenticateClient, getListeCompetance } from './api';
+import { listcompetance } from  '../../../services/CompetanceService';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import { Link } from 'react-router-dom';
-import { Snackbar, Alert } from '@mui/material';
-import { Card } from '@mui/material'
-import CardContent from '@mui/material/CardContent'
-import Button from '@mui/material/Button'
-import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
 import { LoadingMetier, TableMetier } from '../../../shared'
 
 function CompetanceScreen() {
     const theme = useTheme()
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [errortokken, setErrortokken] = useState(false);
     const [error, setError] = useState(false);
-    const [accessToken, setAccessToken] = useState(null);
-    const [valuefiltre, setValueFiltre] = useState(null);
-    const datafiltre = [
-        {label: "savoir", valeur: "savoir"},
-        {label: "Macro savoir faire", valeur: "macro-savoir-faire"},
-        {label: "competence détaillée", valeur: "competence-detaillee"},
-        {label: "Macro savoir être professionnel", valeur: "macro-savoir-etre-professionnel"},
-    ]
+  
     useEffect(() => {
-        authenticateClient()
-          .then((data) => {
-            setAccessToken(data.access_token);
-            setErrortokken(false);
-            setLoading(false);
-          })
-          .catch((error) => {
-            setErrortokken(true);
-            console.error('Authentication error:', error.message);
-          });
+        const fetchData = async () => {
+            try {
+                const datametierexistant = await listcompetance();
+                const reponsemetie = await datametierexistant;
+                setData(reponsemetie);
+                setLoading(false);
+            } catch (error) {
+              console.error('Une erreur s\'est produite :', error);
+              setError("Une erreur s'est produite lors de l'appele serveur");
+              setLoading(false);
+            }
+        };
+        fetchData();
     }, []);
-    const afficherDonnees = () => {
-        setLoading(true);
-        getListeCompetance(accessToken, valuefiltre)
-        .then((data) => {
-            console.log(data)
-            const formattedData = data.map((item) => ({
-            code: item.code,
-            nom: item.libelle,
-            type: item.type,
-            }));
-            setData(formattedData);
-            setLoading(false);
-        })
-        .catch((error) => {
-            console.log(error)
-            setError(true);
-            setLoading(false);
-        });
-    }
+    
     const columns = useMemo(
-        () =>[
-            { 
-                accessorKey: 'code',
-                header: 'Code',
-                Cell: ({ cell, column }) => (
-                    <Link to={`/competancedetail/${cell.getValue()}`}>{cell.getValue()}</Link>
-                ),
+        () => [
+          {
+            accessorKey: 'id',
+            header: 'ID',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true,
+            size: 80,
+            Cell: ({ cell, column }) => 
+                    (<Link to={`/competancedetail/${cell.getValue()}`}>{cell.getValue()}</Link>),
             },
-            { accessorKey: 'nom', header: 'Libellé' },
-            { accessorKey: 'type', header: 'Type' },
+          {
+            accessorKey: 'code',
+            header: 'Code Rome',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'class',
+            header: 'Classe',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'descriptionC',
+            header: 'Decription courte',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'descriptionL',
+            header: 'Decription longue',
+            size: 140,
+            enableHiding: true,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'creation',
+            header: 'Date création',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true,
+          }
         ],
         [],
     );
-    const handleChangelabel = (event, value) => {
-        setValueFiltre(value.valeur)
-    };
-    if (loading || errortokken) {
+    if (loading || error) {
         return (
             <Fragment>
                 <HeaderInScreen
                     title={'Liste competance'}
                 />
-                {LoadingMetier(loading, errortokken)}
+                {LoadingMetier(loading, error)}
             </Fragment>
         );
     }
     return (
-      <Fragment>
-        <HeaderInScreen
-            title={'Liste competance'}
-        />
-        <Box
-            backgroundColor="background.paper"
-            display={'flex'}
-            flexDirection="column"
-            alignItems="center"
-            height={'auto'}
-            minHeight="80vh"
-            paddingTop={5}
-        >
-            {error && (
-                <Snackbar 
-                    open={error}
-                    autoHideDuration={6000}
-                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
-                >
-                    <Alert severity="error">
-                        Une erreur s'est produite lors de la connexion à l'API.
-                    </Alert>
-                </Snackbar>
-            )}
-            <Grid container spacing={2} pl={5} pr={5}>
-                <Grid item xs={12} md={2}>
-                    <Card
+        <Fragment>
+            <HeaderInScreen
+                title={'Liste fiche métier'}
+            />
+            <Box
+                backgroundColor="background.paper"
+                display={'flex'}
+                flexDirection="column"
+                alignItems="center"
+                height={'auto'}
+                minHeight="80vh"
+            >
+                <Grid container spacing={2} pl={5} pr={5}>
+                    <Grid item xs={12} md={12}
                         sx={{
-                            display: 'flex',
-                            width: '100%'
-                            
+                            [theme.breakpoints.up('lg')]: {
+                                mt: 2,
+                            },
+                            [theme.breakpoints.down('sm')]: {
+                                my: 1,
+                                mx: 0,
+                            },
                         }}
                     >
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                width: '100%'
-                            }}
-                        >
-                            <CardContent
-                                sx={{
-                                    flex: '1 0 auto',
-                                    color: 'black.main',
-                                }}
-                            >
-                                <Autocomplete
-                                    sx={{
-                                        mt: 2,
-                                        mb: 2
-                                    }}
-                                    disablePortal
-                                    options={datafiltre}
-                                    onChange={handleChangelabel}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            required
-                                            label="Type" 
-                                            name="metier"
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                                <Button
-                                    variant="contained"
-                                    onClick={afficherDonnees}
-                                    color="blue"
-                                    size='large'
-                                    fullWidth
-                                >
-                                    Recherche
-                                </Button>
-                            </CardContent>
-                        </Box>
-                    </Card>
+                        {TableMetier(columns,data)}
+                    </Grid>
                 </Grid>
-                <Grid item xs={12} md={10}
-                    sx={{
-                        [theme.breakpoints.up('lg')]: {
-                            mt: 2,
-                        },
-                        [theme.breakpoints.down('sm')]: {
-                            my: 1,
-                            mx: 0,
-                        },
-                    }}
-                >
-                    {TableMetier(columns,data)}
-                </Grid>
-            </Grid>
-        </Box>
-    </Fragment>
+            </Box>
+        </Fragment>
     );
 }
 
