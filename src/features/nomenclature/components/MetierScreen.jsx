@@ -1,6 +1,6 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
 import React, { Fragment, useState, useEffect, useMemo } from 'react';
-import { authenticateClient, getFicheMetierData } from './api';
+import { listmetier } from  '../../../services/MetierService';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
@@ -14,38 +14,65 @@ function MetierScreen() {
     const [error, setError] = useState(false);
   
     useEffect(() => {
-      authenticateClient()
-        .then((data) => {
-          getFicheMetierData(data.access_token)
-            .then((data) => {
-              console.log(data)
-              const formattedData = data.map((item) => ({
-                code: item.code,
-                libelle: item.metier.libelle,
-              }));
-              setData(formattedData);
+        const fetchData = async () => {
+            try {
+                const datametierexistant = await listmetier();
+                const reponsemetie = await datametierexistant;
+                setData(reponsemetie);
+                setLoading(false);
+            } catch (error) {
+              console.error('Une erreur s\'est produite :', error);
+              setError("Une erreur s'est produite lors de l'appele serveur");
               setLoading(false);
-            })
-            .catch((error) => {
-              setError(true);
-              setLoading(false);
-            });
-        })
-        .catch((error) => {
-          console.error('Authentication error:', error.message);
-        });
+            }
+        };
+        fetchData();
     }, []);
   
     const columns = useMemo(
-        () =>[
-            { 
-                accessorKey: 'code',
-                header: 'Code',
-                Cell: ({ cell, column }) => (
-                    <Link to={`/metierdetail/${cell.getValue()}`}>{cell.getValue()}</Link>
-                ),
+        () => [
+          {
+            accessorKey: 'id',
+            header: 'ID',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true,
+            size: 80,
+            Cell: ({ cell, column }) => 
+                    (<Link to={`/metierdetail/${cell.getValue()}`}>{cell.getValue()}</Link>),
             },
-            { accessorKey: 'libelle', header: 'Libellé' },
+          {
+            accessorKey: 'code',
+            header: 'Code Rome',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'nom',
+            header: 'Nom',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'descriptionC',
+            header: 'Decription courte',
+            size: 140,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'descriptionL',
+            header: 'Decription longue',
+            size: 140,
+            enableHiding: true,
+            enableEditing: false,
+          },
+          {
+            accessorKey: 'creation',
+            header: 'Date création',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true,
+          }
         ],
         [],
     );
@@ -68,7 +95,6 @@ function MetierScreen() {
             backgroundColor="background.paper"
             display={'flex'}
             flexDirection="column"
-            justifyContent="center"
             alignItems="center"
             height={'auto'}
             minHeight="80vh"

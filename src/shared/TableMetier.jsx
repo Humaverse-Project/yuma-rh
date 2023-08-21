@@ -6,43 +6,64 @@ function TableMetier(columns, data) {
     return (
         <Paper sx={{width: '100%'}}>
             <MaterialReactTable
-                columns={columns}
-                data={data}
-                rowsPerPageOptions={[5, 10, 20]}
-                pagination
-                autoHeight
-                localization={MRT_Localization_FR}
-                enableStickyHeader
-                muiTableBodyProps={{
-                    sx: {
-                        '& tr:nth-of-type(odd)': {
+            initialState={{ columnVisibility: { descriptionL: false} }}
+            displayColumnDefOptions={{
+            'mrt-row-actions': {
+                muiTableHeadCellProps: {
+                align: 'center',
+                },
+                size: 120,
+            },
+            }}
+            columns={columns}
+            data={data}
+            editingMode="modal"
+            enableColumnOrdering
+            enableEditing = {false}
+            muiBottomToolbarProps = {{
+                sx: {
+                    backgroundColor: 'unset'
+                },
+            }}
+            muiTopToolbarProps = {{
+                sx: {
+                    backgroundColor: 'unset'
+                },
+            }}
+            muiTableBodyProps={{
+                sx: {
+                    '& tr:nth-of-type(odd)': {
                         backgroundColor: '#f5f5f5',
-                        },
                     },
-                }}
-                muiTableBodyCellProps={{
-                    sx: {
-                        color: 'black.main'
+                },
+            }}
+            muiTableBodyCellProps={{
+                sx: {
+                    color: 'black.main'
+                },
+            }}
+            muiTableBodyRowProps={{
+                sx: {
+                    ':hover td': {
+                        backgroundColor: '#f5f5f5',
                     },
-                }}
-                enableTopToolbar={false}
-                muiTableHeadCellProps={{
-                    sx: {
-                        color: 'black.main'
-                    },
-                }}
-                muiTableHeadRowProps={{
-                    sx: {
-                        backgroundColor: "unset"
-                    },
-                }}
-                muiTableBodyRowProps={{
-                    sx: {
-                        backgroundColor: "unset"
-                    },
-                    hover: false
-                }}
-                initialState={{ density: 'compact' }}
+                    backgroundColor: 'unset',
+                },
+            }}
+            muiTableHeadRowProps={{
+                sx: {
+                    color: 'black.main',
+                    backgroundColor: 'unset'
+                },
+            }}
+            muiTableHeadCellProps={{
+                sx: {
+                    color: 'black.main',
+                    backgroundColor: 'unset'
+                },
+            }}
+            localization={MRT_Localization_FR}
+            
             />
         </Paper>
     )
