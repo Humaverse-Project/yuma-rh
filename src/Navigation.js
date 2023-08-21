@@ -17,7 +17,8 @@ import {
     CompetanceScreen,
     CompetanceDetailScreen,
     SearchCompetanceScreen,
-    PropositionHomeScreen
+    PropositionHomeScreen,
+    PropositionPageScreen
 } from './features'
 
 function Navigation() {
@@ -113,6 +114,11 @@ function Navigation() {
             path: '/propositionhome',
             components: <PropositionHomeScreen />,
         },
+        {
+            id: 17,
+            path: '/propositionpage',
+            components: <PropositionPageScreen/>
+        }
     ]
 
     return (

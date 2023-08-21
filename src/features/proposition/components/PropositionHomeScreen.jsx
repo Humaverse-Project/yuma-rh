@@ -3,10 +3,10 @@ import HeaderInScreen from '../../header/HeaderInScreen'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
 import { Fragment } from 'react'
-import { Card } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CardActionArea } from '@mui/material'
 import CardContent from '@mui/material/CardContent'
+import Typography from '@mui/material/Typography';
 
 //ICONES
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
@@ -35,31 +35,34 @@ function PropositionHomeScreen() {
                             justifyContent: 'center',
                         },
                         alignItems: 'center',
+                        backgroundColor: 'secondary.dark',
+                        m: 2,
+                        [theme.breakpoints.up('lg')]: {
+                            m: 4,
+                            width: '60ch',
+                        },
+                        boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                        [theme.breakpoints.down('sm')]: {
+                            width: '100%',
+                            my: 1,
+                            mx: 0,
+                        },
                     }}
                 >
-                    <NavLink to={'/metier'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            <CardActionArea>
-                                <CardContent sx={{ p: 4 }}>
-                                    <ReceiptLongIcon sx={{ fontSize: 92, color: 'black.main' }} />
-                                </CardContent>
-                            </CardActionArea>
-                        </Card>
+                    <NavLink to={'/propositionpage'}>
+                        <CardActionArea sx={{ width: 150 }}>
+                            <CardContent sx={{ p: 4 }}>
+                                <ReceiptLongIcon sx={{ fontSize: 92, color: 'black.main' }} />
+                            </CardContent>
+                        </CardActionArea>
                     </NavLink>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }} width={"60%"}>
+                        <CardContent sx={{ flex: '1 0 auto' }}>
+                            <Typography component="div" variant="h5">
+                                Forum
+                            </Typography>
+                        </CardContent>
+                    </Box>
                 </Box>
             </Box>
         </Fragment>

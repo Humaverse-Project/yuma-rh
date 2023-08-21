@@ -19,6 +19,7 @@ import CompetanceScreen from './nomenclature/components/CompetanceScreen'
 import CompetanceDetailScreen from './nomenclature/components/CompetanceDetailScreen'
 import SearchCompetanceScreen from './nomenclature/components/SearchCompetanceScreen'
 import PropositionHomeScreen from './proposition/components/PropositionHomeScreen'
+import PropositionPageScreen from './proposition/components/PropositionPageScreen'
 //import COMPONENTS REUSABLES
 
 export {
@@ -41,5 +42,6 @@ export {
     CompetanceScreen,
     CompetanceDetailScreen,
     SearchCompetanceScreen,
-    PropositionHomeScreen
+    PropositionHomeScreen,
+    PropositionPageScreen
 }
