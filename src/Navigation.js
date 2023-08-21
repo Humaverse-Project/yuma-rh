@@ -15,7 +15,8 @@ import {
     MetierDetailScreen,
     MetierScreen,
     CompetanceScreen,
-    CompetanceDetailScreen
+    CompetanceDetailScreen,
+    SearchCompetanceScreen
 } from './features'
 
 function Navigation() {
@@ -97,9 +98,14 @@ function Navigation() {
             components: <CompetanceScreen />,
         },
         {
-            id: 12,
+            id: 14,
             path: '/competancedetail/:code',
             components: <CompetanceDetailScreen />,
+        },
+        {
+            id: 15,
+            path: '/searchcompetance',
+            components: <SearchCompetanceScreen />,
         },
     ]
 
