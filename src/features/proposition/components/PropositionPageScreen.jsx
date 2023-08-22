@@ -11,6 +11,7 @@ import { LoadingMetier, TableMetier } from '../../../shared'
 import { Button, Link, Typography } from '@mui/material';
 import ModalEdit from './ModalEdit';
 import ModalCreate from './ModalCreate';
+import ModalEditProposal from './ModalEditProposal';
 import EditIcon from '@mui/icons-material/Edit';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
@@ -24,20 +25,36 @@ function PropositionPageScreen() {
     const [dataCompetance, setDataCompetance] = useState(false);
     const [dataMetiercode, setDataMetiercode] = useState(false);
     const [propositionexistant, setDataPropositionexistant] = useState(false);
+    const [originalproposition, setDataoriginalproposition] = useState(false);
     const [allproposition, setDataallproposition] = useState(false);
     const [open, setOpen] = useState(false);
     const [opencreate, setOpencreate] = useState(false);
     const [openeditproposale, setOpeneditproposale] = useState(false);
     const [opendetailproposale, setOpendetailproposale] = useState(false);
+    const [activemodificationproposal, setActivemodificationproposal] = useState({});
     
     const hangleopenmodal = () => {
         setOpen(true)
+    }
+    const hangleopeneditproposalmodal = (id) => {
+        const mydataproposaltoedit = originalproposition.filter( (proposal) =>{
+            if (proposal.id === id) return true
+            return false
+        })
+        setActivemodificationproposal(mydataproposaltoedit[0])
+        setOpeneditproposale(true)
     }
     const hangleopencreatemodal = () => {
         setOpencreate(true)
     }
     const handleCloseCreate = () => {
         setOpencreate(false)
+    }
+    const handleCloseEditProposal = () => {
+        setOpendetailproposale(false)
+    }
+    const handleSubmitProposal = (data) => {
+        console.log(data)
     }
     const mapingdata = (datatomap) =>{
         const datatoformat = datatomap.map(data=>{
@@ -100,6 +117,7 @@ function PropositionPageScreen() {
                 setDataMetiercode(reponsemetie);
                 setDataCompetance(reponsecompetance);
                 setDataPropositionexistant(reponsedatacompetanceaapi)
+                setDataoriginalproposition(reponseproposition)
                 mapingdata(reponseproposition)
                 setLoading(false);
             } catch (error) {
@@ -109,10 +127,8 @@ function PropositionPageScreen() {
             }
         };
         fetchData();
-    }, [setDataMetiercode, setDataCompetance, setDataPropositionexistant, setLoading, setError, mapingdata]);
-    const handleeditproposition = (id)=> {
-        console.log(id)
-    }
+    }, [setDataMetiercode, setDataCompetance, setDataPropositionexistant, setLoading, setError, mapingdata, setDataoriginalproposition]);
+
     const columns = useMemo(
         () => [
           {
@@ -127,8 +143,7 @@ function PropositionPageScreen() {
                 (<Link>modifier</Link>),
             muiTableBodyCellProps: ({ cell }) => ({
                 onClick: () => {
-                    console.log(cell.getValue());
-                    setOpeneditproposale(true)
+                    hangleopeneditproposalmodal(cell.getValue())
                 },
             }),
           },
@@ -167,7 +182,7 @@ function PropositionPageScreen() {
             ),
           }
         ],
-        [setOpeneditproposale],
+        [hangleopeneditproposalmodal],
     );
     const columns2 = useMemo(
         () => [
@@ -350,6 +365,16 @@ function PropositionPageScreen() {
             onClose = {handleCloseCreate}
         >
         </ModalCreate>
+        <ModalEditProposal
+            open={openeditproposale}
+            listCompetance={dataCompetance}
+            listmetier={dataMetiercode}
+            listposte={propositionexistant}
+            onSubmit = {handleSubmitProposal}
+            onClose = {handleCloseEditProposal}
+            proposalData = {activemodificationproposal}
+        >
+        </ModalEditProposal>
     </Fragment>
     );
 }
