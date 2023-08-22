@@ -3,12 +3,14 @@ import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { listmetier } from  '../../../services/MetierService';
 import { listcompetance } from  '../../../services/CompetanceService';
 import { listpost } from  '../../../services/PosteService';
+import { listproposition, postPropositionPoste, postPropositionPosteNew } from  '../../../services/PropositionService';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'
 import { LoadingMetier, TableMetier } from '../../../shared'
 import { Button, Typography } from '@mui/material';
 import ModalEdit from './ModalEdit';
+import ModalCreate from './ModalCreate';
 
 function PropositionPageScreen() {
     const theme = useTheme()
@@ -18,13 +20,34 @@ function PropositionPageScreen() {
     const [dataCompetance, setDataCompetance] = useState(false);
     const [dataMetiercode, setDataMetiercode] = useState(false);
     const [propositionexistant, setDataPropositionexistant] = useState(false);
+    const [allproposition, setDataallproposition] = useState(false);
     const [open, setOpen] = useState(false);
-
+    const [opencreate, setOpencreate] = useState(false);
+    
     const hangleopenmodal = () => {
         setOpen(true)
     }
-    const handleSubmit = (data) => {
+    const hangleopencreatemodal = () => {
+        setOpencreate(true)
+    }
+    const handleCloseCreate = () => {
+        setOpencreate(false)
+    }
+    const handleSubmit = async (data) => {
         console.log(data)
+        setLoading(true);
+        try {
+            const dataproposition = await postPropositionPoste(data)
+            const reponsemetie = await dataproposition;
+            console.log(reponsemetie)
+            setDataallproposition(reponsemetie)
+            setLoading(false);
+        }
+        catch (error) {
+            console.error('Une erreur s\'est produite :', error);
+            setError("Une erreur s'est produite lors de l'appele serveur");
+            setLoading(false);
+        }
     }
     const handleClose = () => {
         setOpen(false)
@@ -45,6 +68,9 @@ function PropositionPageScreen() {
                 const reponsecompetance = await datacompetanceexistant;
                 const datacompetanceaapi = await listpost();
                 const reponsedatacompetanceaapi = await datacompetanceaapi;
+                const dataproposition = await listproposition()
+                const reponseproposition = await dataproposition;
+                setDataallproposition(reponseproposition)
                 setDataMetiercode(reponsemetie);
                 setDataCompetance(reponsecompetance);
                 setDataPropositionexistant(reponsedatacompetanceaapi)
@@ -131,8 +157,8 @@ function PropositionPageScreen() {
                         },
                     }}
                 >
-                    <Typography>Mes propositions</Typography>
-                    {TableMetier(columns,data)}
+                    {/* <Typography>Mes propositions</Typography>
+                    {TableMetier(columns,data)} */}
                 </Grid>
                 <Grid item xs={12} md={2} my={5}>
                     <Button 
@@ -152,7 +178,7 @@ function PropositionPageScreen() {
                         fullWidth
                         style={buttonStyle}
                         size='large'
-                        onClick={hangleopenmodal}>
+                        onClick={hangleopencreatemodal}>
                             crée un metier
                     </Button>
                 </Grid>
@@ -166,6 +192,16 @@ function PropositionPageScreen() {
             onSubmit = {handleSubmit}
             onClose = {handleClose}
         ></ModalEdit>
+        <ModalCreate
+            open={opencreate}
+            listCompetance={dataCompetance}
+            listmetier={dataMetiercode}
+            listposte={propositionexistant}
+            onSubmit = {handleSubmit}
+            onClose = {handleCloseCreate}
+        >
+
+        </ModalCreate>
     </Fragment>
     );
 }

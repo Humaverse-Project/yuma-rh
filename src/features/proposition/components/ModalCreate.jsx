@@ -2,7 +2,7 @@ import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Dialog
 import { useState } from "react"
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
-function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onClose}) {
+function ModalCreate({ open, listCompetance, listmetier, listposte, onSubmit, onClose}) {
     const [newproposition, setNewproposition] = useState(null)
     const [listnommetier, setNewnommetier] = useState([])
     const [ postedata, setPostedata ] = useState([])
@@ -67,28 +67,15 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
                 if(metier.nom === value && metier.code === newproposition.metier_code) return true
                 return false
             })
+            
             if(metierid.length > 0){
-                let postedatametier = listposte.filter(poste=>{
-                    if(poste.metier.id === metierid[0].id) return true
-                    return false
-                })
-                postedatametier = postedatametier.map((poste) => 
-                { 
-                    return {
-                        id: poste.id,
-                        competancecode: poste.competance.code,
-                        competanceid: poste.competance.id,
-                        niveauCompetance: poste.niveauCompetance.toString(),
-                        metier_id: metierid[0].id,
-                        type: "update"
-                    }
-                })
-                setPostedata(postedatametier)
+                setNewproposition({ ...newproposition, metier_id: metierid[0].id })
                 setmetierselected(metierid[0].id)
             } else {
                 setPostedata([])
                 setmetierselected(null)
             }
+            handleNewcompetance()
         } else {
             setPostedata([])
             setmetierselected(null)
@@ -96,7 +83,7 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
     }
     return (
         <Dialog open={open} maxWidth={'md'}>
-            <DialogTitle textAlign="center">Proposition update métier</DialogTitle>
+            <DialogTitle textAlign="center">Proposition création métier</DialogTitle>
             <DialogContent  dividers={true}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack
@@ -151,7 +138,6 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
                                             width: '70%',
                                         }}
                                         disablePortal
-                                        readOnly={item.type === "update"}
                                         options={formatCometance}
                                         onChange={(e, value)=>{
                                             if (value){
@@ -212,4 +198,4 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
     )
 }
 
-export default ModalEdit
+export default ModalCreate

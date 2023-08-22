@@ -1,7 +1,7 @@
 import { base_url } from './BaseUrl'
 
-export async function listpost() {
-    const url = `${base_url}/proposition/poste`;
+export async function listproposition() {
+    const url = `${base_url}/proposition`;
 
     const response = await fetch(url, {
         method: 'GET'
@@ -13,13 +13,17 @@ export async function listpost() {
 }
 
 export async function postPropositionPoste(formdata) {
-    const url = `${base_url}/proposition/poste/new`;
-
+    const url = `${base_url}/proposition/new`;
     const body = new URLSearchParams();
-    body.append('metier_id', formdata.metier_id);
-    body.append('competance_id', formdata.competance_id);
-    body.append('niveau_competance', formdata.niveau_competance);
-
+    for (let index = 0; index < formdata.length; index++) {
+        if(formdata[index].competanceid !== null){
+            body.append('competanceid[]', formdata[index].competanceid);
+            body.append('id[]', formdata[index].id);
+            body.append('metier_id[]', formdata[index].metier_id);
+            body.append('niveauCompetance[]', formdata[index].niveauCompetance);
+            body.append('type[]', formdata[index].type);
+        }
+    }
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -35,7 +39,7 @@ export async function postPropositionPoste(formdata) {
 }
 
 export async function updateProposition(formdata) {
-    const url = `${base_url}/proposition/poste/${formdata.id}/edit`;
+    const url = `${base_url}/proposition/${formdata.id}/edit`;
 
     const body = new URLSearchParams();
     body.append('metier_id', formdata.metier_id);
@@ -57,7 +61,7 @@ export async function updateProposition(formdata) {
 }
 
 export async function deletProposition(id) {
-    const url = `${base_url}/proposition/poste/${id}`;
+    const url = `${base_url}/proposition/${id}`;
 
     const body = new URLSearchParams();
     body.append('id', id);
