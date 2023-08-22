@@ -15,7 +15,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt';
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import BackspaceIcon from '@mui/icons-material/Backspace';
 
 function PropositionPageScreen() {
     const theme = useTheme()
@@ -28,6 +27,8 @@ function PropositionPageScreen() {
     const [allproposition, setDataallproposition] = useState(false);
     const [open, setOpen] = useState(false);
     const [opencreate, setOpencreate] = useState(false);
+    const [openeditproposale, setOpeneditproposale] = useState(false);
+    const [opendetailproposale, setOpendetailproposale] = useState(false);
     
     const hangleopenmodal = () => {
         setOpen(true)
@@ -109,7 +110,9 @@ function PropositionPageScreen() {
         };
         fetchData();
     }, [setDataMetiercode, setDataCompetance, setDataPropositionexistant, setLoading, setError, mapingdata]);
-  
+    const handleeditproposition = (id)=> {
+        console.log(id)
+    }
     const columns = useMemo(
         () => [
           {
@@ -121,7 +124,13 @@ function PropositionPageScreen() {
                 <EditIcon></EditIcon>
             ),
             Cell: ({ cell }) => 
-                (<Link>modifier</Link>)
+                (<Link>modifier</Link>),
+            muiTableBodyCellProps: ({ cell }) => ({
+                onClick: () => {
+                    console.log(cell.getValue());
+                    setOpeneditproposale(true)
+                },
+            }),
           },
           {
             accessorKey: 'metier',
@@ -158,7 +167,7 @@ function PropositionPageScreen() {
             ),
           }
         ],
-        [],
+        [setOpeneditproposale],
     );
     const columns2 = useMemo(
         () => [
@@ -171,7 +180,13 @@ function PropositionPageScreen() {
                 <EditIcon></EditIcon>
             ),
             Cell: ({ cell }) => 
-                (<Link>Détails</Link>)
+                (<Link>Détails</Link>),
+            muiTableBodyCellProps: ({ cell }) => ({
+                onClick: () => {
+                    console.log(cell.getValue());
+                    setOpendetailproposale(true)
+                },
+            }),
           },
           {
             accessorKey: 'metier',
@@ -199,16 +214,6 @@ function PropositionPageScreen() {
             ),
           },
           {
-            accessorKey: 'id',
-            header: 'Remettre mon vote à zero',
-            size: 100,
-            enableHiding: true,
-            enableEditing: false,
-            Header: ({ column }) => (
-                <BackspaceIcon></BackspaceIcon>
-            ),
-          },
-          {
             accessorKey: 'creation',
             header: 'Date création',
             enableColumnOrdering: true,
@@ -218,7 +223,7 @@ function PropositionPageScreen() {
             ),
           }
         ],
-        [],
+        [setOpendetailproposale],
     );
     if (loading || error) {
         return (
@@ -344,7 +349,6 @@ function PropositionPageScreen() {
             onSubmit = {handleSubmit}
             onClose = {handleCloseCreate}
         >
-
         </ModalCreate>
     </Fragment>
     );
