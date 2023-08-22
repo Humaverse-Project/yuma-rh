@@ -16,11 +16,13 @@ export async function postPropositionPoste(formdata) {
     const url = `${base_url}/proposition/new`;
     const body = new URLSearchParams();
     for (let index = 0; index < formdata.length; index++) {
-        body.append('competanceid[]', formdata[index].competanceid);
-        body.append('id[]', formdata[index].id);
-        body.append('metier_id[]', formdata[index].metier_id);
-        body.append('niveauCompetance[]', formdata[index].niveauCompetance);
-        body.append('type[]', formdata[index].type);
+        if(formdata[index].competanceid !== null){
+            body.append('competanceid[]', formdata[index].competanceid);
+            body.append('id[]', formdata[index].id);
+            body.append('metier_id[]', formdata[index].metier_id);
+            body.append('niveauCompetance[]', formdata[index].niveauCompetance);
+            body.append('type[]', formdata[index].type);
+        }
     }
     const response = await fetch(url, {
         method: 'POST',

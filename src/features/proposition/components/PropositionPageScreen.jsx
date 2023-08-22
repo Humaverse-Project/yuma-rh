@@ -3,13 +3,14 @@ import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { listmetier } from  '../../../services/MetierService';
 import { listcompetance } from  '../../../services/CompetanceService';
 import { listpost } from  '../../../services/PosteService';
-import { listproposition, postPropositionPoste } from  '../../../services/PropositionService';
+import { listproposition, postPropositionPoste, postPropositionPosteNew } from  '../../../services/PropositionService';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'
 import { LoadingMetier, TableMetier } from '../../../shared'
 import { Button, Typography } from '@mui/material';
 import ModalEdit from './ModalEdit';
+import ModalCreate from './ModalCreate';
 
 function PropositionPageScreen() {
     const theme = useTheme()
@@ -21,9 +22,16 @@ function PropositionPageScreen() {
     const [propositionexistant, setDataPropositionexistant] = useState(false);
     const [allproposition, setDataallproposition] = useState(false);
     const [open, setOpen] = useState(false);
-
+    const [opencreate, setOpencreate] = useState(false);
+    
     const hangleopenmodal = () => {
         setOpen(true)
+    }
+    const hangleopencreatemodal = () => {
+        setOpencreate(true)
+    }
+    const handleCloseCreate = () => {
+        setOpencreate(false)
     }
     const handleSubmit = async (data) => {
         console.log(data)
@@ -170,7 +178,7 @@ function PropositionPageScreen() {
                         fullWidth
                         style={buttonStyle}
                         size='large'
-                        onClick={hangleopenmodal}>
+                        onClick={hangleopencreatemodal}>
                             crée un metier
                     </Button>
                 </Grid>
@@ -184,6 +192,16 @@ function PropositionPageScreen() {
             onSubmit = {handleSubmit}
             onClose = {handleClose}
         ></ModalEdit>
+        <ModalCreate
+            open={opencreate}
+            listCompetance={dataCompetance}
+            listmetier={dataMetiercode}
+            listposte={propositionexistant}
+            onSubmit = {handleSubmit}
+            onClose = {handleCloseCreate}
+        >
+
+        </ModalCreate>
     </Fragment>
     );
 }
