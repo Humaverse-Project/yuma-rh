@@ -6,6 +6,7 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
     const [newproposition, setNewproposition] = useState(null)
     const [listnommetier, setNewnommetier] = useState([])
     const [ postedata, setPostedata ] = useState([])
+    const [ metierselected, setmetierselected ] = useState(null)
     const formatMetier = listmetier.reduce((list, item) => {
         if (!list.includes(item.code)) {
             list.push(item.code)
@@ -18,16 +19,24 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
         }
         return list
     }, [])
-    console.log(formatCometance)
+    const handleannulerbutton = ()=>{
+        setPostedata([])
+        onClose()
+    }
     const handleSubmit = () => {
-        // onSubmit(newmetier);
+        onSubmit(postedata);
         onClose();
-        console.log(postedata)
+        setPostedata([])
     };
     const handleNewcompetance= () => {
-        // onSubmit(newmetier);
-        postedata.push({ id: Math.floor(Math.random() * 999999999999), competancecode: "", competanceid: 0, niveauCompetance: "0" })
-        setPostedata(postedata)
+        // onSubmit(newmetier);*
+        var competanceid = listCompetance.filter(comp=>{
+            if(comp.code === formatCometance[0]){
+                return true;
+            }
+            return false
+        })[0].id
+        setPostedata(postedata=>[...postedata, { id: Math.floor(Math.random() * 999999999999), competancecode: formatCometance[0], competanceid: competanceid, niveauCompetance: "0", metier_id: metierselected, type: "new" }] )
     };
     const selectMetierCode = (e, value) => {
         var format = []
@@ -59,16 +68,30 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
                 return false
             })
             if(metierid.length > 0){
-                let poste = listposte.filter(poste=>{
-                    if(poste.metier.id === metierid[0].id) return { id: poste.id, competancecode: poste.competance.code, competanceid: poste.competance.id, niveauCompetance: poste.niveauCompetance.toString() }
+                let postedatametier = listposte.filter(poste=>{
+                    if(poste.metier.id === metierid[0].id) return true
                     return false
                 })
-                setPostedata(poste)
+                postedatametier = postedatametier.map((poste) => 
+                { 
+                    return {
+                        id: poste.id,
+                        competancecode: poste.competance.code,
+                        competanceid: poste.competance.id,
+                        niveauCompetance: poste.niveauCompetance.toString(),
+                        metier_id: metierid[0].id,
+                        type: "update"
+                    }
+                })
+                setPostedata(postedatametier)
+                setmetierselected(metierid[0].id)
             } else {
                 setPostedata([])
+                setmetierselected(null)
             }
         } else {
             setPostedata([])
+            setmetierselected(null)
         }
     }
     return (
@@ -128,7 +151,19 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
                                             width: '70%',
                                         }}
                                         disablePortal
+                                        readOnly={item.type === "update"}
                                         options={formatCometance}
+                                        onChange={(e, value)=>{
+                                            if (value){
+                                                item.competancecode = value
+                                                item.competanceid = listCompetance.filter(comp=>{
+                                                    if(comp.code === value){
+                                                        return true;
+                                                    }
+                                                    return false
+                                                })[0].id
+                                            }
+                                        }}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
@@ -146,6 +181,9 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
                                         }}
                                         disablePortal
                                         options={["0", "1", "2", "3", "4", "5"]}
+                                        onChange={(e, value)=>{
+                                            item.niveauCompetance = value
+                                        }}
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
@@ -165,9 +203,9 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
                 </form>
             </DialogContent>
             <DialogActions sx={{ p: '1.25rem' }}>
-                <Button onClick={onClose}>Annuler</Button>
+                <Button onClick={handleannulerbutton}>Annuler</Button>
                 <Button color="secondary" onClick={handleSubmit} variant="contained">
-                    Crée le competance
+                    Mettre le metier
                 </Button>
             </DialogActions>
         </Dialog>
