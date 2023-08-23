@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { listmetier } from  '../../../services/MetierService';
 import { listcompetance } from  '../../../services/CompetanceService';
 import { listpost } from  '../../../services/PosteService';
-import { listproposition, postPropositionPoste } from  '../../../services/PropositionService';
+import { listproposition, postPropositionPoste, postUpdatePropositionPoste } from  '../../../services/PropositionService';
 import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid'
@@ -31,18 +31,28 @@ function PropositionPageScreen() {
     const [opencreate, setOpencreate] = useState(false);
     const [openeditproposale, setOpeneditproposale] = useState(false);
     const [opendetailproposale, setOpendetailproposale] = useState(false);
-    const [activemodificationproposal, setActivemodificationproposal] = useState({});
+    const [activemetieractiveproposal, setActivemetieractiveproposal] = useState({});
+    const [activecompetanceactiveproposal, setActivecompetanceactiveproposal] = useState([]);
     
     const hangleopenmodal = () => {
         setOpen(true)
     }
-    const hangleopeneditproposalmodal = (id) => {
+    const hangleopeneditproposalmodal = (id, modal) => {
         const mydataproposaltoedit = originalproposition.filter( (proposal) =>{
             if (proposal.id === id) return true
             return false
         })
-        setActivemodificationproposal(mydataproposaltoedit[0])
-        setOpeneditproposale(true)
+        var listproposition = mydataproposaltoedit[0].propositionPostes.map(propos=>{
+            return {
+                id: propos.id, competancecode: propos.competance.code, competanceid: propos.competance.id, niveauCompetance: propos.niveauCompetance.toString(), metier_id: propos.metier.id, type: propos.type,
+                id_proposition: mydataproposaltoedit[0].id, type2: "update"
+            }
+        })
+        setActivecompetanceactiveproposal(listproposition)
+        setActivemetieractiveproposal(mydataproposaltoedit[0].propositionPostes[0].metier)
+        if(modal == "modification"){
+            setOpeneditproposale(true)
+        }
     }
     const hangleopencreatemodal = () => {
         setOpencreate(true)
@@ -51,10 +61,23 @@ function PropositionPageScreen() {
         setOpencreate(false)
     }
     const handleCloseEditProposal = () => {
-        setOpendetailproposale(false)
+        setOpeneditproposale(false)
     }
-    const handleSubmitProposal = (data) => {
-        console.log(data)
+    const handleSubmitEditProposal = async (data) => {
+        setLoading(true);
+        try {
+            const dataproposition = await postUpdatePropositionPoste(data)
+            const reponsemetie = await dataproposition;
+            const datapropositionreload = await listproposition()
+            const reponseproposition = await datapropositionreload;
+            mapingdata(reponseproposition)
+            setLoading(false);
+        }
+        catch (error) {
+            console.error('Une erreur s\'est produite :', error);
+            setError("Une erreur s'est produite lors de l'appele serveur");
+            setLoading(false);
+        }
     }
     const mapingdata = (datatomap) =>{
         const datatoformat = datatomap.map(data=>{
@@ -79,12 +102,13 @@ function PropositionPageScreen() {
         setDataallproposition(data2)
     }
     const handleSubmit = async (data) => {
-        console.log(data)
         setLoading(true);
         try {
             const dataproposition = await postPropositionPoste(data)
             const reponsemetie = await dataproposition;
-            mapingdata(reponsemetie)
+            const datapropositionreload = await listproposition()
+            const reponseproposition = await datapropositionreload;
+            mapingdata(reponseproposition)
             setLoading(false);
         }
         catch (error) {
@@ -143,7 +167,7 @@ function PropositionPageScreen() {
                 (<Link>modifier</Link>),
             muiTableBodyCellProps: ({ cell }) => ({
                 onClick: () => {
-                    hangleopeneditproposalmodal(cell.getValue())
+                    hangleopeneditproposalmodal(cell.getValue(), "modification")
                 },
             }),
           },
@@ -370,9 +394,11 @@ function PropositionPageScreen() {
             listCompetance={dataCompetance}
             listmetier={dataMetiercode}
             listposte={propositionexistant}
-            onSubmit = {handleSubmitProposal}
+            onSubmit = {handleSubmitEditProposal}
             onClose = {handleCloseEditProposal}
-            proposalData = {activemodificationproposal}
+            metieractive = {activemetieractiveproposal}
+            postedata = {activecompetanceactiveproposal}
+            setPostedata = {setActivecompetanceactiveproposal}
         >
         </ModalEditProposal>
     </Fragment>

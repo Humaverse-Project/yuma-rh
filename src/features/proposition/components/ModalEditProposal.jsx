@@ -1,13 +1,13 @@
 import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Stack, TextField } from "@mui/material"
-import { useState } from "react"
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
-function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubmit, onClose, proposalData}) {
-    console.log(proposalData)
-    const [newproposition, setNewproposition] = useState(null)
-    const [listnommetier, setNewnommetier] = useState([])
-    const [ postedata, setPostedata ] = useState([])
-    const [ metierselected, setmetierselected ] = useState(null)
+function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubmit, onClose, metieractive, postedata, setPostedata }) {
+    const listnommetier = listmetier.reduce((list, item) => {
+        if (!list.includes(item.nom)) {
+            list.push(item.nom)
+        }
+        return list
+    }, [])
     const formatMetier = listmetier.reduce((list, item) => {
         if (!list.includes(item.code)) {
             list.push(item.code)
@@ -21,13 +21,11 @@ function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubm
         return list
     }, [])
     const handleannulerbutton = ()=>{
-        setPostedata([])
         onClose()
     }
     const handleSubmit = () => {
         onSubmit(postedata);
         onClose();
-        setPostedata([])
     };
     const handleNewcompetance= () => {
         // onSubmit(newmetier);*
@@ -37,67 +35,12 @@ function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubm
             }
             return false
         })[0].id
-        setPostedata(postedata=>[...postedata, { id: Math.floor(Math.random() * 999999999999), competancecode: formatCometance[0], competanceid: competanceid, niveauCompetance: "0", metier_id: metierselected, type: "new" }] )
+        setPostedata(postedata=>[...postedata, { id: Math.floor(Math.random() * 999999999999), competancecode: formatCometance[0], competanceid: competanceid, niveauCompetance: "0", metier_id: metieractive.id, type: "new", id_proposition: postedata[0].id_proposition, type2: "new" }] )
     };
-    const selectMetierCode = (e, value) => {
-        var format = []
-        if (value !== null){
-            setNewproposition({ ...newproposition, metier_code: value })
-            format = listmetier.reduce((list, item) => {
-                if (!list.includes(item.nom)) {
-                    if (item.code === value){
-                        list.push(item.nom)
-                    }
-                }
-                return list
-            }, [])
-        } else {
-            format = listmetier.reduce((list, item) => {
-                if (!list.includes(item.nom)) {
-                    list.push(item.nom)
-                }
-                return list
-            }, [])
-        }
-        setNewnommetier(format)
-    }
-    const selectMetierNom = (e, value) => {
-        if (value !== null){
-            setNewproposition({ ...newproposition, metier_nom: value })
-            let metierid = listmetier.filter(metier=>{
-                if(metier.nom === value && metier.code === newproposition.metier_code) return true
-                return false
-            })
-            if(metierid.length > 0){
-                let postedatametier = listposte.filter(poste=>{
-                    if(poste.metier.id === metierid[0].id) return true
-                    return false
-                })
-                postedatametier = postedatametier.map((poste) => 
-                { 
-                    return {
-                        id: poste.id,
-                        competancecode: poste.competance.code,
-                        competanceid: poste.competance.id,
-                        niveauCompetance: poste.niveauCompetance.toString(),
-                        metier_id: metierid[0].id,
-                        type: "update"
-                    }
-                })
-                setPostedata(postedatametier)
-                setmetierselected(metierid[0].id)
-            } else {
-                setPostedata([])
-                setmetierselected(null)
-            }
-        } else {
-            setPostedata([])
-            setmetierselected(null)
-        }
-    }
+    
     return (
         <Dialog open={open} maxWidth={'md'}>
-            <DialogTitle textAlign="center">Proposition update métier</DialogTitle>
+            <DialogTitle textAlign="center">Moditication Proposition métier</DialogTitle>
             <DialogContent  dividers={true}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack
@@ -110,9 +53,11 @@ function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubm
                             sx={{
                                 width: '100%',
                             }}
+                            value={metieractive.code}
                             disablePortal
+                            readOnly
+                            disabled
                             options={formatMetier}
-                            onChange={selectMetierCode}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -128,9 +73,11 @@ function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubm
                             sx={{
                                 width: '100%',
                             }}
+                            value={metieractive.nom}
                             disablePortal
+                            readOnly
+                            disabled
                             options={listnommetier}
-                            onChange={selectMetierNom}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -206,7 +153,7 @@ function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubm
             <DialogActions sx={{ p: '1.25rem' }}>
                 <Button onClick={handleannulerbutton}>Annuler</Button>
                 <Button color="secondary" onClick={handleSubmit} variant="contained">
-                    Envoyer la proposition
+                    Enregistrer les modification
                 </Button>
             </DialogActions>
         </Dialog>
