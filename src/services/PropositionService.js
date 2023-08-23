@@ -38,14 +38,20 @@ export async function postPropositionPoste(formdata) {
     return await response.json();
 }
 
-export async function updateProposition(formdata) {
-    const url = `${base_url}/proposition/${formdata.id}/edit`;
-
+export async function postUpdatePropositionPoste(formdata) {
+    const url = `${base_url}/proposition/update`;
     const body = new URLSearchParams();
-    body.append('metier_id', formdata.metier_id);
-    body.append('competance_id', formdata.competance_id);
-    body.append('niveau_competance', formdata.niveau_competance);
-
+    for (let index = 0; index < formdata.length; index++) {
+        if(formdata[index].competanceid !== null){
+            body.append('competanceid[]', formdata[index].competanceid);
+            body.append('id[]', formdata[index].id);
+            body.append('metier_id[]', formdata[index].metier_id);
+            body.append('id_proposition[]', formdata[index].id_proposition);
+            body.append('niveauCompetance[]', formdata[index].niveauCompetance);
+            body.append('type[]', formdata[index].type);
+            body.append('type2[]', formdata[index].type2);
+        }
+    }
     const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -60,11 +66,13 @@ export async function updateProposition(formdata) {
     return await response.json();
 }
 
-export async function deletProposition(id) {
-    const url = `${base_url}/proposition/${id}`;
+export async function sendVoteProposition(data) {
+    const url = `${base_url}/proposition/vote`;
 
     const body = new URLSearchParams();
-    body.append('id', id);
+    body.append('id', data.id);
+    body.append('value', data.value);
+    body.append('vote_id', data.vote_id);
 
     const response = await fetch(url, {
         method: 'POST',
