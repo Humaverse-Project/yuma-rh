@@ -40,7 +40,7 @@ function ModalEditProposal({ open, listCompetance, listmetier, listposte, onSubm
     
     return (
         <Dialog open={open} maxWidth={'md'}>
-            <DialogTitle textAlign="center">Moditication Proposition métier</DialogTitle>
+            <DialogTitle textAlign="center" color={"black.main"}>Moditication Proposition métier</DialogTitle>
             <DialogContent  dividers={true}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack

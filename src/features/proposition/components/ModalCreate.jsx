@@ -29,7 +29,6 @@ function ModalCreate({ open, listCompetance, listmetier, listposte, onSubmit, on
         setPostedata([])
     };
     const handleNewcompetance= () => {
-        // onSubmit(newmetier);*
         var competanceid = listCompetance.filter(comp=>{
             if(comp.code === formatCometance[0]){
                 return true;
@@ -83,7 +82,7 @@ function ModalCreate({ open, listCompetance, listmetier, listposte, onSubmit, on
     }
     return (
         <Dialog open={open} maxWidth={'md'}>
-            <DialogTitle textAlign="center">Proposition création métier</DialogTitle>
+            <DialogTitle textAlign="center" color={"black.main"}>Proposition création métier</DialogTitle>
             <DialogContent  dividers={true}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack

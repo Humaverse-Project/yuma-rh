@@ -29,7 +29,6 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
         setPostedata([])
     };
     const handleNewcompetance= () => {
-        // onSubmit(newmetier);*
         var competanceid = listCompetance.filter(comp=>{
             if(comp.code === formatCometance[0]){
                 return true;
@@ -96,7 +95,7 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
     }
     return (
         <Dialog open={open} maxWidth={'md'}>
-            <DialogTitle textAlign="center">Proposition update métier</DialogTitle>
+            <DialogTitle textAlign="center" color={"black.main"}>Proposition update métier</DialogTitle>
             <DialogContent  dividers={true}>
                 <form onSubmit={(e) => e.preventDefault()}>
                     <Stack

@@ -66,33 +66,13 @@ export async function postUpdatePropositionPoste(formdata) {
     return await response.json();
 }
 
-export async function updateProposition(formdata) {
-    const url = `${base_url}/proposition/${formdata.id}/edit`;
+export async function sendVoteProposition(data) {
+    const url = `${base_url}/proposition/vote`;
 
     const body = new URLSearchParams();
-    body.append('metier_id', formdata.metier_id);
-    body.append('competance_id', formdata.competance_id);
-    body.append('niveau_competance', formdata.niveau_competance);
-
-    const response = await fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: body.toString(),
-    });
-
-    if (!response.ok) {
-      throw new Error('erreur backend');
-    }
-    return await response.json();
-}
-
-export async function deletProposition(id) {
-    const url = `${base_url}/proposition/${id}`;
-
-    const body = new URLSearchParams();
-    body.append('id', id);
+    body.append('id', data.id);
+    body.append('value', data.value);
+    body.append('vote_id', data.vote_id);
 
     const response = await fetch(url, {
         method: 'POST',
