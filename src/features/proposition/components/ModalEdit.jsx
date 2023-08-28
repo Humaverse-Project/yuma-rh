@@ -24,7 +24,7 @@ function ModalEdit({ open, listCompetance, listmetier, listposte, onSubmit, onCl
         onClose()
     }
     const handleSubmit = () => {
-        onSubmit(postedata);
+        onSubmit(postedata, newproposition);
         onClose();
         setPostedata([])
     };
