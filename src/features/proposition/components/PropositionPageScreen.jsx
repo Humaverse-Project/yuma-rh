@@ -129,7 +129,9 @@ function PropositionPageScreen() {
             setLoading(false);
         }
     }, [setLoading, mapingdata]);
-    const handleSubmit = async (data) => {
+    const handleSubmit = async (data, metier) => {
+        console.log(data, metier)
+        data = data.map(x=> { return {...x, metier_id: metier.metier_id}})
         setLoading(true);
         try {
             const dataproposition = await postPropositionPoste(data)
@@ -461,7 +463,6 @@ function PropositionPageScreen() {
             open={opencreate}
             listCompetance={dataCompetance}
             listmetier={dataMetiercode}
-            listposte={propositionexistant}
             onSubmit = {handleSubmit}
             onClose = {()=>setOpencreate(false)}
         >

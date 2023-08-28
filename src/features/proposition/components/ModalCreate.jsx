@@ -2,7 +2,7 @@ import { Autocomplete, Box, Button, Dialog, DialogActions, DialogContent, Dialog
 import { useState } from "react"
 import AddBoxIcon from '@mui/icons-material/AddBox';
 
-function ModalCreate({ open, listCompetance, listmetier, listposte, onSubmit, onClose}) {
+function ModalCreate({ open, listCompetance, listmetier, onSubmit, onClose}) {
     const [newproposition, setNewproposition] = useState(null)
     const [listnommetier, setNewnommetier] = useState([])
     const [ postedata, setPostedata ] = useState([])
@@ -24,7 +24,7 @@ function ModalCreate({ open, listCompetance, listmetier, listposte, onSubmit, on
         onClose()
     }
     const handleSubmit = () => {
-        onSubmit(postedata);
+        onSubmit(postedata, newproposition);
         onClose();
         setPostedata([])
     };
