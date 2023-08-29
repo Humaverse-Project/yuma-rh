@@ -1,6 +1,4 @@
 //import SCREENS
-
-import StoreScreen from './store/StoreScreen'
 import HomeScreen from './home/components/HomeScreen'
 import NotFoundScreen from './notFound/NotFoundScreen'
 import PostForm from './parametre/components/PostForm'
@@ -18,8 +16,11 @@ import MetierDetailScreen from './nomenclature/components/MetierDetailScreen'
 import CompetanceScreen from './nomenclature/components/CompetanceScreen'
 import CompetanceDetailScreen from './nomenclature/components/CompetanceDetailScreen'
 import SearchCompetanceScreen from './nomenclature/components/SearchCompetanceScreen'
-import PropositionHomeScreen from './proposition/components/PropositionHomeScreen'
-import PropositionPageScreen from './proposition/components/PropositionPageScreen'
+import PropositionHomeScreen from './propositionmetier/components/PropositionHomeScreen'
+import PropositionPageScreen from './propositionmetier/components/PropositionPageScreen'
+import FormationHomeScreen from './formationettest/components/FormationHomeScreen'
+import GestionFormationTestScreen from './formationettest/components/GestionFormationTestScreen'
+import StoreFormationetTest from './formationettest/components/StoreFormationetTest'
 //import COMPONENTS REUSABLES
 
 export {
@@ -34,7 +35,6 @@ export {
     ParametreScreen,
     MetierForm,
     PostForm,
-    StoreScreen,
     PlaningFormationScreen,
     NomenclatureHomeScreen,
     MetierScreen,
@@ -43,5 +43,8 @@ export {
     CompetanceDetailScreen,
     SearchCompetanceScreen,
     PropositionHomeScreen,
-    PropositionPageScreen
+    PropositionPageScreen,
+    FormationHomeScreen,
+    GestionFormationTestScreen,
+    StoreFormationetTest
 }

@@ -9,7 +9,7 @@ import {
     ManageCompetence,
     ParametreScreen,
     PostForm,
-    StoreScreen,
+    FormationHomeScreen,
     PlaningFormationScreen,
     NomenclatureHomeScreen,
     MetierDetailScreen,
@@ -18,7 +18,9 @@ import {
     CompetanceDetailScreen,
     SearchCompetanceScreen,
     PropositionHomeScreen,
-    PropositionPageScreen
+    PropositionPageScreen,
+    GestionFormationTestScreen,
+    StoreFormationetTest
 } from './features'
 
 function Navigation() {
@@ -72,7 +74,7 @@ function Navigation() {
         {
             id: 8,
             path: '/store',
-            components: <StoreScreen />,
+            components: <FormationHomeScreen />,
         },
         {
           id: 9,
@@ -118,6 +120,16 @@ function Navigation() {
             id: 17,
             path: '/propositionpage',
             components: <PropositionPageScreen/>
+        },
+        {
+            id: 18,
+            path: '/gestionformation',
+            components: <GestionFormationTestScreen/>
+        },
+        {
+            id: 19,
+            path: '/storeplus',
+            components: <StoreFormationetTest/>
         }
     ]
 
