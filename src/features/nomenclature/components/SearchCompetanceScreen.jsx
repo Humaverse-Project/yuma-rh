@@ -1,41 +1,26 @@
 import HeaderInScreen from '../../header/HeaderInScreen'
-import React, { Fragment, useState, useMemo, useEffect, useRef } from 'react';
-import { searchpostbycompetancecode, listpost } from  '../../../services/PosteService';
+import React, { Fragment, useState, useEffect, useRef } from 'react';
+import { listpost } from  '../../../services/PosteService';
 import { useTheme } from '@mui/material/styles'
 import Grid from '@mui/material/Grid';
-import { Link } from 'react-router-dom';
-import { LoadingMetier, Column, DynamicHeadNav, Row, Text } from '../../../shared'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
+import { LoadingMetier, Column, Text } from '../../../shared'
 import ForceGraph2D from "react-force-graph-2d";
 import { NavLink } from 'react-router-dom';
 import {
   Box,
-  Card,
-  CardHeader,
-  CardContent,
-  Typography,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   TextField,
   InputAdornment,
-  CardActions,
 } from '@mui/material';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined'
 function SearchCompetanceScreen() {
     const theme = useTheme()
-    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);
     const [ codesaisi, setCodeSaisi ] = useState("")
     const [ graphData, setMydatatoMap ] = useState({nodes: [], links: []});
     const [initialCenter, setInitialCenter] = useState(true);
     const [collapsedClusters, setCollapsedClusters] = useState([]);
-    const [hiddenClusters, setHiddenClusters] = useState([]);
     const forceRef = useRef();
 
 
@@ -280,11 +265,6 @@ function SearchCompetanceScreen() {
                       if (
                         collapsedClusters.includes(link.source.id) &&
                         !link.target.isClusterNode
-                      ) {
-                        return false;
-                      } else if (
-                        hiddenClusters.includes(link.source.id) ||
-                        hiddenClusters.includes(link.target.id)
                       ) {
                         return false;
                       } else return true;
