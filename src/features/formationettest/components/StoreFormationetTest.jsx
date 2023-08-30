@@ -54,7 +54,6 @@ function StoreFormationetTest() {
     }, [setLoading, setError]);
 
     const HandleSearch = (e)=>{
-        console.log(e.target.value)
         let formation = formationsinitial.filter(formation=>{
             if(formation.genre.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1 || formation.nom.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1
             || formation.type.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1  || formation.categorie.toLowerCase().indexOf(e.target.value.toLowerCase()) !== -1
