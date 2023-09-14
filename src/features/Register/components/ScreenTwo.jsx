@@ -1,10 +1,18 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postentreprise } from '../../../services/CompteService';
-import FormLabel from '@mui/material/FormLabel'
-import RadioGroup from '@mui/material/RadioGroup'
-import Radio from '@mui/material/Radio'
-import { Alert, Snackbar, Grid, Card, Button, Container, Typography, InputLabel, FormControl, OutlinedInput, FormControlLabel } from '@mui/material'
+import { 
+    Alert,
+    Snackbar,
+    Grid,
+    Card,
+    Button,
+    Container,
+    Typography,
+    InputLabel,
+    FormControl,
+    OutlinedInput
+} from '@mui/material'
 
 export default function ScreenTwo({ formData, setScreen, setFormData }) {
     const [showError, setShowError] = useState(false);
@@ -59,74 +67,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                     >
                         Formulaire Inscription YUMA utilisateur RH
                     </Typography>
-                    <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        sx={{
-                            display: 'flex',
-                        }}
-                    >
-                        <FormControl
-                            variant="outlined"
-                            sx={{
-                                m: 2,
-                                width: '40ch',
-                            }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                Effectif de l'entreprise
-                            </InputLabel>
-                            <OutlinedInput
-                                name="effectif"
-                                value={formData.effectif}
-                                onChange={handleChange}
-                                type="number"
-                                label="Effectif de l'entreprise"
-                                inputProps={{
-                                    min: 0,
-                                    step: 1,
-                                }}
-                            />
-                        </FormControl>
                     
-                        <FormLabel
-                            id="demo-controlled-radio-buttons-group"
-                            sx={{
-                                m: 2,
-                                width: '15ch',
-                            }}
-                        >
-                            Etablissement
-                        </FormLabel>
-                        <FormControl>
-                            <RadioGroup
-                                aria-labelledby="demo-controlled-radio-buttons-group"
-                                name="controlled-radio-buttons-group"
-                            >
-                                <FormControlLabel
-                                    value="1"
-                                    control={
-                                        <Radio
-                                            checked = {(formData.etablissement === "1")}
-                                            onChange = {(e)=>{ if(e.target.checked){setFormData({ ...formData, etablissement: '1' })} }}
-                                        />
-                                    }
-                                    label="principal"
-                                />
-                                <FormControlLabel
-                                    value="2"
-                                    control={
-                                        <Radio
-                                            checked = {(formData.etablissement === "2")}
-                                            onChange = {(e)=>{ if(e.target.checked){setFormData({ ...formData, etablissement: '2' })} }}
-                                        />
-                                    }
-                                    label="secondaire"
-                                />
-                            </RadioGroup>
-                        </FormControl>
-                    </Grid>
                     <Grid
                         item
                         xs={12}
