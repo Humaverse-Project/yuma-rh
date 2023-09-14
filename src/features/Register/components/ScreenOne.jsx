@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
-import { getInfoSirret, getNaflist } from './api';
+import { getInfoSirret, getNaflist } from '../../../services/SiretService';
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { Snackbar, Alert } from '@mui/material';
