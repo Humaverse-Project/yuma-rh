@@ -10,7 +10,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { getInfoSirret, getNaflist } from '../../../services/SiretService';
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-import { Snackbar, Alert } from '@mui/material';
+import { Snackbar, Alert, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { Link } from 'react-router-dom'
 
 export default function ScreenOne({ setScreen, setFormData, formData }) {
@@ -102,7 +102,7 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                             mb: 2
                         }}
                     >
-                        Formulaire Inscription YUMA utilisateur RH
+                        Formulaire Inscription YUMA Entreprise
                     </Typography>
                     <Grid
                         item
@@ -330,7 +330,88 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                             />
                         </FormControl>
                     </Grid>
-                    
+                    <Grid
+                        item
+                        xs={12}
+                        sm={6}
+                        sx={{
+                            display: 'flex',
+                        }}
+                    >
+                        <FormControl
+                            variant="outlined"
+                            sx={{
+                                m: 2,
+                                width: '40ch',
+                            }}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">
+                                Effectif de l'entreprise
+                            </InputLabel>
+                            <OutlinedInput
+                                name="effectif"
+                                value={formData.effectif}
+                                onChange={handleChange}
+                                type="number"
+                                label="Effectif de l'entreprise"
+                                inputProps={{
+                                    min: 0,
+                                    step: 1,
+                                }}
+                            />
+                        </FormControl>
+                        <FormControl
+                            variant="inlined"
+                            sx={{
+                                m: 2,
+                                width: '40ch',
+                            }}>
+                            <Grid
+                                container spacing={2}
+                            >
+                                <Grid item xs={6}>
+                                    <FormLabel
+                                        id="demo-controlled-radio-buttons-group"
+                                        sx={{
+                                            m: 2,
+                                            width: '5ch',
+                                        }}
+                                    >
+                                        Etablissement
+                                    </FormLabel>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <RadioGroup
+                                        aria-labelledby="demo-controlled-radio-buttons-group"
+                                        name="controlled-radio-buttons-group"
+                                    >
+                                        <FormControlLabel
+                                            value="1"
+                                            control={
+                                                <Radio
+                                                    checked = {(formData.etablissement === "1")}
+                                                    onChange = {(e)=>{ if(e.target.checked){setFormData({ ...formData, etablissement: '1' })} }}
+                                                />
+                                            }
+                                            label="principal"
+                                        />
+                                        <FormControlLabel
+                                            value="2"
+                                            control={
+                                                <Radio
+                                                    checked = {(formData.etablissement === "2")}
+                                                    onChange = {(e)=>{ if(e.target.checked){setFormData({ ...formData, etablissement: '2' })} }}
+                                                />
+                                            }
+                                            label="secondaire"
+                                        />
+                                    </RadioGroup>
+                                </Grid>
+                            </Grid>
+                            
+                            
+                        </FormControl>
+                    </Grid>
                     <Grid item xs={6} sm={3}>
                         <Link to={'/'}>
                             <Button
