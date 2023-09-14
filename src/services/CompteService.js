@@ -2,14 +2,34 @@ import { base_url } from './BaseUrl'
 
 
 export async function postentreprise(formdata) {
-    const url = `${base_url}/competance/new`;
-
+    const url = `${base_url}/entreprise/new`;
+    const listinp = [
+        "siret",
+        "naf",
+        "nom_entreprise",
+        "url",
+        'rue_numero',
+        'code_postal',
+        'ville',
+        'pays',
+        'telephone',
+        'email',
+        'effectif',
+        'nomrh',
+        'prenomrh',
+        'fonctionrh',
+        'servicerh',
+        'telephonerh',
+        'emailrh',
+        'password',
+        "password2",
+        'etablissement'
+    ]
     const body = new URLSearchParams();
-    body.append('code', formdata.code);
-    body.append('class', formdata.class);
-    body.append('description_c', formdata.description_c);
-    body.append('description_l', formdata.description_l);
-
+    for (let index = 0; index < listinp.length; index++) {
+        const element = listinp[index];
+        body.append(element, formdata[element]);
+    }
     const response = await fetch(url, {
         method: 'POST',
         headers: {

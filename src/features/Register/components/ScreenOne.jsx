@@ -11,24 +11,25 @@ import { getInfoSirret, getNaflist } from '../../../services/SiretService';
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
 import { Snackbar, Alert } from '@mui/material';
+import { Link } from 'react-router-dom'
 
-export default function ScreenOne({ setScreen, setFormData }) {
+export default function ScreenOne({ setScreen, setFormData, formData }) {
     const select = [
-        { label: 'France' },
-        { label: 'Allemagne' },
-        { label: 'Espagne' },
-        { label: 'Italie' },
-        { label: 'Portugal' },
-        { label: 'Belgique' },
-        { label: 'Suisse' },
-        { label: 'Luxembourg' },
-        { label: 'Royaume-Uni' },
-        { label: 'Autre' },
+        'France',
+        'Allemagne',
+        'Espagne',
+        'Italie',
+        'Portugal',
+        'Belgique',
+        'Suisse',
+        'Luxembourg',
+        'Royaume-Uni',
+        'Autre',
     ]
-    const [naflist, setNaflist] = useState(null);
+    const [naflist, setNaflist] = useState([]);
     useEffect(() => {
         getNaflist("0").then((data) => {
-            setNaflist(data.results.map((data) => {return {'label': data.code_naf}}))
+            setNaflist(data.results.map((data) => {return data.code_naf}))
         }).catch((error) => {
             console.error('API error:', error.message);
             setShowError(true);
@@ -42,34 +43,24 @@ export default function ScreenOne({ setScreen, setFormData }) {
         }
         setShowError(false);
     };
-
-    const [formData, setLocalFormData] = useState({
-        siret: '',
-        nom_entreprise: '',
-        code_postal:'',
-        rue_numero: '',
-        ville: ''
-    });
     const handleSubmit = (event) => {
         event.preventDefault();
         setScreen(2);
     };
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setLocalFormData({ ...formData, [name]: value });
+        setFormData({ ...formData, [name]: value });
         if(name === "siret" && value.length === 14){
             console.log("envois")
             getInfoSirret(value)
             .then((data) => {
-                console.log(data)
-                setLocalFormData({
+                setFormData({
                     siret: value,
                     nom_entreprise: data.etablissement.unite_legale.denomination,
                     code_postal: data.etablissement.code_postal,
                     rue_numero: data.etablissement.numero_voie+" "+data.etablissement.libelle_voie,
                     ville: data.etablissement.libelle_commune
                 });
-                setFormData(formData);
                 
             })
             .catch((error) => {
@@ -79,7 +70,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
         }
         if(name === "naf"){
             getNaflist(value).then((data) => {
-                setNaflist(data.results.map((data) => {return {'label': data.code_naf}}))
+                setNaflist(data.results.map((data) => {return data.code_naf}))
             }).catch((error) => {
                 console.error('API error:', error.message);
                 setShowError(true);
@@ -97,7 +88,6 @@ export default function ScreenOne({ setScreen, setFormData }) {
             <form>
                 <Container
                     component="main"
-                    minWidth="xs"
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -112,7 +102,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                             mb: 2
                         }}
                     >
-                        Formulaire Inscription YUMA utilisateur RH page 1
+                        Formulaire Inscription YUMA utilisateur RH
                     </Typography>
                     <Grid
                         item
@@ -133,6 +123,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 Siret
                             </InputLabel>
                             <OutlinedInput
+                                value={formData.siret}
                                 name="siret"
                                 type="number"
                                 label="Nom"
@@ -145,7 +136,9 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 width: '40ch',
                             }}
                             disablePortal
+                            value={formData.naf}
                             options={naflist}
+                            onChange={(e, value)=>{setFormData({ ...formData, naf: value });}}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -179,6 +172,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 name="nom_entreprise"
                                 type="text"
                                 value={formData.nom_entreprise}
+                                onChange={handleChange}
                                 label=" Nom de l'entreprise"
                             />
                         </FormControl>
@@ -194,6 +188,8 @@ export default function ScreenOne({ setScreen, setFormData }) {
                             </InputLabel>
                             <OutlinedInput
                                 name="url"
+                                value={formData.url}
+                                onChange={handleChange}
                                 type="url"
                                 label="URL"
                             />
@@ -220,6 +216,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                             <OutlinedInput
                                 name="rue_numero"
                                 value={formData.rue_numero}
+                                onChange={handleChange}
                                 type="text"
                                 label="Rue et Numero"
                             />
@@ -238,6 +235,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 name="password"
                                 type="text"
                                 value={formData.code_postal}
+                                onChange={handleChange}
                                 label="Code Postal"
                             />
                         </FormControl>
@@ -264,6 +262,7 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 name="password"
                                 type="text"
                                 value={formData.ville}
+                                onChange={handleChange}
                                 label="Nom"
                             />
                         </FormControl>
@@ -273,6 +272,8 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 width: '40ch',
                             }}
                             disablePortal
+                            value={formData.pays}
+                            onChange={(e, value)=>{setFormData({ ...formData, pays: value });}}
                             options={select || []}
                             renderInput={(params) => (
                                 <TextField
@@ -303,7 +304,9 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 Télephone
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                onChange={handleChange}
+                                value={formData.telephone}
+                                name="telephone"
                                 type="text"
                                 label="Télephone"
                             />
@@ -319,7 +322,9 @@ export default function ScreenOne({ setScreen, setFormData }) {
                                 Email
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                name="email"
+                                onChange={handleChange}
+                                value={formData.email}
                                 type="email"
                                 label="Email"
                             />
@@ -327,6 +332,19 @@ export default function ScreenOne({ setScreen, setFormData }) {
                     </Grid>
                     
                     <Grid item xs={6} sm={3}>
+                        <Link to={'/'}>
+                            <Button
+                                variant="outlined"
+                                sx={{
+                                    m: 2,
+                                    width: '20ch',
+                                    height: '50px',
+                                }}
+                                color='secondary'
+                            >
+                                Retour
+                            </Button>
+                        </Link>
                         <Button
                             variant="contained"
                             sx={{

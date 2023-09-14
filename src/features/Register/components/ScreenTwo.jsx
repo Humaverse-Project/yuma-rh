@@ -1,24 +1,38 @@
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Card from '@mui/material/Card'
-import Button from '@mui/material/Button'
-import { NavLink } from 'react-router-dom'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import InputLabel from '@mui/material/InputLabel'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
-import FormControlLabel from '@mui/material/FormControlLabel'
-
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { postentreprise } from '../../../services/CompteService';
 import FormLabel from '@mui/material/FormLabel'
 import RadioGroup from '@mui/material/RadioGroup'
 import Radio from '@mui/material/Radio'
-// logo
-import qrcodeImage from '../../../assets/images/qrcode.png'
+import { Alert, Snackbar, Grid, Card, Button, Container, Typography, InputLabel, FormControl, OutlinedInput, FormControlLabel } from '@mui/material'
 
-export default function ScreenTwo({ formData }) {
-    console.log(formData)
-    
+export default function ScreenTwo({ formData, setScreen, setFormData }) {
+    const [showError, setShowError] = useState(false);
+    const navigate = useNavigate();
+    const handlesubmit = ()=>{
+        if(formData.password !== formData.password2){
+            setShowError(true)
+            return false
+        }
+        postentreprise(formData)
+        .then((data) => {
+            navigate('/home');
+        })
+        .catch((error) => {
+            console.error('bakend error:', error.message);
+        });
+    }
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleCloseAlert = (event, reason) => {
+        if (reason === 'clickaway') {
+        return;
+        }
+        setShowError(false);
+    };
     return (
         <Card
             sx={{
@@ -43,7 +57,7 @@ export default function ScreenTwo({ formData }) {
                             mb: 2
                         }}
                     >
-                        Formulaire Inscription YUMA utilisateur RH page 2
+                        Formulaire Inscription YUMA utilisateur RH
                     </Typography>
                     <Grid
                         item
@@ -51,80 +65,72 @@ export default function ScreenTwo({ formData }) {
                         sm={6}
                         sx={{
                             display: 'flex',
-                            marginRight: '5px',
                         }}
                     >
-                        <Grid
-                            item
-                            xs={6}
-                            sm={6}
+                        <FormControl
+                            variant="outlined"
                             sx={{
-                                display: 'flex',
-                                marginRight: '5px',
-                            }}
-                        >  
-                            <FormControl
-                                variant="outlined"
-                                sx={{
-                                    m: 2
-                                }}
-                            >
-                             
-                                <InputLabel htmlFor="outlined-adornment-password">
-                                    Effectif de l'entreprise
-                                </InputLabel>
-                                <OutlinedInput
-                                    name="password"
-                                    type="number"
-                                    label="Effectif de l'entreprise"
-                                    inputProps={{
-                                        min: 0,
-                                        step: 1,
-                                    }}
-                                />
-                            </FormControl>
-                        </Grid>
-                        <Grid
-                            item
-                            xs={6}
-                            sm={6}
-                            sx={{
-                                display: 'flex',
-                                marginRight: '5px',
+                                m: 2,
+                                width: '40ch',
                             }}
                         >
-                            <FormLabel
-                                id="demo-controlled-radio-buttons-group"
-                                sx={{
-                                    m: 2,
-                                    width: '15ch',
+                            <InputLabel htmlFor="outlined-adornment-password">
+                                Effectif de l'entreprise
+                            </InputLabel>
+                            <OutlinedInput
+                                name="effectif"
+                                value={formData.effectif}
+                                onChange={handleChange}
+                                type="number"
+                                label="Effectif de l'entreprise"
+                                inputProps={{
+                                    min: 0,
+                                    step: 1,
                                 }}
+                            />
+                        </FormControl>
+                    
+                        <FormLabel
+                            id="demo-controlled-radio-buttons-group"
+                            sx={{
+                                m: 2,
+                                width: '15ch',
+                            }}
+                        >
+                            Etablissement
+                        </FormLabel>
+                        <FormControl>
+                            <RadioGroup
+                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                name="controlled-radio-buttons-group"
                             >
-                                Etablissement
-                            </FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                    aria-labelledby="demo-controlled-radio-buttons-group"
-                                    name="controlled-radio-buttons-group"
-                                >
-                                    <FormControlLabel
-                                        value="principal"
-                                        control={<Radio />}
-                                        label="principal"
-                                    />
-                                    <FormControlLabel
-                                        value="secondaire"
-                                        control={<Radio />}
-                                        label="secondaire"
-                                    />
-                                </RadioGroup>
-                            </FormControl>
-                        </Grid>
+                                <FormControlLabel
+                                    value="1"
+                                    control={
+                                        <Radio
+                                            checked = {(formData.etablissement === "1")}
+                                            onChange = {(e)=>{ if(e.target.checked){setFormData({ ...formData, etablissement: '1' })} }}
+                                        />
+                                    }
+                                    label="principal"
+                                />
+                                <FormControlLabel
+                                    value="2"
+                                    control={
+                                        <Radio
+                                            checked = {(formData.etablissement === "2")}
+                                            onChange = {(e)=>{ if(e.target.checked){setFormData({ ...formData, etablissement: '2' })} }}
+                                        />
+                                    }
+                                    label="secondaire"
+                                />
+                            </RadioGroup>
+                        </FormControl>
                     </Grid>
                     <Grid
                         item
                         xs={12}
-                        sm={4}
+                        sm={6}
                         sx={{
                             display: 'flex',
                         }}
@@ -133,48 +139,36 @@ export default function ScreenTwo({ formData }) {
                             variant="outlined"
                             sx={{
                                 m: 2,
-                                width: '20ch',
+                                width: '40ch',
                             }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
-                                Civilité
+                                Votre nom
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
-                                type="text"
-                                label=" Nom de l'entreprise"
+                                value={formData.nomrh}
+                                onChange={handleChange}
+                                name="nomrh"
+                                type="url"
+                                label="Votre nom"
                             />
                         </FormControl>
                         <FormControl
                             variant="outlined"
                             sx={{
                                 m: 2,
-                                width: '30ch',
+                                width: '40ch',
                             }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
-                                Nom
+                                Votre prénom
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                value={formData.prenomrh}
+                                onChange={handleChange}
+                                name="prenomrh"
                                 type="url"
-                                label="Nom"
-                            />
-                        </FormControl>
-                        <FormControl
-                            variant="outlined"
-                            sx={{
-                                m: 2,
-                                width: '27ch',
-                            }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                Prénom
-                            </InputLabel>
-                            <OutlinedInput
-                                name="password"
-                                type="url"
-                                label="Prénom"
+                                label="Votre prénom"
                             />
                         </FormControl>
                     </Grid>
@@ -197,7 +191,9 @@ export default function ScreenTwo({ formData }) {
                                 Fonction
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                value={formData.fonctionrh}
+                                onChange={handleChange}
+                                name="fonctionrh"
                                 type="text"
                                 label="Fonction"
                             />
@@ -213,7 +209,9 @@ export default function ScreenTwo({ formData }) {
                                 Service
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                value={formData.servicerh}
+                                onChange={handleChange}
+                                name="servicerh"
                                 type="text"
                                 label="Service"
                             />
@@ -235,12 +233,14 @@ export default function ScreenTwo({ formData }) {
                             }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
-                                Téléphone
+                                Votre numero de téléphone
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                value={formData.telephonerh}
+                                onChange={handleChange}
+                                name="telephonerh"
                                 type="text"
-                                label="Téléphone"
+                                label="Votre numero de téléphone"
                             />
                         </FormControl>
                         <FormControl
@@ -251,12 +251,14 @@ export default function ScreenTwo({ formData }) {
                             }}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
-                                Email
+                                Votre adresse email
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                value={formData.emailrh}
+                                onChange={handleChange}
+                                name="emailrh"
                                 type="text"
-                                label="Email"
+                                label="Votre adresse email"
                             />
                         </FormControl>
                     </Grid>
@@ -268,69 +270,85 @@ export default function ScreenTwo({ formData }) {
                             display: 'flex',
                         }}
                     >
-                        <Box
+                        <FormControl
+                            variant="outlined"
                             sx={{
                                 m: 2,
+                                width: '40ch',
                             }}
                         >
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    m: 2,
-                                    width: '30ch',
-                                    height: '50px',
-                                    backgroundColor: '#3D50FF',
-                                    color: '#fff',
-                                }}
-                            >
-                                Lier mon YUMA PASS
-                            </Button>
-                            <Button
-                                variant="contained"
-                                disabled={true}
-                                sx={{
-                                    m: 2,
-                                    width: '30ch',
-                                    height: '50px',
-                                    backgroundColor: '#3D50FF',
-                                    color: '#fff',
-                                }}
-                            >
-                                Pas encore de YUMA PASS ?
-                            </Button>
-                        </Box>
-                        <img
-                            src={qrcodeImage}
-                            alt="qrcode"
-                            width="200px"
-                            height="200px"
-                        />
+                            <InputLabel htmlFor="outlined-adornment-password">
+                                Mot de passe
+                            </InputLabel>
+                            <OutlinedInput
+                                value={formData.password}
+                                onChange={handleChange}
+                                name="password"
+                                type="password"
+                                label="Mot de passe"
+                            />
+                        </FormControl>
+                        <FormControl
+                            variant="outlined"
+                            sx={{
+                                m: 2,
+                                width: '40ch',
+                            }}
+                        >
+                            <InputLabel htmlFor="outlined-adornment-password">
+                                Confirmation mot de passe
+                            </InputLabel>
+                            <OutlinedInput
+                                value={formData.password2}
+                                onChange={handleChange}
+                                name="password2"
+                                type="password"
+                                label="Confirmation mot de passe"
+                            />
+                        </FormControl>
                     </Grid>
+                    
                     <Grid item xs={6} sm={3}>
-                        <NavLink
-                            to="/home"
-                            style={{
-                                textDecoration: 'none',
-                                color: 'white',
-                                width: '150%',
+                        <Button
+                            variant="outlined"
+                            sx={{
+                                m: 2,
+                                width: '20ch',
+                                height: '50px',
                             }}
+                            onClick={()=>setScreen(1)}
+                            color='secondary'
                         >
-                            <Button
-                                variant="contained"
-                                sx={{
-                                    m: 2,
-                                    width: '20ch',
-                                    height: '50px',
-                                    backgroundColor: '#3D50FF',
-                                    color: '#fff',
-                                }}
-                            >
-                                Enregistrer
-                            </Button>
-                        </NavLink>
+                            Retour
+                        </Button>
+                        <Button
+                            variant="contained"
+                            sx={{
+                                m: 2,
+                                width: '20ch',
+                                height: '50px',
+                                backgroundColor: '#3D50FF',
+                                color: '#fff',
+                            }}
+                            onClick={handlesubmit}
+                        >
+                            Enregistrer
+                        </Button>
                     </Grid>
                 </Container>
             </form>
+            <div>
+                <Snackbar 
+                    open={showError}
+                    autoHideDuration={6000}
+                    onClose={handleCloseAlert}
+                    anchorOrigin={{ vertical:'top', horizontal:'right' }}
+                >
+                    <Alert onClose={handleCloseAlert} severity="error">
+                        Les mots de passe ne correspond pas
+                    </Alert>
+                </Snackbar>
+            </div>
         </Card>
     )
 }
