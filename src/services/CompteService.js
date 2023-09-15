@@ -43,3 +43,22 @@ export async function postentreprise(formdata) {
     }
     return await response.json();
 }
+
+export async function postcredential(formdata) {
+    const url = `${base_url}/compte/authentification`;
+    const body = new URLSearchParams();
+    body.append("username", formdata.username);
+    body.append("password", formdata.password);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+    });
+
+    if (!response.ok) {
+      throw new Error('erreur backend');
+    }
+    return await response.json();
+}

@@ -13,15 +13,27 @@ import {
     FormControl,
     OutlinedInput
 } from '@mui/material'
+import LoadingButton from '@mui/lab/LoadingButton';
 
-export default function ScreenTwo({ formData, setScreen, setFormData }) {
+export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm, setErrorForm }) {
     const [showError, setShowError] = useState(false);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const handlesubmit = ()=>{
         if(formData.password !== formData.password2){
             setShowError(true)
             return false
         }
+        let key = Object.keys(ErrorForm)
+        for (let index = 11; index < key.length; index++) {
+            const element = key[index];
+            console.log(formData[element])
+            if (formData[element] === "" || formData[element] === 0 || formData[element] === undefined){
+                setErrorForm({ ...ErrorForm, [element]: true })
+                return false
+            }
+        }
+        setLoading(true)
         postentreprise(formData)
         .then((data) => {
             navigate('/home');
@@ -33,6 +45,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
+        setErrorForm({ ...ErrorForm, [name]: false })
     };
 
     const handleCloseAlert = (event, reason) => {
@@ -77,16 +90,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                         }}
                     >
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.nomrh}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre nom
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.nomrh}
                                 onChange={handleChange}
                                 name="nomrh"
@@ -95,16 +113,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                             />
                         </FormControl>
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.prenomrh}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre prénom
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.prenomrh}
                                 onChange={handleChange}
                                 name="prenomrh"
@@ -122,16 +145,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                         }}
                     >
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.fonctionrh}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Fonction
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.fonctionrh}
                                 onChange={handleChange}
                                 name="fonctionrh"
@@ -140,16 +168,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                             />
                         </FormControl>
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.servicerh}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Service
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.servicerh}
                                 onChange={handleChange}
                                 name="servicerh"
@@ -167,16 +200,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                         }}
                     >
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.telephonerh}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre numero de téléphone
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.telephonerh}
                                 onChange={handleChange}
                                 name="telephonerh"
@@ -185,16 +223,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                             />
                         </FormControl>
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.emailrh}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre adresse email
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.emailrh}
                                 onChange={handleChange}
                                 name="emailrh"
@@ -212,16 +255,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                         }}
                     >
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.password}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Mot de passe
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.password}
                                 onChange={handleChange}
                                 name="password"
@@ -230,16 +278,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                             />
                         </FormControl>
                         <FormControl
+                            required
                             variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.password2}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Confirmation mot de passe
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.password2}
                                 onChange={handleChange}
                                 name="password2"
@@ -262,19 +315,21 @@ export default function ScreenTwo({ formData, setScreen, setFormData }) {
                         >
                             Retour
                         </Button>
-                        <Button
-                            variant="contained"
-                            sx={{
-                                m: 2,
-                                width: '20ch',
-                                height: '50px',
-                                backgroundColor: '#3D50FF',
-                                color: '#fff',
-                            }}
-                            onClick={handlesubmit}
-                        >
-                            Enregistrer
-                        </Button>
+                        <LoadingButton
+                                loading={loading}
+                                sx={{
+                                    m: 2,
+                                    width: '20ch',
+                                    height: '50px',
+                                    backgroundColor: '#3D50FF',
+                                    color: '#fff',
+                                }}
+                                variant="contained"
+                                fullWidth
+                                onClick={handlesubmit}
+                            >
+                                Se Enregistrer
+                        </LoadingButton>
                     </Grid>
                 </Container>
             </form>

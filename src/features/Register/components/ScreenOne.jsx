@@ -13,7 +13,7 @@ import TextField from '@mui/material/TextField'
 import { Snackbar, Alert, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import { Link } from 'react-router-dom'
 
-export default function ScreenOne({ setScreen, setFormData, formData }) {
+export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm, setErrorForm }) {
     const select = [
         'France',
         'Allemagne',
@@ -45,11 +45,22 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
+        let key = Object.keys(ErrorForm)
+        for (let index = 0; index < 11; index++) {
+            const element = key[index];
+            console.log(formData[element])
+            if (formData[element] === "" || formData[element] === 0 || formData[element] === undefined){
+                setErrorForm({ ...ErrorForm, [element]: true })
+                console.log(ErrorForm)
+                return false
+            }
+        }
         setScreen(2);
     };
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
+        setErrorForm({ ...ErrorForm, [name]: false })
         if(name === "siret" && value.length === 14){
             console.log("envois")
             getInfoSirret(value)
@@ -118,11 +129,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            required
+                            error={ErrorForm.siret}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Siret
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 value={formData.siret}
                                 name="siret"
                                 type="number"
@@ -133,7 +149,7 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                         <Autocomplete
                             sx={{
                                 m: 2,
-                                width: '40ch',
+                                width: '40ch'
                             }}
                             disablePortal
                             value={formData.naf}
@@ -142,6 +158,7 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
+                                    error={ErrorForm.naf}
                                     required
                                     label="APE/NAF" 
                                     name="naf"
@@ -164,11 +181,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            required
+                            error={ErrorForm.nom_entreprise}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Nom de l'entreprise
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 name="nom_entreprise"
                                 type="text"
                                 value={formData.nom_entreprise}
@@ -187,6 +209,9 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 URL
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 name="url"
                                 value={formData.url}
                                 onChange={handleChange}
@@ -209,11 +234,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.rue_numero}
+                            required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Rue et Numero
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 name="rue_numero"
                                 value={formData.rue_numero}
                                 onChange={handleChange}
@@ -227,11 +257,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.code_postal}
+                            required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Code Postal
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 name="password"
                                 type="text"
                                 value={formData.code_postal}
@@ -254,16 +289,21 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.code_postal}
+                            required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Ville
                             </InputLabel>
                             <OutlinedInput
-                                name="password"
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
+                                name="ville"
                                 type="text"
                                 value={formData.ville}
                                 onChange={handleChange}
-                                label="Nom"
+                                label="Ville"
                             />
                         </FormControl>
                         <Autocomplete
@@ -278,6 +318,7 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
+                                    error={ErrorForm.pays}
                                     required
                                     variant="outlined"
                                     label="Pays"
@@ -299,11 +340,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            required
+                            error={ErrorForm.telephone}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Télephone
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 onChange={handleChange}
                                 value={formData.telephone}
                                 name="telephone"
@@ -317,11 +363,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            error={ErrorForm.email}
+                            required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Email
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 name="email"
                                 onChange={handleChange}
                                 value={formData.email}
@@ -344,11 +395,16 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                                 m: 2,
                                 width: '40ch',
                             }}
+                            required
+                            error={ErrorForm.effectif}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Effectif de l'entreprise
                             </InputLabel>
                             <OutlinedInput
+                                sx = {{
+                                        color: 'black.main'
+                                    }}
                                 name="effectif"
                                 value={formData.effectif}
                                 onChange={handleChange}
@@ -365,7 +421,9 @@ export default function ScreenOne({ setScreen, setFormData, formData }) {
                             sx={{
                                 m: 2,
                                 width: '40ch',
-                            }}>
+                            }}
+                            error={ErrorForm.etablissement}
+                        >
                             <Grid
                                 container spacing={2}
                             >
