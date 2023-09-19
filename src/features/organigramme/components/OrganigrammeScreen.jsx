@@ -1,44 +1,21 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { OrgChartComponent } from './OrgChart';
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { useTheme } from '@mui/material/styles'
-import { Button, Box, Modal } from '@mui/material'
+import { Button, Box, Dialog, DialogTitle, DialogContent, Stack, DialogActions, FormControl, InputLabel, OutlinedInput } from '@mui/material'
 import Grid from '@mui/material/Grid';
 import './mylink.css'
-import Backdrop from '@mui/material/Backdrop';
-import Fade from '@mui/material/Fade';
-import { authenticateClient, getFicheMetierData } from './api';
 import { Snackbar, Alert } from '@mui/material';
-import Typography from '@mui/material/Typography'
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-
-const style = {
-  position: 'absolute',
-  top: '20%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: 800,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-  alignItems: 'center',
-};
+import { loaddata } from '../../../services/OrganigrammeService'
+import theme from './theme';
+import { ThemeProvider } from '@mui/material/styles';
 
 function OrganigrammeScreen() {
-  const theme = useTheme()
-  const [data] = useState([
-    {
-      "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
-      "name": "DG",
-      "parentNodeId": "",
-      "nodeId": "0",
-      "metier": "PDG"
-    }
-  ]);
-  const [dataPersonne, setDataPersonne] = useState(null);
+  const [data, setData] = useState([]);
+  const [dataPersonne, setDataPersonne] = useState([]);
   const [dataPersonneafficher, setDataPersonneafficher] = useState(null);
+  const [datacompetance, setdatacompetance] = useState([]);
   const [datametier, setDataMetier] = useState(null);
   const [etat, setEtat] = useState();
   const [nodeselected, setNodeselected] = useState({
@@ -78,21 +55,12 @@ function OrganigrammeScreen() {
     nodeId: '',
     metier: ''
   });
-
-  const generateRandomName = () => {
-    const firstNames = ['John', 'Jane', 'Michael', 'Emily', 'William', 'Olivia', 'James', 'Sophia', 'Benjamin', 'Ava'];
-    const lastNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez'];
-  
-    const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-    const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-  
-    return `${randomFirstName} ${randomLastName}`;
+  const handleChange = (event) => {
+      const { name, value } = event.target;
+      setNewnode({ ...newnode, [name]: value });
   };
-  
   function addNode() {
-    
     if(nodeselected.name !== ""){
-      console.log(nodeselected)
       newnode.parentNodeId = nodeselected.nodeId;
       addNodeChildFunc(newnode)
     } else {
@@ -101,31 +69,30 @@ function OrganigrammeScreen() {
     handleClose()
   }
   useEffect(() => {
-    
-    authenticateClient()
-      .then((data) => {
-        getFicheMetierData(data.access_token)
-          .then((data) => {
-            const formattedData = data.map((item) => ({
-              'label': item.metier.libelle,
-              'code' : item.code
-            }));
-            setDataMetier(formattedData);
-            // le code suivant genere le personne avec metier pour le teste seulement
-            const formattedDataPersonne = data.map(item => {
-              return { label: generateRandomName(), metier: item.metier.libelle }
-            });
-            setDataPersonne(formattedDataPersonne);
-          })
-          .catch((error) => {
-            setShowError(true);
-          });
-      })
-      .catch((error) => {
-        console.error('Authentication error:', error.message);
-        setShowError(true);
-      });
-  }, []);
+    const fetchData = async () => {
+        try {
+            const datametierexistant = await loaddata();
+            const reponsemetie = await datametierexistant;
+            setDataMetier(reponsemetie.rome.map(metier=> {
+              return {
+                label: "["+metier.rome_coderome+"]"+metier.nom,
+                id: metier.id
+              }
+            }))
+            setdatacompetance(reponsemetie.competance.map(metier=> {
+              return {
+                label: "[v-"+metier.ficCompVersion+"]"+metier.ficCompTitreEmploi,
+                id: metier.id
+              }
+            }))
+            console.log(reponsemetie)
+        } catch (error) {
+          console.error('Une erreur s\'est produite :', error);
+          setShowError(true);
+        }
+    };
+    fetchData();
+  }, [loaddata, setShowError]);
 
   const handleChangeMetier = (event, value) => {
     setNewnode({ ...newnode, metier: value.label, nodeId: Math.floor(Math.random() * 999999999999) });
@@ -193,131 +160,309 @@ function OrganigrammeScreen() {
                     },
                 }}
             >
-              <OrgChartComponent
-                setClick={(click) => (addNodeChildFunc = click)}
-                setDeletefonction={(click) => (deletenode = click)}
-                deleteNode={(d, etat) => {
-                  setEtat(etat)
-                  setNodeselected(d)
-                  console.log(d)
-                }}
-                data={data}
-                svgWidth ={200}
-              />
-              <Modal
-                aria-labelledby="transition-modal-title"
-                aria-describedby="transition-modal-description"
-                open={open}
-                onClose={handleClose}
-                closeAfterTransition
-                slots={{ backdrop: Backdrop }}
-                slotProps={{
-                  backdrop: {
-                    timeout: 500,
-                  },
-                }}
-              >
-                <Fade in={open}>
-                  <Box sx={style}>
-                    <Typography
-                        component="h1"
-                        variant="h5"
-                        sx={{
-                            mt: 2,
-                            mb: 2
-                        }}
-                        width={'100%'}
-                    >
-                      Formulaire de création poste
-                    </Typography>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                        }}
-                    >
-                      <Grid
-                        item
-                        xs={6}
-                        sm={6}
-                        sx={{
-                            display: 'flex',
-                            marginRight: '5px',
-                        }}
-                      >
-                        <Autocomplete
+              {   data.length>0 ? (
+                    <OrgChartComponent
+                      setClick={(click) => (addNodeChildFunc = click)}
+                      setDeletefonction={(click) => (deletenode = click)}
+                      deleteNode={(d, etat) => {
+                        setEtat(etat)
+                        setNodeselected(d)
+                        console.log(d)
+                      }}
+                      data={data}
+                      svgWidth ={200}
+                    />
+                  ) : (
+                  null
+              )}
+              <ThemeProvider theme={theme}>
+                <Dialog  open={open} onClose={handleClose}>
+                  <DialogTitle textAlign="center"  color={"black.main"}>Formulaire de création poste</DialogTitle>
+                  <DialogContent dividers={true}>
+                  <Stack
+                    sx={{
+                      minWidth: { xs: '300px', sm: '360px', md: '400px' },
+                      gap: '1.5rem',
+                    }}
+                  >
+                      <Box
                           sx={{
-                              m: 2,
-                              width: '40ch',
+                              display: 'flex',
                           }}
-                          freeSolo
-                          disablePortal
-                          options={datametier}
-                          onChange={handleChangeMetier}
-                          renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  required
-                                  label="Métier" 
-                                  name="metier"
-                                  variant="outlined"
-                              />
-                          )}
-                        />
-                      </Grid>
-                      <Grid
-                        item
-                        xs={6}
-                        sm={6}
-                        sx={{
-                            display: 'flex',
-                            marginRight: '5px',
-                        }}
                       >
-                        <Autocomplete
+                        <Grid
+                          item
+                          xs={4}
+                          sm={4}
                           sx={{
-                              m: 2,
-                              width: '40ch',
+                              display: 'flex',
+                              marginRight: '5px',
                           }}
-                          freeSolo
-                          disablePortal
-                          options={dataPersonneafficher}
-                          onChange={(event, newValue) => {
-                            setNewnode({ ...newnode, name: newValue.label });
+                        >
+                          <Autocomplete
+                            sx={{
+                                width: '100%',
+                            }}
+                            disablePortal
+                            options={datametier || []}
+                            onChange={handleChangeMetier}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    required
+                                    label="Métier" 
+                                    name="rome"
+                                    variant="outlined"
+                                />
+                            )}
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sm={4}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
                           }}
-                          renderInput={(params) => (
-                              <TextField
-                                  {...params}
-                                  required
-                                  label="Personne" 
-                                  name="personne"
-                                  variant="outlined"
-                              />
-                          )}
-                        />
-                      </Grid>
-                    </Box>
-                    <Grid
-                        item
-                        xs={4}
-                        sm={4}
-                        ml= {33}
-                        sx={{
-                            display: 'flex',
-                            marginRight: '5px'
-                        }}
+                        >
+                          <Autocomplete
+                            sx={{
+                                width: '100%',
+                            }}
+                            disablePortal
+                            options={datacompetance || []}
+                            onChange={handleChangeMetier}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    required
+                                    label="Fiche competance" 
+                                    name="fiche Competance"
+                                    variant="outlined"
+                                />
+                            )}
+                          />
+                        </Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sm={4}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                            }}
+                            required
+                          >
+                            <InputLabel htmlFor="outlined-adornment-password">
+                                Titre
+                            </InputLabel>
+                            <OutlinedInput
+                              name="titre"
+                              onChange={handleChange}
+                              label="Titre"
+                            />
+                          </FormControl>
+                        </Grid>
+                      </Box>
+                      <Box
+                          sx={{
+                              display: 'flex',
+                          }}
                       >
-                      <Button
+                        <Grid
+                          item
+                          xs={4}
+                          sm={4}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                            }}
+                            required
+                          >
+                            <TextField
+                              name="activite"
+                              onChange={handleChange}
+                              InputProps={{
+                                multiline: true
+                              }}
+                              label="Activité"
+                            />
+                          </FormControl>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sm={4}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                            }}
+                            required
+                          >
+                            <TextField
+                              name="definition"
+                              onChange={handleChange}
+                              InputProps={{
+                                  multiline: true
+                              }}
+                              label="Définition"
+                            />
+                          </FormControl>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={4}
+                          sm={4}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                            }}
+                            required
+                          >
+                            <TextField
+                              name="agrement"
+                              onChange={handleChange}
+                              InputProps={{
+                                  multiline: true
+                              }}
+                              label="Agrement"
+                            />
+                          </FormControl>
+                        </Grid>
+                      </Box>
+                      <Box
+                          sx={{
+                              display: 'flex',
+                          }}
+                      >
+                        <Grid
+                          item
+                          xs={6}
+                          sm={6}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                            }}
+                            required
+                          >
+                            <TextField
+                              name="condition_general"
+                              onChange={handleChange}
+                              InputProps={{
+                                  multiline: true
+                              }}
+                              label="Condition Génerale"
+                            />
+                          </FormControl>
+                        </Grid>
+                        <Grid
+                          item
+                          xs={6}
+                          sm={6}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <FormControl
+                            variant="outlined"
+                            sx={{
+                                width: '100%',
+                            }}
+                            required
+                          >
+                            <TextField
+                              name="instruction"
+                              onChange={handleChange}
+                              InputProps={{
+                                  multiline: true
+                              }}
+                              label="Instruction"
+                            />
+                          </FormControl>
+                        </Grid>
+                      </Box>
+                        {/* <Grid
+                          item
+                          xs={6}
+                          sm={6}
+                          sx={{
+                              display: 'flex',
+                              marginRight: '5px',
+                          }}
+                        >
+                          <Autocomplete
+                            sx={{
+                                m: 2,
+                                width: '40ch',
+                            }}
+                            freeSolo
+                            disablePortal
+                            options={dataPersonneafficher}
+                            onChange={(event, newValue) => {
+                              setNewnode({ ...newnode, name: newValue.label });
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    required
+                                    label="Personne" 
+                                    name="personne"
+                                    variant="outlined"
+                                />
+                            )}
+                          />
+                        </Grid> */}
+                    </Stack>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button
+                          variant="contained"
+                          onClick={(e)=>{ setOpen(false) }}
+                      >
+                        Annuler
+                    </Button>
+                    <Button
                           variant="contained"
                           onClick={addNode}
-                          color="blue"
-                          fullWidth
+                          color="success"
                       >
                         Continuer
-                      </Button>
-                    </Grid>
-                  </Box>
-                </Fade>
-              </Modal>
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+              </ThemeProvider>
             </Grid>
         </Grid>
       </Box>

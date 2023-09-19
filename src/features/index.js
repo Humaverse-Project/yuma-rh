@@ -21,6 +21,8 @@ import PropositionPageScreen from './propositionmetier/components/PropositionPag
 import FormationHomeScreen from './formationettest/components/FormationHomeScreen'
 import GestionFormationTestScreen from './formationettest/components/GestionFormationTestScreen'
 import StoreFormationetTest from './formationettest/components/StoreFormationetTest'
+import PersonneHomeScreen from './personne/components/PersonneHomeScreen'
+import PersonneGestion from './personne/components/PersonneGestion'
 //import COMPONENTS REUSABLES
 
 export {
@@ -46,5 +48,7 @@ export {
     PropositionPageScreen,
     FormationHomeScreen,
     GestionFormationTestScreen,
-    StoreFormationetTest
+    StoreFormationetTest,
+    PersonneHomeScreen,
+    PersonneGestion
 }
