@@ -46,11 +46,11 @@ export default function LoginScreen() {
         setFormData({ ...formData, [name]: value });
     };
     const handleSubmitform = () => {
-        if(formData.username == ""){
+        if(formData.username === ""){
             setErrorForm({ ...errorform, username: true })
             return false
         }
-        if(formData.password == ""){
+        if(formData.password === ""){
             setErrorForm({ ...errorform, password: true })
             return false
         }

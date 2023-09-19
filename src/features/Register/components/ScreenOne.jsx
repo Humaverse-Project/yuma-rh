@@ -10,7 +10,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import { getInfoSirret, getNaflist } from '../../../services/SiretService';
 import Autocomplete from '@mui/material/Autocomplete'
 import TextField from '@mui/material/TextField'
-import { Snackbar, Alert, FormLabel, RadioGroup, FormControlLabel, Radio } from '@mui/material';
+import { Snackbar, Alert, FormLabel, RadioGroup, FormControlLabel, Radio, FormHelperText } from '@mui/material';
 import { Link } from 'react-router-dom'
 
 export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm, setErrorForm }) {
@@ -45,22 +45,31 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
     };
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(ErrorForm)
+        let errr = 0;
         let key = Object.keys(ErrorForm)
+        let dataerror = {}
         for (let index = 0; index < 11; index++) {
             const element = key[index];
-            console.log(formData[element])
             if (formData[element] === "" || formData[element] === 0 || formData[element] === undefined){
-                setErrorForm({ ...ErrorForm, [element]: true })
-                console.log(ErrorForm)
-                return false
+                dataerror = { ...dataerror, [element]: [true, "Ce champs est obligatoire"]}
+                errr ++;
             }
+            if(element === "siret" && formData[element].length < 14) {
+                dataerror = { ...dataerror, [element]: [true, "Ce champs est obligatoire"]}
+                errr ++;
+            }
+        }
+        setErrorForm({ ...ErrorForm, ...dataerror})
+        if(errr > 0){
+            return false
         }
         setScreen(2);
     };
     const handleChange = (event) => {
         const { name, value } = event.target;
         setFormData({ ...formData, [name]: value });
-        setErrorForm({ ...ErrorForm, [name]: false })
+        setErrorForm({ ...ErrorForm, [name]: [false, ""] })
         if(name === "siret" && value.length === 14){
             console.log("envois")
             getInfoSirret(value)
@@ -130,7 +139,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 width: '40ch',
                             }}
                             required
-                            error={ErrorForm.siret}
+                            error={ErrorForm.siret[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Siret
@@ -142,30 +151,52 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 value={formData.siret}
                                 name="siret"
                                 type="number"
-                                label="Nom"
+                                label="Siret"
+                                inputProps={{
+                                    min: 0,
+                                }}
                                 onChange={handleChange}
                             />
+                            {   ErrorForm.siret[0] ? (
+                                    <FormHelperText>{ErrorForm.siret[1]}</FormHelperText>
+                                ) : (
+                                null
+                            )}
                         </FormControl>
-                        <Autocomplete
+                        <FormControl
+                            variant="outlined"
                             sx={{
                                 m: 2,
-                                width: '40ch'
+                                width: '40ch',
                             }}
-                            disablePortal
-                            value={formData.naf}
-                            options={naflist}
-                            onChange={(e, value)=>{setFormData({ ...formData, naf: value });}}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    error={ErrorForm.naf}
-                                    required
-                                    label="APE/NAF" 
-                                    name="naf"
-                                    variant="outlined"
-                                />
+                            required
+                            error={ErrorForm.naf[0]}
+                        >
+                            <Autocomplete
+                                sx={{
+                                    width: '40ch'
+                                }}
+                                disablePortal
+                                value={formData.naf}
+                                options={naflist || []}
+                                onChange={(e, value)=>{setFormData({ ...formData, naf: value });}}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        required
+                                        error={ErrorForm.naf[0]}
+                                        label="APE/NAF" 
+                                        name="naf"
+                                        variant="outlined"
+                                    />
+                                )}
+                            />
+                            {   ErrorForm.naf[0] ? (
+                                    <FormHelperText>{ErrorForm.naf[1]}</FormHelperText>
+                                ) : (
+                                null
                             )}
-                        />
+                        </FormControl>
                     </Grid>
                     <Grid
                         item
@@ -182,7 +213,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 width: '40ch',
                             }}
                             required
-                            error={ErrorForm.nom_entreprise}
+                            error={ErrorForm.nom_entreprise[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Nom de l'entreprise
@@ -194,6 +225,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 name="nom_entreprise"
                                 type="text"
                                 value={formData.nom_entreprise}
+                                readOnly
                                 onChange={handleChange}
                                 label=" Nom de l'entreprise"
                             />
@@ -234,7 +266,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.rue_numero}
+                            error={ErrorForm.rue_numero[0]}
                             required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
@@ -244,6 +276,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 sx = {{
                                         color: 'black.main'
                                     }}
+                                readOnly
                                 name="rue_numero"
                                 value={formData.rue_numero}
                                 onChange={handleChange}
@@ -257,7 +290,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.code_postal}
+                            error={ErrorForm.code_postal[0]}
                             required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
@@ -267,6 +300,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 sx = {{
                                         color: 'black.main'
                                     }}
+                                readOnly
                                 name="password"
                                 type="text"
                                 value={formData.code_postal}
@@ -289,7 +323,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.code_postal}
+                            error={ErrorForm.code_postal[0]}
                             required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
@@ -305,6 +339,11 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 onChange={handleChange}
                                 label="Ville"
                             />
+                            {   ErrorForm.ville[0] ? (
+                                    <FormHelperText>{ErrorForm.ville[1]}</FormHelperText>
+                                ) : (
+                                null
+                            )}
                         </FormControl>
                         <Autocomplete
                             sx={{
@@ -313,12 +352,12 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                             }}
                             disablePortal
                             value={formData.pays}
-                            onChange={(e, value)=>{setFormData({ ...formData, pays: value });}}
+                            onChange={(e, value)=>{setFormData({ ...formData, pays: value });setErrorForm({ ...ErrorForm, pays: [false, ""] });}}
                             options={select || []}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
-                                    error={ErrorForm.pays}
+                                    error={ErrorForm.pays[0]}
                                     required
                                     variant="outlined"
                                     label="Pays"
@@ -341,7 +380,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 width: '40ch',
                             }}
                             required
-                            error={ErrorForm.telephone}
+                            error={ErrorForm.telephone[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Télephone
@@ -356,6 +395,11 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 type="text"
                                 label="Télephone"
                             />
+                            {   ErrorForm.telephone[0] ? (
+                                    <FormHelperText>{ErrorForm.telephone[1]}</FormHelperText>
+                                ) : (
+                                null
+                            )}
                         </FormControl>
                         <FormControl
                             variant="outlined"
@@ -363,7 +407,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.email}
+                            error={ErrorForm.email[0]}
                             required
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
@@ -379,6 +423,11 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 type="email"
                                 label="Email"
                             />
+                            {   ErrorForm.email[0] ? (
+                                    <FormHelperText>{ErrorForm.email[1]}</FormHelperText>
+                                ) : (
+                                null
+                            )}
                         </FormControl>
                     </Grid>
                     <Grid
@@ -396,7 +445,7 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                 width: '40ch',
                             }}
                             required
-                            error={ErrorForm.effectif}
+                            error={ErrorForm.effectif[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Effectif de l'entreprise
@@ -415,14 +464,19 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                     step: 1,
                                 }}
                             />
+                            {   ErrorForm.effectif[0] ? (
+                                    <FormHelperText>{ErrorForm.effectif[1]}</FormHelperText>
+                                ) : (
+                                null
+                            )}
                         </FormControl>
                         <FormControl
-                            variant="inlined"
+                            variant="outlined"
                             sx={{
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.etablissement}
+                            error={ErrorForm.etablissement[0]}
                         >
                             <Grid
                                 container spacing={2}
@@ -466,8 +520,6 @@ export default function ScreenOne({ setScreen, setFormData, formData, ErrorForm,
                                     </RadioGroup>
                                 </Grid>
                             </Grid>
-                            
-                            
                         </FormControl>
                     </Grid>
                     <Grid item xs={6} sm={3}>
