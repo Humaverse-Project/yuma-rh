@@ -38,7 +38,7 @@ function HomeScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/organigramme'}>
+                    <NavLink to={'/personnehome'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',

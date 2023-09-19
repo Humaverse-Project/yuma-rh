@@ -20,7 +20,9 @@ import {
     PropositionHomeScreen,
     PropositionPageScreen,
     GestionFormationTestScreen,
-    StoreFormationetTest
+    StoreFormationetTest,
+    PersonneHomeScreen,
+    PersonneGestion
 } from './features'
 
 function Navigation() {
@@ -40,16 +42,6 @@ function Navigation() {
             id: 3,
             path: '/register',
             components: <RegisterScreen />,
-        },
-        {
-            id: 2,
-            path: '/organigramme',
-            components: <OrganigrammeScreen />,
-        },
-        {
-            id: 3,
-            path: '*',
-            components: <NotFoundScreen />,
         },
         {
             id: 4,
@@ -130,6 +122,26 @@ function Navigation() {
             id: 19,
             path: '/storeplus',
             components: <StoreFormationetTest/>
+        },
+        {
+            id: 20,
+            path: '/personnehome',
+            components: <PersonneHomeScreen/>
+        },
+        {
+            id: 21,
+            path: '/organigramme',
+            components: <OrganigrammeScreen />,
+        },
+        {
+            id: 22,
+            path: '*',
+            components: <NotFoundScreen />,
+        },
+        {
+            id: 23,
+            path: '/gestionpersonnel',
+            components: <PersonneGestion />,
         }
     ]
 
