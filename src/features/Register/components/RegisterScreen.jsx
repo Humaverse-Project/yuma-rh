@@ -28,25 +28,25 @@ export default function RegisterScreen() {
         "password2":""
     });
     const [ErrorForm, setErrorForm] = useState({
-        "siret": false,
-        "naf": false,
-        "nom_entreprise": false,
-        'rue_numero': false,
-        'code_postal': false,
-        'ville': false,
-        'pays':false,
-        'telephone':false,
-        'email':false,
-        'effectif':false,
-        'etablissement':false,
-        'nomrh': false,
-        'prenomrh': false,
-        'fonctionrh': false,
-        'servicerh': false,
-        'telephonerh':false,
-        'emailrh':false,
-        'password':false,
-        "password2":false
+        "siret": [false, ""],
+        "naf": [false, ""],
+        "nom_entreprise": [false, ""],
+        'rue_numero': [false, ""],
+        'code_postal': [false, ""],
+        'ville': [false, ""],
+        'pays':[false, ""],
+        'telephone':[false, ""],
+        'email':[false, ""],
+        'effectif':[false, ""],
+        'etablissement':[false, ""],
+        'nomrh': [false, ""],
+        'prenomrh': [false, ""],
+        'fonctionrh': [false, ""],
+        'servicerh': [false, ""],
+        'telephonerh':[false, ""],
+        'emailrh':[false, ""],
+        'password':[false, ""],
+        "password2":[false, ""]
     });
 
     return (

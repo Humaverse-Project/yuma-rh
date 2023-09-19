@@ -25,13 +25,18 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
             return false
         }
         let key = Object.keys(ErrorForm)
+        let errr = 0;
+        let dataerror = {}
         for (let index = 11; index < key.length; index++) {
             const element = key[index];
-            console.log(formData[element])
             if (formData[element] === "" || formData[element] === 0 || formData[element] === undefined){
-                setErrorForm({ ...ErrorForm, [element]: true })
-                return false
+                dataerror = { ...dataerror, [element]: [true, "Ce champs est obligatoire"]}
+                errr ++;
             }
+        }
+        setErrorForm({ ...ErrorForm, ...dataerror})
+        if(errr > 0){
+            return false
         }
         setLoading(true)
         postentreprise(formData)
@@ -96,7 +101,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.nomrh}
+                            error={ErrorForm.nomrh[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre nom
@@ -119,7 +124,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.prenomrh}
+                            error={ErrorForm.prenomrh[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre prénom
@@ -151,7 +156,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.fonctionrh}
+                            error={ErrorForm.fonctionrh[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Fonction
@@ -174,7 +179,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.servicerh}
+                            error={ErrorForm.servicerh[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Service
@@ -206,7 +211,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.telephonerh}
+                            error={ErrorForm.telephonerh[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre numero de téléphone
@@ -229,7 +234,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.emailrh}
+                            error={ErrorForm.emailrh[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Votre adresse email
@@ -261,7 +266,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.password}
+                            error={ErrorForm.password[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Mot de passe
@@ -284,7 +289,7 @@ export default function ScreenTwo({ formData, setScreen, setFormData, ErrorForm,
                                 m: 2,
                                 width: '40ch',
                             }}
-                            error={ErrorForm.password2}
+                            error={ErrorForm.password2[0]}
                         >
                             <InputLabel htmlFor="outlined-adornment-password">
                                 Confirmation mot de passe
