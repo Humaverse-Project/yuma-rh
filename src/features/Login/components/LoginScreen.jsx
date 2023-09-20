@@ -21,7 +21,6 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 
 // logo
 import logo from '../../../assets/images/logo.png'
-import { Text } from '../../../shared'
 
 export default function LoginScreen() {
     const [showPassword, setShowPassword] = React.useState(false)
@@ -198,9 +197,9 @@ export default function LoginScreen() {
                                         to="/passwordReminder"
                                         style={{ textDecoration: 'none' }}
                                     >
-                                        <Text color="primary.main">
+                                        <Typography color="primary.main">
                                             Mot de passe oublié?
-                                        </Text>
+                                        </Typography>
                                     </NavLink>
                                 </Grid>
                                 <Grid item>
@@ -208,9 +207,9 @@ export default function LoginScreen() {
                                         to="/register"
                                         style={{ textDecoration: 'none' }}
                                     >
-                                        <Text color="primary.main">
+                                        <Typography color="primary.main">
                                             Pas du compte? S'inscrire
-                                        </Text>
+                                        </Typography>
                                     </NavLink>
                                 </Grid>
                             </Grid>
