@@ -1,29 +1,25 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { OrgChartComponent } from './OrgChart';
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Button, Box, Dialog, DialogTitle, DialogContent, Stack, DialogActions, FormControl, InputLabel, OutlinedInput } from '@mui/material'
-import Grid from '@mui/material/Grid';
+import { Button, Box, Grid } from '@mui/material'
 import './mylink.css'
 import { Snackbar, Alert } from '@mui/material';
-import Autocomplete from '@mui/material/Autocomplete'
-import TextField from '@mui/material/TextField'
-import { loaddata } from '../../../services/OrganigrammeService'
+import { loaddata, postdata, postupdate } from '../../../services/OrganigrammeService'
 import theme from './theme';
-import { ThemeProvider } from '@mui/material/styles';
+import NewPosteModal from './NewPosteModal';
 
 function OrganigrammeScreen() {
   const [data, setData] = useState([]);
   const [dataPersonne, setDataPersonne] = useState([]);
-  const [dataPersonneafficher, setDataPersonneafficher] = useState(null);
   const [datacompetance, setdatacompetance] = useState([]);
   const [datametier, setDataMetier] = useState(null);
   const [etat, setEtat] = useState();
   const [nodeselected, setNodeselected] = useState({
-    name: ""
+    titre: ""
   });
   let addNodeChildFunc = null;
+  let initializeChart = null;
   let deletenode = null;
-  
 
   const [open, setOpen] = useState(false);
 
@@ -38,7 +34,14 @@ function OrganigrammeScreen() {
     deletenode(nodeselected)
     setEtat(false)
   };
-
+  const sendupdateposte = async (source, target)=>{
+    let obj = {
+      nodeId: source.nodeId,
+      parentNodeId: target.nodeId
+    }
+    const datametierexistant = await postupdate(obj);
+    await datametierexistant;
+  }
   const [showError, setShowError] = useState(false);
 
   const handleCloseAlert = (event, reason) => {
@@ -47,26 +50,26 @@ function OrganigrammeScreen() {
       }
       setShowError(false);
   };
-
-  const [newnode, setNewnode] = useState({
-    imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
-    name: '',
-    parentNodeId: "0",
-    nodeId: '',
-    metier: ''
-  });
-  const handleChange = (event) => {
-      const { name, value } = event.target;
-      setNewnode({ ...newnode, [name]: value });
-  };
-  function addNode() {
-    if(nodeselected.name !== ""){
+  async function addNode(newnode) {
+    console.log(nodeselected)
+    if(nodeselected.personne !== ""){
       newnode.parentNodeId = nodeselected.nodeId;
-      addNodeChildFunc(newnode)
-    } else {
+    }
+    if(data.length === 0){
+      newnode.parentNodeId = ""
+    }
+    
+    const datametierexistant = await postdata(newnode);
+    const reponsemetie = await datametierexistant;
+    newnode.nodeId = reponsemetie.id
+    if(data.length === 0){
+      newnode.parentNodeId = ""
+      setData([...data, newnode])
+      initializeChart();
+    } else{
       addNodeChildFunc(newnode)
     }
-    handleClose()
+    return true;
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -76,394 +79,152 @@ function OrganigrammeScreen() {
             setDataMetier(reponsemetie.rome.map(metier=> {
               return {
                 label: "["+metier.rome_coderome+"]"+metier.nom,
+                code: metier.rome_coderome,
+                nom: metier.nom,
                 id: metier.id
               }
             }))
             setdatacompetance(reponsemetie.competance.map(metier=> {
               return {
                 label: "[v-"+metier.ficCompVersion+"]"+metier.ficCompTitreEmploi,
+                titre: metier.ficCompTitreEmploi,
                 id: metier.id
               }
             }))
-            console.log(reponsemetie)
+            setDataPersonne(reponsemetie.personnelist.map(personne=>{
+              return {
+                label: personne.personneNom+" "+personne.personnePrenom,
+                id: personne.id
+              }
+            }))
+            var persutiliser = []
+            let postorg = reponsemetie.poste.map(poste=> {
+              let titre = poste.fiches_postes_titre;
+              let nodeId = poste.id;
+              let parentNodeId = "";
+              if (poste.fiches_postes_nplus1.length != 0 ) {
+                parentNodeId = poste.fiches_postes_nplus1.id;
+              }
+              let personne = "";
+              let personneid = 0;
+              var per = reponsemetie.personnelist.filter(personne =>{
+                if (personne.personnePoste.id === poste.id) {
+                  return true
+                } return false
+              })
+              if (per.length>0) {
+                if (per.length == 1) {
+                  personne = per[0].personneNom+" "+per[0].personnePrenom
+                  personneid = per[0].id
+                } else {
+                  for (let index = 0; index < per.length; index++) {
+                    const element = per[index];
+                    if (!persutiliser.includes(element.personneNom+" "+element.personnePrenom)) {
+                      personne = element.personneNom+" "+element.personnePrenom
+                      personneid = element.id
+                      break
+                    }
+                  }                  
+                }
+              }
+              return {
+                titre: titre,
+                nodeId: nodeId,
+                personne: personne,
+                personneid: personneid,
+                parentNodeId: parentNodeId,
+                imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg"
+              }
+            })
+            setData(postorg)
+            console.log(postorg)
         } catch (error) {
           console.error('Une erreur s\'est produite :', error);
           setShowError(true);
         }
     };
     fetchData();
-  }, [loaddata, setShowError]);
-
-  const handleChangeMetier = (event, value) => {
-    setNewnode({ ...newnode, metier: value.label, nodeId: Math.floor(Math.random() * 999999999999) });
-    const newPersonne = dataPersonne.filter(personne=>{
-      return (personne.metier === value.label)
-    })
-    setDataPersonneafficher(newPersonne);
-  };
+  }, [setShowError]);
 
 
   return (
     <Fragment>
       <HeaderInScreen
-          title={'Organigramme'}
+        title={'Organigramme'}
       />
       <Box
-          backgroundColor="background.paper"
-          display="flex"
-          width="100%"
-          flexDirection="row"
-          sx={{
-              [theme.breakpoints.down('md')]: {
-                  flexDirection: 'column',
-                  alignItems: 'center',
-              },
-          }}
-          justifyContent="space-between"
-          alignItems="flex-start"
-          minHeight="80vh"
-          py={6}
-          px={4}
+        backgroundColor="background.paper"
+        display="flex"
+        width="100%"
+        flexDirection="row"
+        sx={{
+          [theme.breakpoints.down('md')]: {
+            flexDirection: 'column',
+            alignItems: 'center',
+          },
+        }}
+        justifyContent="space-between"
+        alignItems="flex-start"
+        minHeight="80vh"
+        py={6}
+        px={4}
       >
-        <div>
-            <Snackbar 
-                open={showError}
-                autoHideDuration={6000}
-                onClose={handleCloseAlert}
-                anchorOrigin={{ vertical:'top', horizontal:'right' }}
-            >
-                <Alert onClose={handleCloseAlert} severity="error">
-                    Une erreur s'est produite lors de la connexion à l'API.
-                </Alert>
-            </Snackbar>
-        </div>
+      <div>
+        <Snackbar 
+          open={showError}
+          autoHideDuration={6000}
+          onClose={handleCloseAlert}
+          anchorOrigin={{ vertical:'top', horizontal:'right' }}
+        >
+          <Alert onClose={handleCloseAlert} severity="error">
+            Une erreur s'est produite lors de la connexion à l'API.
+          </Alert>
+        </Snackbar>
+      </div>
         <Grid container spacing={2}>
-            <Grid item xs={12} md={2}>
-              <Button variant="contained" onClick={handleOpen} md={2} disabled={datametier == null} size="large" fullWidth color="blue">
-                Ajouter un poste
-              </Button>
-              {/* <Button variant="contained" color="primary" sx={{m: 2}}>
-                Importer
-              </Button> */}
-              <Button variant="contained" sx={{mt: 2}} size="large" disabled={!etat} onClick={handleDeletenode} fullWidth color="blue">
-                Supprimer { nodeselected.name }
-              </Button>
-            </Grid>
-            <Grid item xs={12} md={10}
-                sx={{
-                    [theme.breakpoints.up('lg')]: {
-                        mt: 2,
-                    },
-                    [theme.breakpoints.down('sm')]: {
-                        my: 1,
-                        mx: 0,
-                    },
+          <Grid item xs={12} md={2}>
+            <Button variant="contained" onClick={handleOpen} md={2} disabled={datametier === null || (data.length>0 && nodeselected.titre === "" )} size="large" fullWidth color="blue">
+              Ajouter un poste
+            </Button>
+            {/* <Button variant="contained" color="primary" sx={{m: 2}}>
+              Importer
+            </Button> 
+            <Button variant="contained" sx={{mt: 2}} size="large" disabled={!etat} onClick={handleDeletenode} fullWidth color="blue">
+              Supprimer { nodeselected.name }
+            </Button>*/}
+          </Grid>
+          <Grid item xs={12} md={10}
+              sx={{
+                  [theme.breakpoints.up('lg')]: {
+                      mt: 2,
+                  },
+                  [theme.breakpoints.down('sm')]: {
+                      my: 1,
+                      mx: 0,
+                  },
+              }}
+          >
+              <OrgChartComponent
+                setClick={(click) => (addNodeChildFunc = click)}
+                setDeletefonction={(click) => (deletenode = click)}
+                deleteNode={(d, etat) => {
+                  setEtat(etat)
+                  setNodeselected(d)
                 }}
-            >
-              {   data.length>0 ? (
-                    <OrgChartComponent
-                      setClick={(click) => (addNodeChildFunc = click)}
-                      setDeletefonction={(click) => (deletenode = click)}
-                      deleteNode={(d, etat) => {
-                        setEtat(etat)
-                        setNodeselected(d)
-                        console.log(d)
-                      }}
-                      data={data}
-                      svgWidth ={200}
-                    />
-                  ) : (
-                  null
-              )}
-              <ThemeProvider theme={theme}>
-                <Dialog  open={open} onClose={handleClose}>
-                  <DialogTitle textAlign="center"  color={"black.main"}>Formulaire de création poste</DialogTitle>
-                  <DialogContent dividers={true}>
-                  <Stack
-                    sx={{
-                      minWidth: { xs: '300px', sm: '360px', md: '400px' },
-                      gap: '1.5rem',
-                    }}
-                  >
-                      <Box
-                          sx={{
-                              display: 'flex',
-                          }}
-                      >
-                        <Grid
-                          item
-                          xs={4}
-                          sm={4}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <Autocomplete
-                            sx={{
-                                width: '100%',
-                            }}
-                            disablePortal
-                            options={datametier || []}
-                            onChange={handleChangeMetier}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    required
-                                    label="Métier" 
-                                    name="rome"
-                                    variant="outlined"
-                                />
-                            )}
-                          />
-                        </Grid>
-                        <Grid
-                          item
-                          xs={4}
-                          sm={4}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <Autocomplete
-                            sx={{
-                                width: '100%',
-                            }}
-                            disablePortal
-                            options={datacompetance || []}
-                            onChange={handleChangeMetier}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    required
-                                    label="Fiche competance" 
-                                    name="fiche Competance"
-                                    variant="outlined"
-                                />
-                            )}
-                          />
-                        </Grid>
-                        <Grid
-                          item
-                          xs={4}
-                          sm={4}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                            }}
-                            required
-                          >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                Titre
-                            </InputLabel>
-                            <OutlinedInput
-                              name="titre"
-                              onChange={handleChange}
-                              label="Titre"
-                            />
-                          </FormControl>
-                        </Grid>
-                      </Box>
-                      <Box
-                          sx={{
-                              display: 'flex',
-                          }}
-                      >
-                        <Grid
-                          item
-                          xs={4}
-                          sm={4}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                            }}
-                            required
-                          >
-                            <TextField
-                              name="activite"
-                              onChange={handleChange}
-                              InputProps={{
-                                multiline: true
-                              }}
-                              label="Activité"
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={4}
-                          sm={4}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                            }}
-                            required
-                          >
-                            <TextField
-                              name="definition"
-                              onChange={handleChange}
-                              InputProps={{
-                                  multiline: true
-                              }}
-                              label="Définition"
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={4}
-                          sm={4}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                            }}
-                            required
-                          >
-                            <TextField
-                              name="agrement"
-                              onChange={handleChange}
-                              InputProps={{
-                                  multiline: true
-                              }}
-                              label="Agrement"
-                            />
-                          </FormControl>
-                        </Grid>
-                      </Box>
-                      <Box
-                          sx={{
-                              display: 'flex',
-                          }}
-                      >
-                        <Grid
-                          item
-                          xs={6}
-                          sm={6}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                            }}
-                            required
-                          >
-                            <TextField
-                              name="condition_general"
-                              onChange={handleChange}
-                              InputProps={{
-                                  multiline: true
-                              }}
-                              label="Condition Génerale"
-                            />
-                          </FormControl>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={6}
-                          sm={6}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <FormControl
-                            variant="outlined"
-                            sx={{
-                                width: '100%',
-                            }}
-                            required
-                          >
-                            <TextField
-                              name="instruction"
-                              onChange={handleChange}
-                              InputProps={{
-                                  multiline: true
-                              }}
-                              label="Instruction"
-                            />
-                          </FormControl>
-                        </Grid>
-                      </Box>
-                        {/* <Grid
-                          item
-                          xs={6}
-                          sm={6}
-                          sx={{
-                              display: 'flex',
-                              marginRight: '5px',
-                          }}
-                        >
-                          <Autocomplete
-                            sx={{
-                                m: 2,
-                                width: '40ch',
-                            }}
-                            freeSolo
-                            disablePortal
-                            options={dataPersonneafficher}
-                            onChange={(event, newValue) => {
-                              setNewnode({ ...newnode, name: newValue.label });
-                            }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    required
-                                    label="Personne" 
-                                    name="personne"
-                                    variant="outlined"
-                                />
-                            )}
-                          />
-                        </Grid> */}
-                    </Stack>
-                  </DialogContent>
-                  <DialogActions>
-                    <Button
-                          variant="contained"
-                          onClick={(e)=>{ setOpen(false) }}
-                      >
-                        Annuler
-                    </Button>
-                    <Button
-                          variant="contained"
-                          onClick={addNode}
-                          color="success"
-                      >
-                        Continuer
-                    </Button>
-                  </DialogActions>
-                </Dialog>
-              </ThemeProvider>
-            </Grid>
+                initializeChart={(init)=> (initializeChart = init)}
+                onNodeDrop={(source, target)=> {sendupdateposte(source, target)}}
+                data={data}
+                svgWidth ={200}
+              />
+          </Grid>
+          <NewPosteModal
+            open={open}
+            onClose={handleClose}
+            onSubmit={addNode}
+            dataPersonne= {dataPersonne}
+            datametier={datametier}
+            datacompetance={datacompetance}
+          />
         </Grid>
       </Box>
     </Fragment>
