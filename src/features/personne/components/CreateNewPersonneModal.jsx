@@ -19,7 +19,7 @@ import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LoadingButton } from '@mui/lab';
 
-const CreateNewPersonneModal = ({ open, onClose, onSubmit }) => {
+const CreateNewPersonneModal = ({ open, onClose, onSubmit, datapostegenerique }) => {
     const [newpersonne, setNewPersonne] = useState({});
     const [loading, setLoading] = useState(false)
     const handleSubmit = async () => {
@@ -234,6 +234,7 @@ const CreateNewPersonneModal = ({ open, onClose, onSubmit }) => {
                             key="role"
                             label="Rôle"
                             name="role"
+                            onChange={changetexarea}
                             sx={{
                                 m: 2,
                                 width: '100%',
@@ -243,6 +244,7 @@ const CreateNewPersonneModal = ({ open, onClose, onSubmit }) => {
                             key="service"
                             label="Service"
                             name="service"
+                            onChange={changetexarea}
                             sx={{
                                 m: 2,
                                 width: '100%',

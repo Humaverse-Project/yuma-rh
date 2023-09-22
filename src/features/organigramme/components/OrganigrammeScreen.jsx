@@ -13,6 +13,7 @@ function OrganigrammeScreen() {
   const [dataPersonne, setDataPersonne] = useState([]);
   const [datacompetance, setdatacompetance] = useState([]);
   const [datametier, setDataMetier] = useState(null);
+  const [datapostegenerique, setDatapostegenerique] = useState(null);
   const [etat, setEtat] = useState();
   const [nodeselected, setNodeselected] = useState({
     titre: ""
@@ -88,7 +89,9 @@ function OrganigrammeScreen() {
               return {
                 label: "[v-"+metier.ficCompVersion+"]"+metier.ficCompTitreEmploi,
                 titre: metier.ficCompTitreEmploi,
-                id: metier.id
+                id: metier.id,
+                brique: metier.briquelist,
+                niveau: metier.niveau
               }
             }))
             setDataPersonne(reponsemetie.personnelist.map(personne=>{
@@ -97,6 +100,7 @@ function OrganigrammeScreen() {
                 id: personne.id
               }
             }))
+            setDatapostegenerique(reponsemetie.poste_generique)
             var persutiliser = []
             let postorg = reponsemetie.poste.map(poste=> {
               let titre = poste.fiches_postes_titre;
@@ -137,7 +141,7 @@ function OrganigrammeScreen() {
               }
             })
             setData(postorg)
-            console.log(postorg)
+            console.log(reponsemetie)
         } catch (error) {
           console.error('Une erreur s\'est produite :', error);
           setShowError(true);
@@ -224,6 +228,7 @@ function OrganigrammeScreen() {
             dataPersonne= {dataPersonne}
             datametier={datametier}
             datacompetance={datacompetance}
+            datapostegenerique={datapostegenerique}
           />
         </Grid>
       </Box>
