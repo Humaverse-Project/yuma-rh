@@ -26,6 +26,7 @@ export default function ScreenOne({ setScreen }) {
         <Card
             sx={{
                 m: -1,
+                height: '100vh',
             }}
         >
             <form>

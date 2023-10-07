@@ -21,6 +21,7 @@ export default function ScreenTwo() {
         <Card
             sx={{
                 m: -1,
+                height: '100vh',
             }}
         >
             <form>
