@@ -7,6 +7,7 @@ import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import { NavLink } from 'react-router-dom'
+import HeaderInScreen from '../../header/HeaderInScreen'
 
 export default function SettingAccount() {
     return (
@@ -16,6 +17,7 @@ export default function SettingAccount() {
                 height: '100vh',
             }}
         >
+            <HeaderInScreen title={'Paramètre de compte'} />
             <form>
                 <Container
                     component="main"
