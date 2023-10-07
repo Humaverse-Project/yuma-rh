@@ -12,6 +12,7 @@ import OutlinedInput from '@mui/material/OutlinedInput'
 import Visibility from '@mui/icons-material/Visibility'
 import InputAdornment from '@mui/material/InputAdornment'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 // logo
 import logo from '../../../assets/images/logo.png'
@@ -24,6 +25,10 @@ export default function LoginScreen() {
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault()
+    }
+
+    const onChange = (value) => {
+        console.log('Captcha value:', value)
     }
 
     return (
@@ -155,6 +160,14 @@ export default function LoginScreen() {
                                     </NavLink>
                                 </Grid>
                             </Grid>
+                        </Box>
+                        <Box>
+                            <ReCAPTCHA
+                                sitekey={
+                                    process.env.REACT_APP_CAPTACHAT_SECRET_KEY
+                                }
+                                onChange={onChange}
+                            />
                         </Box>
                     </Box>
                 </Container>
