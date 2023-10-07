@@ -12,6 +12,7 @@ import ManageCompetence from './profil/components/ManageCompetence'
 import ParametreScreen from './parametre/components/ParametreScreen'
 import OrganigrammeScreen from './organigramme/components/OrganigrammeScreen'
 import PlaningFormationScreen from './planing/components/PlaningFormationScreen'
+import SettingAccount from './SettingAccount/components/SettingAccount'
 //import COMPONENTS REUSABLES
 
 export {
@@ -27,5 +28,6 @@ export {
     MetierForm,
     PostForm,
     StoreScreen,
-    PlaningFormationScreen
+    PlaningFormationScreen,
+    SettingAccount,
 }

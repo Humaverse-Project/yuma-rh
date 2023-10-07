@@ -5,6 +5,7 @@ import { Icon, useMediaQuery, Button, Box } from '@mui/material'
 import LanguageIcon from '@mui/icons-material/Language'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { useTheme } from '@emotion/react'
+import { NavLink } from 'react-router-dom'
 
 function HeaderGlobal() {
     const theme = useTheme()
@@ -30,7 +31,19 @@ function HeaderGlobal() {
                 >
                     <Row width={100} justifyContent={'space-between'}>
                         <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
-                        <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
+                        <NavLink
+                            style={{
+                                textDecoration: 'none',
+                                marginTop: 2,
+                                color: 'black',
+                            }}
+                            to="/settingAccount"
+                        >
+                            <Icon
+                                sx={{ fontSize: 38 }}
+                                component={SettingsIcon}
+                            />
+                        </NavLink>
                     </Row>
                     <Row marginLeft={3}>
                         <Button

@@ -11,7 +11,8 @@ import {
     MetierForm,
     PostForm,
     StoreScreen,
-    PlaningFormationScreen
+    SettingAccount,
+    PlaningFormationScreen,
 } from './features'
 
 function Navigation() {
@@ -73,9 +74,14 @@ function Navigation() {
             components: <StoreScreen />,
         },
         {
-          id: 10,
-          path: '/planing',
-          components: <PlaningFormationScreen />,
+            id: 10,
+            path: '/planing',
+            components: <PlaningFormationScreen />,
+        },
+        {
+            id: 11,
+            path: '/settingAccount',
+            components: <SettingAccount />,
         },
     ]
 
