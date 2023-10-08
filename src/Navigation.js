@@ -8,11 +8,21 @@ import {
     ProfilScreen,
     ManageCompetence,
     ParametreScreen,
-    MetierForm,
     PostForm,
-    StoreScreen,
-    SettingAccount,
+    FormationHomeScreen,
     PlaningFormationScreen,
+    NomenclatureHomeScreen,
+    MetierDetailScreen,
+    MetierScreen,
+    CompetanceScreen,
+    CompetanceDetailScreen,
+    SearchCompetanceScreen,
+    PropositionHomeScreen,
+    PropositionPageScreen,
+    GestionFormationTestScreen,
+    StoreFormationetTest,
+    PersonneHomeScreen,
+    PersonneGestion,
 } from './features'
 
 function Navigation() {
@@ -34,16 +44,6 @@ function Navigation() {
             components: <RegisterScreen />,
         },
         {
-            id: 2,
-            path: '/organigramme',
-            components: <OrganigrammeScreen />,
-        },
-        {
-            id: 3,
-            path: '*',
-            components: <NotFoundScreen />,
-        },
-        {
             id: 4,
             path: '/profil',
             components: <ProfilScreen />,
@@ -60,28 +60,88 @@ function Navigation() {
         },
         {
             id: 7,
-            path: '/metier',
-            components: <MetierForm />,
-        },
-        {
-            id: 8,
             path: '/poste',
             components: <PostForm />,
         },
         {
-            id: 9,
+            id: 8,
             path: '/store',
-            components: <StoreScreen />,
+            components: <FormationHomeScreen />,
         },
         {
-            id: 10,
+            id: 9,
             path: '/planing',
             components: <PlaningFormationScreen />,
         },
         {
+            id: 10,
+            path: '/nomenclature',
+            components: <NomenclatureHomeScreen />,
+        },
+        {
             id: 11,
-            path: '/settingAccount',
-            components: <SettingAccount />,
+            path: '/metier',
+            components: <MetierScreen />,
+        },
+        {
+            id: 12,
+            path: '/metierdetail/:code',
+            components: <MetierDetailScreen />,
+        },
+        {
+            id: 13,
+            path: '/competance',
+            components: <CompetanceScreen />,
+        },
+        {
+            id: 14,
+            path: '/competancedetail/:code',
+            components: <CompetanceDetailScreen />,
+        },
+        {
+            id: 15,
+            path: '/searchcompetance',
+            components: <SearchCompetanceScreen />,
+        },
+        {
+            id: 16,
+            path: '/propositionhome',
+            components: <PropositionHomeScreen />,
+        },
+        {
+            id: 17,
+            path: '/propositionpage',
+            components: <PropositionPageScreen />,
+        },
+        {
+            id: 18,
+            path: '/gestionformation',
+            components: <GestionFormationTestScreen />,
+        },
+        {
+            id: 19,
+            path: '/storeplus',
+            components: <StoreFormationetTest />,
+        },
+        {
+            id: 20,
+            path: '/personnehome',
+            components: <PersonneHomeScreen />,
+        },
+        {
+            id: 21,
+            path: '/organigramme',
+            components: <OrganigrammeScreen />,
+        },
+        {
+            id: 22,
+            path: '*',
+            components: <NotFoundScreen />,
+        },
+        {
+            id: 23,
+            path: '/gestionpersonnel',
+            components: <PersonneGestion />,
         },
     ]
 

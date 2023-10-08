@@ -1,11 +1,11 @@
 import { DynamicHeadNav, Text, Row } from '../../shared'
 import { Icon, useMediaQuery, Button, Box } from '@mui/material'
+import { NavLink } from 'react-router-dom'
 
 //ICONES
 import LanguageIcon from '@mui/icons-material/Language'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { useTheme } from '@emotion/react'
-import { NavLink } from 'react-router-dom'
 
 function HeaderGlobal() {
     const theme = useTheme()
@@ -44,6 +44,13 @@ function HeaderGlobal() {
                                 component={SettingsIcon}
                             />
                         </NavLink>
+                        <NavLink to={'/nomenclature'}>
+                            <Icon
+                                sx={{ fontSize: 38 }}
+                                component={LanguageIcon}
+                            />
+                        </NavLink>
+                        <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
                     </Row>
                     <Row marginLeft={3}>
                         <Button

@@ -1,36 +1,86 @@
 import * as React from 'react'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import { NavLink } from 'react-router-dom'
-import Button from '@mui/material/Button'
-import Container from '@mui/material/Container'
-import InputLabel from '@mui/material/InputLabel'
-import Typography from '@mui/material/Typography'
-import IconButton from '@mui/material/IconButton'
-import FormControl from '@mui/material/FormControl'
-import OutlinedInput from '@mui/material/OutlinedInput'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { setCookie } from '../../../services/CoockieService'
+import LoadingButton from '@mui/lab/LoadingButton';
+import { postcredential } from '../../../services/CompteService'
+
+import {
+    Box,
+    Grid,
+    Container,
+    InputLabel,
+    Typography,
+    IconButton,
+    FormControl,
+    OutlinedInput,
+    InputAdornment
+} from '@mui/material'
+
 import Visibility from '@mui/icons-material/Visibility'
-import InputAdornment from '@mui/material/InputAdornment'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import ReCAPTCHA from 'react-google-recaptcha'
 
 // logo
 import logo from '../../../assets/images/logo.png'
-import { Text } from '../../../shared'
 
 export default function LoginScreen() {
     const [showPassword, setShowPassword] = React.useState(false)
-
+    const [loading, setLoading] = React.useState(false);
+    const navigate = useNavigate();
     const handleClickShowPassword = () => setShowPassword((show) => !show)
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault()
     }
+    const [formData, setFormData] = React.useState({
+        "username": "",
+        "password": ""
+    });
+    const [errorform, setErrorForm] = React.useState({
+        "username": false,
+        "password": false
+    });
 
     const onChange = (value) => {
         console.log('Captcha value:', value)
     }
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setFormData({ ...formData, [name]: value });
+    };
+    const handleSubmitform = () => {
+        if(formData.username === ""){
+            setErrorForm({ ...errorform, username: true })
+            return false
+        }
+        if(formData.password === ""){
+            setErrorForm({ ...errorform, password: true })
+            return false
+        }
+        setLoading(true)
+        postcredential(formData)
+        .then((data) => {
+            if(data.error){
+                setErrorForm({password: true, username: true })
+            } else {
+                console.log(data.data)
+                let userdata = data.data[0]
+                setCookie("email", userdata.compteEmail)
+                setCookie("id", userdata.id)
+                setCookie("nom", userdata.compteNom)
+                setCookie("prenom", userdata.comptePrenom)
+                setCookie("role", userdata.compteRole)
+                setCookie("entrepriseid", userdata.compteEntrepriseId.id)
+                navigate("/home")
+            }
+            setLoading(false)
+        })
+        .catch((error) => {
+            console.error('bakend error:', error.message);
+        });
+    };
+    
     return (
         <>
             <form>
@@ -72,7 +122,14 @@ export default function LoginScreen() {
                                     Email
                                 </InputLabel>
                                 <OutlinedInput
-                                    name="password"
+                                    sx = {{
+                                        color: 'black.main'
+                                    }}
+                                    name="username"
+                                    error={errorform.username}
+                                    value={formData.username}
+                                    onChange={handleChange}
+                                    onClick={()=>setErrorForm({ ...errorform, username: false })}
                                     type="email"
                                     label="Email"
                                 />
@@ -88,9 +145,17 @@ export default function LoginScreen() {
                                     Mot de passe
                                 </InputLabel>
                                 <OutlinedInput
+                                    sx = {{
+                                        color: 'black.main'
+                                    }}
                                     name="password"
                                     id="outlined-adornment-password"
                                     type={showPassword ? 'text' : 'password'}
+                                    value={formData.password}
+                                    error={errorform.password}
+                                    onChange={handleChange}
+                                    onClick={()=>setErrorForm({ ...errorform, password: false })}
+                                    required
                                     endAdornment={
                                         <InputAdornment position="end">
                                             <IconButton
@@ -114,22 +179,15 @@ export default function LoginScreen() {
                                     label="Mot de passe"
                                 />
                             </FormControl>
-                            <NavLink
-                                to="/home"
-                                style={{
-                                    textDecoration: 'none',
-                                    color: 'white',
-                                    width: '150%',
-                                }}
+                            <LoadingButton
+                                loading={loading}
+                                sx={{ height: '50px', mt: 2 }}
+                                variant="contained"
+                                fullWidth
+                                onClick={handleSubmitform}
                             >
-                                <Button
-                                    fullWidth
-                                    variant="contained"
-                                    sx={{ height: '50px', mt: 2 }}
-                                >
-                                    Se connecter
-                                </Button>
-                            </NavLink>
+                                Se connecter
+                            </LoadingButton>
                             <Grid
                                 container
                                 sx={{
@@ -144,9 +202,9 @@ export default function LoginScreen() {
                                         to="/passwordReminder"
                                         style={{ textDecoration: 'none' }}
                                     >
-                                        <Text color="primary.main">
+                                        <Typography color="primary.main">
                                             Mot de passe oublié?
-                                        </Text>
+                                        </Typography>
                                     </NavLink>
                                 </Grid>
                                 <Grid item>
@@ -154,9 +212,9 @@ export default function LoginScreen() {
                                         to="/register"
                                         style={{ textDecoration: 'none' }}
                                     >
-                                        <Text color="primary.main">
+                                        <Typography color="primary.main">
                                             Pas du compte? S'inscrire
-                                        </Text>
+                                        </Typography>
                                     </NavLink>
                                 </Grid>
                             </Grid>

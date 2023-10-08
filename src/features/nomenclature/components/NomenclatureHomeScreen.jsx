@@ -1,4 +1,4 @@
-import HeaderGlobal from '../../header/HeaderGlobal'
+import HeaderInScreen from '../../header/HeaderInScreen'
 
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
@@ -8,17 +8,17 @@ import { NavLink } from 'react-router-dom'
 import { CardItem } from '../../../shared'
 
 //ICONES
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
-import CloudOutlinedIcon from '@mui/icons-material/CloudOutlined'
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined'
-import ShoppingBagOutlinedIcon from '@mui/icons-material/ShoppingBagOutlined'
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong'
+import TuneIcon from '@mui/icons-material/Tune';
+import SearchIcon from '@mui/icons-material/Search';
 
-function HomeScreen() {
+function NomenclatureHomeScreen() {
     const theme = useTheme()
-
     return (
         <Fragment>
-            <HeaderGlobal />
+            <HeaderInScreen
+                title={'Nomenclature'}
+            />
             <Box
                 backgroundColor="background.paper"
                 display={'flex'}
@@ -38,7 +38,7 @@ function HomeScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/personnehome'}>
+                    <NavLink to={'/metier'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -54,10 +54,10 @@ function HomeScreen() {
                                 },
                             }}
                         >
-                            {CardItem(GroupsOutlinedIcon)}
+                            {CardItem(ReceiptLongIcon)}
                         </Card>
                     </NavLink>
-                    <NavLink to={'/setting'}>
+                    <NavLink to={'/competance'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -73,23 +73,10 @@ function HomeScreen() {
                                 },
                             }}
                         >
-                            {CardItem(BuildOutlinedIcon)}
+                            {CardItem(TuneIcon)}
                         </Card>
                     </NavLink>
-                </Box>
-
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        justifyContent: 'space-between',
-                        [theme.breakpoints.down('sm')]: {
-                            justifyContent: 'center',
-                        },
-                        alignItems: 'center',
-                    }}
-                >
-                    <NavLink to={'/propositionhome'}>
+                    <NavLink to={'/searchcompetance'}>
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -105,26 +92,7 @@ function HomeScreen() {
                                 },
                             }}
                         >
-                            {CardItem(CloudOutlinedIcon)}
-                        </Card>
-                    </NavLink>
-                    <NavLink to={'/store'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            {CardItem(ShoppingBagOutlinedIcon)}
+                            {CardItem(SearchIcon)}
                         </Card>
                     </NavLink>
                 </Box>
@@ -133,4 +101,4 @@ function HomeScreen() {
     )
 }
 
-export default HomeScreen
+export default NomenclatureHomeScreen
