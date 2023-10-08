@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { setCookie } from '../../../services/CoockieService'
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from '@mui/lab/LoadingButton'
 import { postcredential } from '../../../services/CompteService'
 
 import {
@@ -13,7 +13,7 @@ import {
     IconButton,
     FormControl,
     OutlinedInput,
-    InputAdornment
+    InputAdornment,
 } from '@mui/material'
 
 import Visibility from '@mui/icons-material/Visibility'
@@ -25,62 +25,62 @@ import logo from '../../../assets/images/logo.png'
 
 export default function LoginScreen() {
     const [showPassword, setShowPassword] = React.useState(false)
-    const [loading, setLoading] = React.useState(false);
-    const navigate = useNavigate();
+    const [loading, setLoading] = React.useState(false)
+    const navigate = useNavigate()
     const handleClickShowPassword = () => setShowPassword((show) => !show)
 
     const handleMouseDownPassword = (event) => {
         event.preventDefault()
     }
     const [formData, setFormData] = React.useState({
-        "username": "",
-        "password": ""
-    });
+        username: '',
+        password: '',
+    })
     const [errorform, setErrorForm] = React.useState({
-        "username": false,
-        "password": false
-    });
+        username: false,
+        password: false,
+    })
 
     const onChange = (value) => {
         console.log('Captcha value:', value)
     }
 
     const handleChange = (event) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    };
+        const { name, value } = event.target
+        setFormData({ ...formData, [name]: value })
+    }
     const handleSubmitform = () => {
-        if(formData.username === ""){
+        if (formData.username === '') {
             setErrorForm({ ...errorform, username: true })
             return false
         }
-        if(formData.password === ""){
+        if (formData.password === '') {
             setErrorForm({ ...errorform, password: true })
             return false
         }
         setLoading(true)
         postcredential(formData)
-        .then((data) => {
-            if(data.error){
-                setErrorForm({password: true, username: true })
-            } else {
-                console.log(data.data)
-                let userdata = data.data[0]
-                setCookie("email", userdata.compteEmail)
-                setCookie("id", userdata.id)
-                setCookie("nom", userdata.compteNom)
-                setCookie("prenom", userdata.comptePrenom)
-                setCookie("role", userdata.compteRole)
-                setCookie("entrepriseid", userdata.compteEntrepriseId.id)
-                navigate("/home")
-            }
-            setLoading(false)
-        })
-        .catch((error) => {
-            console.error('bakend error:', error.message);
-        });
-    };
-    
+            .then((data) => {
+                if (data.error) {
+                    setErrorForm({ password: true, username: true })
+                } else {
+                    console.log(data.data)
+                    let userdata = data.data[0]
+                    setCookie('email', userdata.compteEmail)
+                    setCookie('id', userdata.id)
+                    setCookie('nom', userdata.compteNom)
+                    setCookie('prenom', userdata.comptePrenom)
+                    setCookie('role', userdata.compteRole)
+                    setCookie('entrepriseid', userdata.compteEntrepriseId.id)
+                    navigate('/home')
+                }
+                setLoading(false)
+            })
+            .catch((error) => {
+                console.error('bakend error:', error.message)
+            })
+    }
+
     return (
         <>
             <form>
@@ -122,14 +122,19 @@ export default function LoginScreen() {
                                     Email
                                 </InputLabel>
                                 <OutlinedInput
-                                    sx = {{
-                                        color: 'black.main'
+                                    sx={{
+                                        color: 'black.main',
                                     }}
                                     name="username"
                                     error={errorform.username}
                                     value={formData.username}
                                     onChange={handleChange}
-                                    onClick={()=>setErrorForm({ ...errorform, username: false })}
+                                    onClick={() =>
+                                        setErrorForm({
+                                            ...errorform,
+                                            username: false,
+                                        })
+                                    }
                                     type="email"
                                     label="Email"
                                 />
@@ -145,8 +150,8 @@ export default function LoginScreen() {
                                     Mot de passe
                                 </InputLabel>
                                 <OutlinedInput
-                                    sx = {{
-                                        color: 'black.main'
+                                    sx={{
+                                        color: 'black.main',
                                     }}
                                     name="password"
                                     id="outlined-adornment-password"
@@ -154,7 +159,12 @@ export default function LoginScreen() {
                                     value={formData.password}
                                     error={errorform.password}
                                     onChange={handleChange}
-                                    onClick={()=>setErrorForm({ ...errorform, password: false })}
+                                    onClick={() =>
+                                        setErrorForm({
+                                            ...errorform,
+                                            password: false,
+                                        })
+                                    }
                                     required
                                     endAdornment={
                                         <InputAdornment position="end">
@@ -221,9 +231,7 @@ export default function LoginScreen() {
                         </Box>
                         <Box>
                             <ReCAPTCHA
-                                sitekey={
-                                    process.env.REACT_APP_CAPTACHAT_SECRET_KEY
-                                }
+                                sitekey="6LdBhYYoAAAAAK0kVuppwgM0o6fUXfW3y9z3MRpD"
                                 onChange={onChange}
                             />
                         </Box>
