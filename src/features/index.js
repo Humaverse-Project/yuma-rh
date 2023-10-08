@@ -23,6 +23,7 @@ import GestionFormationTestScreen from './formationettest/components/GestionForm
 import StoreFormationetTest from './formationettest/components/StoreFormationetTest'
 import PersonneHomeScreen from './personne/components/PersonneHomeScreen'
 import PersonneGestion from './personne/components/PersonneGestion'
+import SettingAccount from './SettingAccount/components/SettingAccount'
 //import COMPONENTS REUSABLES
 
 export {
@@ -51,4 +52,5 @@ export {
     StoreFormationetTest,
     PersonneHomeScreen,
     PersonneGestion,
+    SettingAccount,
 }

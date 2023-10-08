@@ -23,6 +23,7 @@ import {
     StoreFormationetTest,
     PersonneHomeScreen,
     PersonneGestion,
+    SettingAccount,
 } from './features'
 
 function Navigation() {
@@ -142,6 +143,11 @@ function Navigation() {
             id: 23,
             path: '/gestionpersonnel',
             components: <PersonneGestion />,
+        },
+        {
+            id: 23,
+            path: '/settingAccount',
+            components: <SettingAccount />,
         },
     ]
 

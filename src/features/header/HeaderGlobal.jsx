@@ -30,7 +30,6 @@ function HeaderGlobal() {
                     }}
                 >
                     <Row width={100} justifyContent={'space-between'}>
-                        <Icon sx={{ fontSize: 38 }} component={LanguageIcon} />
                         <NavLink
                             style={{
                                 textDecoration: 'none',
@@ -44,13 +43,19 @@ function HeaderGlobal() {
                                 component={SettingsIcon}
                             />
                         </NavLink>
-                        <NavLink to={'/nomenclature'}>
+                        <NavLink
+                            to={'/nomenclature'}
+                            style={{
+                                textDecoration: 'none',
+                                marginTop: 2,
+                                color: 'black',
+                            }}
+                        >
                             <Icon
                                 sx={{ fontSize: 38 }}
                                 component={LanguageIcon}
                             />
                         </NavLink>
-                        <Icon sx={{ fontSize: 38 }} component={SettingsIcon} />
                     </Row>
                     <Row marginLeft={3}>
                         <Button
