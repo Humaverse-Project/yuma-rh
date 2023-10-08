@@ -1,16 +1,15 @@
 import { Fragment } from 'react'
 import { Box } from '@mui/system'
-import { Card } from '@mui/material'
+import { Card, CardActionArea, CardContent, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { useTheme } from '@mui/material/styles'
-import { CardItem } from '../../home/components/CardNavigation'
+import { CardItem } from '../../../shared'
 
 //ICONES
 import WorkIcon from '@mui/icons-material/Work'
-import ReceiptIcon from '@mui/icons-material/Receipt'
 import HeaderInScreen from '../../header/HeaderInScreen'
 import DescriptionIcon from '@mui/icons-material/Description'
-
+import AccountTreeIcon from '@mui/icons-material/AccountTree';
 function ParametreScreen() {
     const theme = useTheme()
 
@@ -25,6 +24,44 @@ function ParametreScreen() {
                 alignItems="center"
                 height={'88vh'}
             >
+                <Box
+                        sx={{
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            justifyContent: 'space-between',
+                            [theme.breakpoints.down('sm')]: {
+                                justifyContent: 'center',
+                            },
+                            alignItems: 'center',
+                            backgroundColor: 'secondary.dark',
+                            m: 2,
+                            [theme.breakpoints.up('lg')]: {
+                                m: 4,
+                                width: '60ch',
+                            },
+                            boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                            [theme.breakpoints.down('sm')]: {
+                                width: '100%',
+                                my: 1,
+                                mx: 0,
+                            },
+                        }}
+                    >
+                        <NavLink to={'/organigramme'}>
+                            <CardActionArea sx={{ width: 150 }}>
+                                <CardContent sx={{ p: 4 }}>
+                                    <AccountTreeIcon sx={{ fontSize: 92, color: 'black.main' }} />
+                                </CardContent>
+                            </CardActionArea>
+                        </NavLink>
+                        <Box sx={{ display: 'flex', flexDirection: 'column' }} width={"60%"}>
+                            <CardContent sx={{ flex: '1 0 auto' }}>
+                                <Typography component="div" variant="h5">
+                                    Organigramme
+                                </Typography>
+                            </CardContent>
+                        </Box>
+                    </Box>
                 <Box
                     sx={{
                         display: 'flex',
@@ -72,25 +109,6 @@ function ParametreScreen() {
                             }}
                         >
                             {CardItem(WorkIcon)}
-                        </Card>
-                    </NavLink>
-                    <NavLink to={'/planing'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            {CardItem(ReceiptIcon)}
                         </Card>
                     </NavLink>
                 </Box>

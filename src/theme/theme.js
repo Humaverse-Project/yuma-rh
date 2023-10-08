@@ -1,12 +1,13 @@
 import { createTheme } from '@mui/material/styles'
 
 const palette = {
-    red: '#A7001E',
+    red: '#ff2600',
     black: '#000000',
     blue: '#317AC1',
     grey: '#E5E7E6',
     greyText: '#7E7E7E',
     greyCard: '#CACACA',
+    warning: "#f29c11"
 }
 
 const typo = {
@@ -59,6 +60,9 @@ const theme = createTheme({
         text: {
             primary: palette.red,
             secondary: '#000000',
+        },
+        warning: {
+            main: palette.warning
         },
         /*custom: {
       light: '#ffa726',

@@ -12,7 +12,7 @@ function Text({ variant, color, children, ...props }) {
         <Typography
             variant={variant}
             color={color}
-            sx={{ fontFamily: 'default', ...props }}
+            sx={{ fontFamily: 'default',fontSize: 28, ...props }}
         >
             {children}
         </Typography>
