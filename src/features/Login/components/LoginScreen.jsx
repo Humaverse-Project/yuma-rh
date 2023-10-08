@@ -230,10 +230,10 @@ export default function LoginScreen() {
                             </Grid>
                         </Box>
                         <Box>
-                            {/*<ReCAPTCHA
+                            <ReCAPTCHA
                                 sitekey="6LdBhYYoAAAAAK0kVuppwgM0o6fUXfW3y9z3MRpD"
                                 onChange={onChange}
-                            />*/}
+                            />
                         </Box>
                     </Box>
                 </Container>
