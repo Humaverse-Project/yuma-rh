@@ -64,7 +64,7 @@ export default function LoginScreen() {
                 if (data.error) {
                     setErrorForm({ password: true, username: true })
                 } else {
-                    console.log(data.data)
+                    localStorage.setItem('user_data', JSON.stringify(data.data))
                     let userdata = data.data[0]
                     setCookie('email', userdata.compteEmail)
                     setCookie('id', userdata.id)
