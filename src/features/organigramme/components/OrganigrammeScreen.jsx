@@ -15,9 +15,8 @@ import NewPosteModal from './NewPosteModal'
 function OrganigrammeScreen() {
     const [data, setData] = useState([])
     const [dataPersonne, setDataPersonne] = useState([])
-    const [datacompetance, setdatacompetance] = useState([])
     const [datametier, setDataMetier] = useState(null)
-    const [datapostegenerique, setDatapostegenerique] = useState(null)
+    const [posteentreprise, setposteentreprise] = useState([])
     //const [etat, setEtat] = useState();
     const [nodeselected, setNodeselected] = useState({
         titre: '',
@@ -85,25 +84,10 @@ function OrganigrammeScreen() {
                     reponsemetie.rome.map((metier) => {
                         return {
                             label:
-                                '[' + metier.rome_coderome + ']' + metier.nom,
+                                metier.rome_coderome + ' ' + metier.nom,
                             code: metier.rome_coderome,
                             nom: metier.nom,
                             id: metier.id,
-                        }
-                    })
-                )
-                setdatacompetance(
-                    reponsemetie.competance.map((metier) => {
-                        return {
-                            label:
-                                '[v-' +
-                                metier.ficCompVersion +
-                                ']' +
-                                metier.ficCompTitreEmploi,
-                            titre: metier.ficCompTitreEmploi,
-                            id: metier.id,
-                            brique: metier.briquelist,
-                            niveau: metier.niveau,
                         }
                     })
                 )
@@ -118,8 +102,8 @@ function OrganigrammeScreen() {
                         }
                     })
                 )
-                setDatapostegenerique(reponsemetie.poste_generique)
                 var persutiliser = []
+                setposteentreprise(reponsemetie.poste)
                 let postorg = reponsemetie.poste.map((poste) => {
                     let titre = poste.fiches_postes_titre
                     let nodeId = poste.id
@@ -271,8 +255,7 @@ function OrganigrammeScreen() {
                         onSubmit={addNode}
                         dataPersonne={dataPersonne}
                         datametier={datametier}
-                        datacompetance={datacompetance}
-                        datapostegenerique={datapostegenerique}
+                        posteentreprise={posteentreprise}
                     />
                 </Grid>
             </Box>

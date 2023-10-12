@@ -1,4 +1,5 @@
 import { base_url } from './BaseUrl'
+import { getCookie } from './CoockieService'
 
 export async function listmetier() {
     const url = `${base_url}/metier`;
@@ -12,6 +13,26 @@ export async function listmetier() {
     return await response.json();
 }
 
+export async function getdatarome(code) {
+    const url = `${base_url}/organigramme/loadposte`;
+  
+    const body = new URLSearchParams();
+    body.append('code', code);
+    body.append("entrepriseid", getCookie("entrepriseid"));
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+    });
+  
+    if (!response.ok) {
+      throw new Error('erreur backend');
+    }
+    return await response.json();
+  }
+  
 export async function postmetier(formdata) {
     const url = `${base_url}/metier/new`;
 
