@@ -43,9 +43,13 @@ export default function ScreenOne({
         'Autre',
     ]
     const [naflist, setNaflist] = useState([])
+    const [keyDownState, setKeyDownState] = useState('')
+    const [nafLoading, setNafLoading] = useState(false)
     useEffect(() => {
-        getNaflist('0')
+        setNafLoading(true)
+        getNaflist(keyDownState)
             .then((data) => {
+                setNafLoading(false)
                 setNaflist(
                     data.results.map((data) => {
                         return {
@@ -56,10 +60,14 @@ export default function ScreenOne({
                 )
             })
             .catch((error) => {
+                setNafLoading(false)
                 console.error('API error:', error.message)
                 setShowError(true)
             })
-    }, [])
+            .finally(() => {
+                setNafLoading(false)
+            })
+    }, [keyDownState])
     const [showError, setShowError] = useState(false)
 
     const handleCloseAlert = (event, reason) => {
@@ -204,35 +212,40 @@ export default function ScreenOne({
                                 </FormControl>
                             </Grid>
                             <Grid item xs={6}>
-                                <Select
-                                    className="basic-single"
-                                    styles={{
-                                        control: (base) => ({
-                                            ...base,
-                                            height: 56,
-                                            width: '40ch',
-                                            padding: '0 16px',
-                                            marginTop: 15,
-                                            marginLeft: 16,
-                                        }),
+                                <Autocomplete
+                                    sx={{
+                                        m: 2,
+                                        width: '40ch',
                                     }}
-                                    placeholder="APE/NAF"
-                                    isSearchable
-                                    isClearable
+                                    disablePortal
+                                    value={formData.naf}
+                                    // onBlur ref izy mquitter le champ de averina "" n valeur mb ahazona n state initial
+                                    onBlur={(e) => setKeyDownState('')}
+                                    // isak n mtap clavier iz ref ao anat champ de alefa n recherche
+                                    onKeyDown={(e) =>
+                                        setKeyDownState(e.target.value)
+                                    }
+                                    loading={nafLoading}
+                                    onChange={(e, value) => {
+                                        setFormData({
+                                            ...formData,
+                                            naf: value,
+                                        })
+                                        setErrorForm({
+                                            ...ErrorForm,
+                                            naf: [false, ''],
+                                        })
+                                    }}
                                     options={naflist || []}
-                                    onChange={(e) => {
-                                        if (e) {
-                                            setFormData({
-                                                ...formData,
-                                                naf: e.value,
-                                            })
-                                        } else {
-                                            setFormData({
-                                                ...formData,
-                                                naf: '',
-                                            })
-                                        }
-                                    }}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            error={ErrorForm.naf[0]}
+                                            required
+                                            variant="outlined"
+                                            label="APE/NAF"
+                                        />
+                                    )}
                                 />
                             </Grid>
                         </Grid>
@@ -381,7 +394,6 @@ export default function ScreenOne({
                                     disablePortal
                                     value={formData.pays}
                                     onChange={(e, value) => {
-                                        console.log(value)
                                         setFormData({
                                             ...formData,
                                             pays: value,
