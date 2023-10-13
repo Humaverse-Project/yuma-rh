@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { OrgChartComponent } from './OrgChart'
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Button, Box, Grid, Divider, Autocomplete, TextField } from '@mui/material'
+import { Button, Box, Grid, Divider, Autocomplete, TextField, CircularProgress, Backdrop } from '@mui/material'
 import './mylink.css'
 import { Snackbar, Alert } from '@mui/material'
 import {
@@ -14,6 +14,7 @@ import NewPosteModal from './NewPosteModal'
 
 function OrganigrammeScreen() {
     const [data, setData] = useState([])
+    const [loadingrome, setloadingrome] = useState(true);
     const [dataPersonne, setDataPersonne] = useState([])
     const [datametier, setDataMetier] = useState(null)
     const [posteentreprise, setposteentreprise] = useState([])
@@ -127,6 +128,7 @@ function OrganigrammeScreen() {
                 })
                 setTitreexistant(reponsemetie.organigramme.map(poste=> poste.orgIntitulePoste))
                 setData(postorg)
+                setloadingrome(false)
             } catch (error) {
                 console.error("Une erreur s'est produite :", error)
                 setShowError(true)
@@ -137,6 +139,12 @@ function OrganigrammeScreen() {
 
     return (
         <Fragment>
+            <Backdrop
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 255 }}
+                open={loadingrome}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <HeaderInScreen title={'Organigramme'} />
             <Box
                 backgroundColor="background.paper"
@@ -231,15 +239,18 @@ function OrganigrammeScreen() {
                             svgWidth={200}
                         />
                     </Grid>
-                    <NewPosteModal
-                        open={open}
-                        onClose={handleClose}
-                        onSubmit={addNode}
-                        dataPersonne={dataPersonne}
-                        datametier={datametier}
-                        posteentreprise={posteentreprise}
-                        titreexistant={titreexistant}
-                    />
+                    {
+                        open && 
+                        <NewPosteModal
+                            open={open}
+                            onClose={handleClose}
+                            onSubmit={addNode}
+                            dataPersonne={dataPersonne}
+                            datametier={datametier}
+                            posteentreprise={posteentreprise}
+                            titreexistant={titreexistant}
+                        />
+                    }
                 </Grid>
             </Box>
         </Fragment>

@@ -32,6 +32,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
     const [loadingrome, setloadingrome] = useState(false);
     const [romecompetanceerreur, setromecompetanceerreur] = useState([false, ""]);
     const [titreerreur, settitreerreur] = useState([false, ""]);
+    const [erreurposte, seterreurposte] = useState(false);
     const [ postesource, setpostesource ] = useState({
         id: null
     })
@@ -41,7 +42,8 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
         nodeId: "K_"+Math.floor(Math.random() * 999999999999),
         personneid: "",
         personne: "",
-        titre: ""
+        titre: "",
+        posteid: 0
     });
     
     const handleChangePersonne = (event, value) => {
@@ -90,13 +92,19 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
         if (titreerreur[0] || romecompetanceerreur[0]){
             return false
         }
+        if ( newposte.posteid === 0) {
+            seterreurposte(true)
+            return false
+        }
         setLoading(true)
-        console.log(newposte)
+        setloadingrome(true)
         await onSubmit(newposte)
         setLoading(false)
         setNewPoste({
             imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg"
         })
+        setloadingrome(false)
+        setpostegenerique([])
         onClose()
     }
     return (
@@ -226,6 +234,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                                                                     ) {
                                                                         setNewPoste({ ...newposte, posteid: poste.id })
                                                                         setpostesource(poste)
+                                                                        seterreurposte(false)
                                                                     }
                                                                 }}
                                                             />
@@ -259,6 +268,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                                                                     ) {
                                                                         setNewPoste({ ...newposte, posteid: poste.id })
                                                                         setpostesource(poste)
+                                                                        seterreurposte(false)
                                                                     }
                                                                 }}
                                                             />
@@ -292,6 +302,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                                                                     ) {
                                                                         setNewPoste({ ...newposte, posteid: poste.id })
                                                                         setpostesource(poste)
+                                                                        seterreurposte(false)
                                                                     }
                                                                 }}
                                                             />
@@ -306,7 +317,10 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                                 </>
                             )
                         }
-                        
+                        {
+                            erreurposte && 
+                            <Alert severity="warning">Veuillez associer le poste à la liste de métier ci dessus.</Alert>
+                        }
                         <Box
                             sx={{
                                 display: 'flex',
