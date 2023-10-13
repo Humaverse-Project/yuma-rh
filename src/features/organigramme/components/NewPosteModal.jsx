@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {getdatarome} from "../../../services/MetierService"
 import { 
     Button,
     Box,
@@ -13,105 +14,84 @@ import {
     Autocomplete,
     TextField,
     Grid,
-    List,
-    ListItem,
     FormControlLabel,
-    ListItemText,
-    Checkbox,
-    Typography
+    Typography,
+    Backdrop,
+    CircularProgress,
+    RadioGroup,
+    Radio,
+    FormHelperText,
+    Alert
 } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import { LoadingButton } from '@mui/lab';
 
-const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, datacompetance, datapostegenerique  }) => {
+const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, posteentreprise, titreexistant  }) => {
     const [loading, setLoading] = useState(false)
-    const [readonlycompetance, setreadonlycompetance] = useState(false)
-    const [ datapostegeneriqueafficher, setdatapostegeneriqueafficher] = useState([])
-    const [ listbrique, setlistbrique ] = useState([])
-    const [ niveau, setniveau ] = useState(null)
+    const [loadingrome, setloadingrome] = useState(false);
+    const [romecompetanceerreur, setromecompetanceerreur] = useState([false, ""]);
+    const [titreerreur, settitreerreur] = useState([false, ""]);
+    const [ postesource, setpostesource ] = useState({
+        id: null
+    })
+    const [ postegenerique, setpostegenerique ] = useState([])
     const [newposte, setNewPoste] = useState({
-        imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg"
-        ,competancedata: null
-        ,condition_general: ''
-        ,instruction: ''
-        ,activite:''
-        ,definition:''
-        ,agrement:''
+        imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
+        nodeId: "K_"+Math.floor(Math.random() * 999999999999),
+        personneid: "",
+        personne: "",
+        titre: ""
     });
-    const handleChangeMetier = (event, value) => {
-        if(value != null){
-            setNewPoste({ ...newposte, metier: value.nom, metierid: value.id });
-            let poste = datapostegenerique.filter(posg=>{
-                if (posg.rome.id === value.id) {
-                    return true
-                } return false
-            });
-            setdatapostegeneriqueafficher(poste)
-        }
-        else {setNewPoste({ ...newposte, metier: "", nodeId: "", metierid: 0, metierlabel: ""}); setdatapostegeneriqueafficher([])}
-    };
-    const handleChangeCompetance = (event, value) => {
-        if(value != null){
-            setNewPoste({ ...newposte, competance: value.titre, competanceid: value.id, nodeId: value.id+"_"+Math.floor(Math.random() * 999999999999), competancedata: value});
-            setlistbrique(value.brique)
-            setniveau(value.niveau)
-        }
-        else {
-            setNewPoste({ ...newposte, competance: "", competanceid: 0, nodeId: "" })
-            setlistbrique([])
-            setniveau(null)
-        }
-    };
+    
     const handleChangePersonne = (event, value) => {
         if(value != null){setNewPoste({ ...newposte, personne: value.label, personneid: value.id, personnelabel: value.label })}
         else {setNewPoste({ ...newposte, personne: "", personneid: 0, personnelabel: "" })}
     };
-    const handleChangePostegenerique = (event, value) => {
-        if(value != null){
-            let test = datacompetance.filter(competance=>{
-                if (competance.id === value.fichecompetance.id) {
-                    return true
-                } return false
-            })
-            if (test.length > 0) {
-                let values = test[0]
-                setNewPoste({
-                    ...newposte,
-                    activite: value.activite[0],
-                    definition: value.definition[0],
-                    agrement: value.agrement,
-                    condition_general: value.condition,
-                    instruction: value.instruction[0],
-                    competance: values.titre, competanceid: values.id, nodeId: values.id+"_"+Math.floor(Math.random() * 999999999999), competancedata: values
-                })
-                setreadonlycompetance(true)
-                setniveau(values.niveau)
-                setlistbrique(values.brique)
-            } else {
-                setNewPoste({
-                    ...newposte,
-                    activite: value.activite[0],
-                    definition: value.definition[0],
-                    agrement: value.agrement,
-                    condition_general: value.condition,
-                    instruction: value.instruction[0]
-                })
-                setlistbrique([])
-                setniveau(null)
-            }
-        } else {
-            setreadonlycompetance(false)
-        }
-        // else {setNewPoste({ ...newposte, personne: "", personneid: 0 })}
-    };
     const handleChange = (event) => {
         const { name, value } = event.target;
+        if (name === "titre") {
+            if (titreexistant.includes(value)) {
+                settitreerreur([true, "Cet intitulé existe déjà dans organigramme"])
+            } else {
+                settitreerreur([false, ""])
+            }
+        }
         setNewPoste({ ...newposte, [name]: value });
     };
+    const handleChangeRome = (e, value)=>{
+        if (value !== null) {
+            setloadingrome(true)
+            getdatarome(value.code)
+            .then((reponsemetie) => {
+                setloadingrome(false);
+                console.log(reponsemetie.poste_generique)
+                setpostegenerique(reponsemetie.poste_generique)
+                if (reponsemetie.poste_generique.length === 0) {
+                    setromecompetanceerreur([true, "Il n'y pas de fiche poste prédedinir sur cette code ROME"])
+                } else {
+                    setromecompetanceerreur([false, ""])
+                }
+            })
+            .catch((error) => {
+                setloadingrome(false);
+            });
+        } else {
+            setromecompetanceerreur([true, "Veuillez selectionner un code rome"])
+            setpostegenerique([])
+        }
+        
+    }
     const submitdata = async (e)=> {
-        console.log(newposte)
+        if (newposte.titre === "") {
+            settitreerreur([true, "Ce champs et obligatoire"])
+            return false
+        }
+        if (titreerreur[0] || romecompetanceerreur[0]){
+            return false
+        }
         setLoading(true)
+        console.log(newposte)
         await onSubmit(newposte)
         setLoading(false)
         setNewPoste({
@@ -121,8 +101,14 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, data
     }
     return (
         <ThemeProvider theme={theme}>
+            <Backdrop
+                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 255 }}
+                open={loadingrome}
+            >
+                <CircularProgress color="inherit" />
+            </Backdrop>
             <Dialog  open={open} onClose={onClose}>
-                <DialogTitle textAlign="center"  color={"black.main"}>Formulaire de création poste</DialogTitle>
+                <DialogTitle textAlign="center"  color={"black.main"}>Ajout poste</DialogTitle>
                 <DialogContent dividers={true}>
                     <Stack
                         sx={{
@@ -137,241 +123,199 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, data
                         >
                             <Grid
                                 item
-                                xs={4}
-                                sm={4}
+                                xs={6}
+                                sm={6}
                                 sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <Autocomplete
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    disablePortal
-                                    options={datametier || []}
-                                    onChange={handleChangeMetier}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            required
-                                            label="Fiches Métiers" 
-                                            name="rome"
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
+                                display: "flex",
+                                marginRight: "5px",
                                 }}
                             >
                                 <FormControl
                                     variant="outlined"
                                     sx={{
-                                        width: '100%',
+                                        width: "100%",
                                     }}
                                     required
-                                    >
+                                    error={titreerreur[0]}
+                                >
                                     <InputLabel htmlFor="outlined-adornment-password">
-                                        Nom poste
+                                        Intitulé poste organigramme
                                     </InputLabel>
                                     <OutlinedInput
+                                        onChange={handleChange}
                                         name="titre"
-                                        onChange={handleChange}
-                                        label="Nom poste"
+                                        label="Intitulé poste organigramme"
                                     />
-                                </FormControl>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <Autocomplete
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    disablePortal
-                                    options={datapostegeneriqueafficher || []}
-                                    onChange={handleChangePostegenerique}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            required
-                                            label="Associer ce poste à un poste generique" 
-                                            name="postegenerique"
-                                            variant="outlined"
-                                        />
+                                {   titreerreur[0] ? (
+                                        <FormHelperText>{titreerreur[1]}</FormHelperText>
+                                    ) : (
+                                    null
                                     )}
-                                />
+                                </FormControl>
                             </Grid>
+                            <Grid
+                                item
+                                xs={6}
+                                sm={6}
+                                sx={{
+                                    display: 'flex',
+                                    marginRight: '5px',
+                                }}
+                            >
+                                <FormControl
+                                    sx={{
+                                    width: "100%",
+                                }}
+                                    variant="outlined"
+                                    error={romecompetanceerreur[0]}
+                                >
+                                    <Autocomplete
+                                        disablePortal
+                                        options={datametier || []}
+                                        onChange={handleChangeRome}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                required
+                                                label="Code ROME" 
+                                                name="rome"
+                                                variant="outlined"
+                                            />
+                                        )}
+                                    />
+                                    {   romecompetanceerreur[0] ? (
+                                        <FormHelperText>{romecompetanceerreur[1]}</FormHelperText>
+                                    ) : (
+                                    null
+                                    )}
+                                </FormControl>
+                                
+                            </Grid>
+                            
                         </Box>
+                        {
+                            // (posteentreprise.length > 0 && postegenerique.length > 0) && (
+                            ( postegenerique.length > 0) && (
+                                <>
+                                    <Alert severity="info">Vous pouver associer ce poste à une fiche poste ou métier ci dessous</Alert>
+                                    <Grid
+                                        sx={{ flexGrow: 1 }}
+                                        container
+                                        spacing={2}
+                                    >
+                                        <Grid item xs={4}>
+                                            <Typography sx={{mb: 2}}><b>Poste entreprise</b></Typography>
+                                            <RadioGroup
+                                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                                name="controlled-radio-buttons-group"
+                                            >
+                                            {
+                                                posteentreprise.map((poste)=> (
+                                                    <FormControlLabel
+                                                        value={poste.id}
+                                                        control={
+                                                            <Radio
+                                                                checked={
+                                                                    postesource.id ===
+                                                                    poste.id
+                                                                }
+                                                                onChange={(e) => {
+                                                                    if (
+                                                                        e.target
+                                                                            .checked
+                                                                    ) {
+                                                                        setNewPoste({ ...newposte, posteid: poste.id })
+                                                                        setpostesource(poste)
+                                                                    }
+                                                                }}
+                                                            />
+                                                        }
+                                                        label={poste.titre}
+                                                    />
+                                                ))
+                                            }
+                                            </RadioGroup>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Typography sx={{mb: 2}}><b>Liste de Fiches Métier Entreprise</b></Typography>
+                                            <RadioGroup
+                                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                                name="controlled-radio-buttons-group"
+                                            >
+                                            {
+                                                posteentreprise.map((poste)=> (
+                                                    <FormControlLabel
+                                                        value={poste.id}
+                                                        control={
+                                                            <Radio
+                                                                checked={
+                                                                    postesource.id ===
+                                                                    poste.id
+                                                                }
+                                                                onChange={(e) => {
+                                                                    if (
+                                                                        e.target
+                                                                            .checked
+                                                                    ) {
+                                                                        setNewPoste({ ...newposte, posteid: poste.id })
+                                                                        setpostesource(poste)
+                                                                    }
+                                                                }}
+                                                            />
+                                                        }
+                                                        label={poste.titre}
+                                                    />
+                                                ))
+                                            }
+                                            </RadioGroup>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Typography sx={{mb: 2}}><b>Liste de Fiches Métier Humaverse</b></Typography>
+                                            <RadioGroup
+                                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                                name="controlled-radio-buttons-group"
+                                            >
+                                            {
+                                                postegenerique.map((poste)=> (
+                                                    <FormControlLabel
+                                                        value={poste.id}
+                                                        control={
+                                                            <Radio
+                                                                checked={
+                                                                    postesource.id ===
+                                                                    poste.id
+                                                                }
+                                                                onChange={(e) => {
+                                                                    if (
+                                                                        e.target
+                                                                            .checked
+                                                                    ) {
+                                                                        setNewPoste({ ...newposte, posteid: poste.id })
+                                                                        setpostesource(poste)
+                                                                    }
+                                                                }}
+                                                            />
+                                                        }
+                                                        label={poste.titre}
+                                                    />
+                                                ))
+                                            }
+                                            </RadioGroup>
+                                        </Grid>
+                                    </Grid>
+                                </>
+                            )
+                        }
+                        
                         <Box
                             sx={{
                                 display: 'flex',
                             }}
-                        >
+                        >  
                             <Grid
                                 item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <FormControl
-                                    variant="outlined"
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    required
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-password">
-                                        Activité
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        type="text"
-                                        value={newposte.activite}
-                                        name="activite"
-                                        onChange={handleChange}
-                                        multiline
-                                        label="Activité"
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <FormControl
-                                    variant="outlined"
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    required
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-password">
-                                        Définition
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        name="definition"
-                                        value={newposte.definition}
-                                        onChange={handleChange}
-                                        multiline
-                                        label="Définition"
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <FormControl
-                                    variant="outlined"
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    required
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-password">
-                                        Agrement
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        name="agrement"
-                                        value={newposte.agrement}
-                                        onChange={handleChange}
-                                        multiline
-                                        label="Agrement"
-                                    />
-                                </FormControl>
-                            </Grid>
-                        </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                            }}
-                        >
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <FormControl
-                                    variant="outlined"
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    required
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-password">
-                                        Condition Génerale
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        name="condition_general"
-                                        value={newposte.condition_general}
-                                        onChange={handleChange}
-                                        multiline
-                                        label="Condition Génerale"
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <FormControl
-                                    variant="outlined"
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    required
-                                >
-                                    <InputLabel htmlFor="outlined-adornment-password">
-                                        Instruction
-                                    </InputLabel>
-                                    <OutlinedInput
-                                        name="instruction"
-                                        value={newposte.instruction}
-                                        onChange={handleChange}
-                                        multiline
-                                        label="Instruction"
-                                    />
-                                </FormControl>
-                            </Grid>
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
+                                xs={12}
+                                sm={12}
                                 sx={{
                                     display: 'flex',
                                     marginRight: '5px',
@@ -396,77 +340,6 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, data
                                 />
                             </Grid>
                         </Box>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                            }}
-                        >
-                            <Grid
-                                item
-                                xs={4}
-                                sm={4}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <Autocomplete
-                                    sx={{
-                                        width: '100%',
-                                    }}
-                                    disablePortal
-                                    value={newposte.competancedata}
-                                    readOnly={readonlycompetance}
-                                    options={datacompetance || []}
-                                    onChange={handleChangeCompetance}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            required
-                                            label="Fiche competance" 
-                                            name="fiche_competance"
-                                            variant="outlined"
-                                        />
-                                    )}
-                                />
-                            </Grid>
-                        { listbrique.length >0 ? (
-                            <Grid
-                                item
-                                xs={8}
-                                sm={8}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <Typography>Niveau {niveau}</Typography>
-                                <Box flex="1"
-                                    sx={{
-                                        m: 2,
-                                        width: '100%',
-                                    }}>
-                                    <List sx={{maxHeight: "40vh", height: "40vh", overflow: "auto"}}>
-                                        {listbrique.map((element) => (
-                                        <ListItem key={element.id}>
-                                            <FormControlLabel
-                                                control={
-                                                    <Checkbox
-                                                        checked = {true}
-                                                        readOnly
-                                                    />
-                                                }
-                                            label={<ListItemText primary={element.brqCompTitre} />}
-                                            />
-                                        </ListItem>
-                                        ))}
-                                    </List>
-                                </Box>
-                            </Grid>
-                        ) : (
-                            null
-                        )}
-                        </Box>
                     </Stack>
                 </DialogContent>
                 <DialogActions>
@@ -474,7 +347,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, data
                     variant="contained"
                     onClick={onClose}
                 >
-                Annuler
+                    Annuler
                 </Button>
                 <LoadingButton
                     loading={loading}

@@ -229,7 +229,7 @@ export default function ScreenOne({
                                     onChange={(e, value) => {
                                         setFormData({
                                             ...formData,
-                                            naf: value,
+                                            naf: value.value,
                                         })
                                         setErrorForm({
                                             ...ErrorForm,
