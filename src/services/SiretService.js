@@ -1,17 +1,16 @@
 export async function getInfoSirret(sirret) {
-    const url = `https://data.siren-api.fr/v3/etablissements/${sirret}`
+    const url = `https://api.insee.fr/entreprises/sirene/V3/siret/${sirret}`
 
     const response = await fetch(url, {
         method: 'GET',
-        //   headers: {
-        //     "X-Client-Secret": `xhZZkBOp7TSweBOtSeAYudVV9D47ZzLs`,
-        //   },
+        headers: {
+            'Authorization': 'Bearer 4bbd4e34-e391-349f-86ce-85c573eb80cb'
+        },
     })
 
     if (!response.ok) {
         throw new Error('Network response was not ok')
     }
-
     return await response.json()
 }
 

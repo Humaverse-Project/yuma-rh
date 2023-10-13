@@ -223,7 +223,7 @@ export default function LoginScreen() {
                             </Grid>
                         </Grid>
                     </Box>
-                    <Box
+                    {/* <Box
                         sx={{
                             mt: 2,
                             display: 'flex',
@@ -235,7 +235,7 @@ export default function LoginScreen() {
                             sitekey="6LdBhYYoAAAAAK0kVuppwgM0o6fUXfW3y9z3MRpD"
                             onChange={onChange}
                         />
-                    </Box>
+                    </Box> */}
                 </Box>
             </Grid>
         </form>

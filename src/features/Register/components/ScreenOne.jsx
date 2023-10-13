@@ -120,13 +120,13 @@ export default function ScreenOne({
                     setFormData({
                         siret: value,
                         nom_entreprise:
-                            data.etablissement.unite_legale.denomination,
-                        code_postal: data.etablissement.code_postal,
+                            data.etablissement.uniteLegale.denominationUniteLegale,
+                        code_postal: data.etablissement.adresseEtablissement.codePostalEtablissement,
                         rue_numero:
-                            data.etablissement.numero_voie +
+                            data.etablissement.adresseEtablissement.numeroVoieEtablissement +
                             ' ' +
-                            data.etablissement.libelle_voie,
-                        ville: data.etablissement.libelle_commune,
+                            data.etablissement.adresseEtablissement.libelleVoieEtablissement,
+                        ville: data.etablissement.adresseEtablissement.libelleCommuneEtablissement,
                     })
                 })
                 .catch((error) => {
