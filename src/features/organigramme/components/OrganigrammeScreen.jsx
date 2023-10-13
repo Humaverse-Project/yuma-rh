@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { OrgChartComponent } from './OrgChart'
 import HeaderInScreen from '../../header/HeaderInScreen'
-import { Button, Box, Grid } from '@mui/material'
+import { Button, Box, Grid, Divider, Autocomplete, TextField } from '@mui/material'
 import './mylink.css'
 import { Snackbar, Alert } from '@mui/material'
 import {
@@ -17,6 +17,7 @@ function OrganigrammeScreen() {
     const [dataPersonne, setDataPersonne] = useState([])
     const [datametier, setDataMetier] = useState(null)
     const [posteentreprise, setposteentreprise] = useState([])
+    const [titreexistant, setTitreexistant] = useState([])
     //const [etat, setEtat] = useState();
     const [nodeselected, setNodeselected] = useState({
         titre: '',
@@ -55,14 +56,12 @@ function OrganigrammeScreen() {
         setShowError(false)
     }
     async function addNode(newnode) {
-        console.log(nodeselected)
-        if (nodeselected.personne !== '') {
+        if (nodeselected.nodeId !== undefined) {
             newnode.parentNodeId = nodeselected.nodeId
         }
         if (data.length === 0) {
             newnode.parentNodeId = ''
         }
-
         const datametierexistant = await postdata(newnode)
         const reponsemetie = await datametierexistant
         newnode.nodeId = reponsemetie.id
@@ -84,7 +83,7 @@ function OrganigrammeScreen() {
                     reponsemetie.rome.map((metier) => {
                         return {
                             label:
-                                metier.rome_coderome + ' ' + metier.nom,
+                            metier.rome_coderome + ' ' + metier.nom,
                             code: metier.rome_coderome,
                             nom: metier.nom,
                             id: metier.id,
@@ -102,47 +101,19 @@ function OrganigrammeScreen() {
                         }
                     })
                 )
-                var persutiliser = []
                 setposteentreprise(reponsemetie.poste)
-                let postorg = reponsemetie.poste.map((poste) => {
-                    let titre = poste.fiches_postes_titre
+                let postorg = reponsemetie.organigramme.map((poste) => {
+                    let titre = poste.orgIntitulePoste
                     let nodeId = poste.id
                     let parentNodeId = ''
-                    if (poste.fiches_postes_nplus1.length !== 0) {
-                        parentNodeId = poste.fiches_postes_nplus1.id
+                    if (poste.organigrammeNplus1 !== null) {
+                        parentNodeId = poste.organigrammeNplus1
                     }
-                    let personne = ''
-                    let personneid = 0
-                    var per = reponsemetie.personnelist.filter((personne) => {
-                        if (personne.personnePoste.id === poste.id) {
-                            return true
-                        }
-                        return false
-                    })
-                    if (per.length > 0) {
-                        if (per.length === 1) {
-                            personne =
-                                per[0].personneNom + ' ' + per[0].personnePrenom
-                            personneid = per[0].id
-                        } else {
-                            for (let index = 0; index < per.length; index++) {
-                                const element = per[index]
-                                if (
-                                    !persutiliser.includes(
-                                        element.personneNom +
-                                            ' ' +
-                                            element.personnePrenom
-                                    )
-                                ) {
-                                    personne =
-                                        element.personneNom +
-                                        ' ' +
-                                        element.personnePrenom
-                                    personneid = element.id
-                                    break
-                                }
-                            }
-                        }
+                    let personne = ""
+                    let personneid = ""
+                    if (poste.personnes !== null) {
+                        personne = poste.personnes.personneNom
+                        personneid = poste.personnes.id
                     }
                     return {
                         titre: titre,
@@ -154,8 +125,8 @@ function OrganigrammeScreen() {
                             'https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg',
                     }
                 })
+                setTitreexistant(reponsemetie.organigramme.map(poste=> poste.orgIntitulePoste))
                 setData(postorg)
-                console.log(reponsemetie)
             } catch (error) {
                 console.error("Une erreur s'est produite :", error)
                 setShowError(true)
@@ -181,8 +152,6 @@ function OrganigrammeScreen() {
                 justifyContent="space-between"
                 alignItems="flex-start"
                 minHeight="80vh"
-                py={6}
-                px={4}
             >
                 <div>
                     <Snackbar
@@ -197,8 +166,9 @@ function OrganigrammeScreen() {
                         </Alert>
                     </Snackbar>
                 </div>
-                <Grid container spacing={2}>
-                    <Grid item xs={12} md={2}>
+                <Grid container>
+                    <Grid item xs={12} md={2} sx={{pt:2}}>
+                        <Box sx={{ my: 1, mx: 1 }}>
                         <Button
                             variant="contained"
                             onClick={handleOpen}
@@ -213,6 +183,24 @@ function OrganigrammeScreen() {
                         >
                             Ajouter un poste
                         </Button>
+                        </Box>
+                        <Divider variant="middle" />
+                        <Box sx={{ my: 1, mx: 1 }}>
+                            <Autocomplete
+                                disablePortal
+                                options={["Hiérarchique", "Matriciel", "Plat"]}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        required
+                                        label="Type d’organigrame" 
+                                        name="rome"
+                                        variant="outlined"
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Divider variant="middle" />
                         {/* <Button variant="contained" color="primary" sx={{m: 2}}>
               Importer
             </Button> 
@@ -225,13 +213,7 @@ function OrganigrammeScreen() {
                         xs={12}
                         md={10}
                         sx={{
-                            [theme.breakpoints.up('lg')]: {
-                                mt: 2,
-                            },
-                            [theme.breakpoints.down('sm')]: {
-                                my: 1,
-                                mx: 0,
-                            },
+                            p:0
                         }}
                     >
                         <OrgChartComponent
@@ -256,6 +238,7 @@ function OrganigrammeScreen() {
                         dataPersonne={dataPersonne}
                         datametier={datametier}
                         posteentreprise={posteentreprise}
+                        titreexistant={titreexistant}
                     />
                 </Grid>
             </Box>

@@ -27,7 +27,7 @@ export const OrgChartComponent = (props, ref) => {
         .container(d3Container.current)
         .data(props.data)
         .svgWidth(500)
-        .initialZoom(0.8)
+        .initialZoom(0.5)
         .rootMargin(100)
         .nodeWidth((d) => 210)
         .nodeHeight((d) => 140)
