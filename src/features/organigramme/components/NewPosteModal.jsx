@@ -54,7 +54,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
         const { name, value } = event.target;
         if (name === "titre") {
             if (titreexistant.includes(value)) {
-                settitreerreur([true, "Cet intitulé existe déjà dans organigramme"])
+                settitreerreur([true, "Cet intitulé existe déjà dans l'organigramme"])
             } else {
                 settitreerreur([false, ""])
             }
@@ -70,7 +70,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                 console.log(reponsemetie.poste_generique)
                 setpostegenerique(reponsemetie.poste_generique)
                 if (reponsemetie.poste_generique.length === 0) {
-                    setromecompetanceerreur([true, "Il n'y pas de fiche poste prédedinir sur cette code ROME"])
+                    setromecompetanceerreur([true, "Il n'y a pas de fiche de poste prédéfinie pour ce code ROME"])
                 } else {
                     setromecompetanceerreur([false, ""])
                 }
@@ -205,7 +205,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                             // (posteentreprise.length > 0 && postegenerique.length > 0) && (
                             ( postegenerique.length > 0) && (
                                 <>
-                                    <Alert severity="info">Vous pouver associer ce poste à une fiche poste ou métier ci dessous</Alert>
+                                    <Alert severity="info">Vous pouvez associer ce poste à une fiche de poste ou à un métier ci-dessous.</Alert>
                                     <Grid
                                         sx={{ flexGrow: 1 }}
                                         container
