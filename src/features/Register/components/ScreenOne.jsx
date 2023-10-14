@@ -45,6 +45,11 @@ export default function ScreenOne({
     const [naflist, setNaflist] = useState([])
     const [keyDownState, setKeyDownState] = useState('')
     const [nafLoading, setNafLoading] = useState(false)
+
+    // siret validation
+    const [isValidNumberSiret, setIsValidNumberSiret] = useState(false)
+    const [invalidMail, setInvalidMail] = useState(false)
+
     useEffect(() => {
         setNafLoading(true)
         getNaflist(keyDownState)
@@ -78,7 +83,6 @@ export default function ScreenOne({
     }
     const handleSubmit = (event) => {
         event.preventDefault()
-        console.log(ErrorForm)
         let errr = 0
         let key = Object.keys(ErrorForm)
         let dataerror = {}
@@ -110,7 +114,27 @@ export default function ScreenOne({
         setScreen(2)
     }
     const handleChange = (event) => {
+        console.log('value onchange', event.target.value)
         const { name, value } = event.target
+        console.log('name', name)
+        if (name === 'siret') {
+            if (value.length >= 14) {
+                setIsValidNumberSiret(false)
+            } else {
+                setIsValidNumberSiret(true)
+            }
+        }
+
+        if (name === 'email') {
+            if (value.includes('@') === false) {
+                setInvalidMail(true)
+            } else {
+                setInvalidMail(false)
+            }
+
+            console.log('invalid pory', invalidMail)
+        }
+
         setFormData({ ...formData, [name]: value })
         setErrorForm({ ...ErrorForm, [name]: [false, ''] })
         if (name === 'siret' && value.length === 14) {
@@ -120,16 +144,24 @@ export default function ScreenOne({
                     setFormData({
                         siret: value,
                         nom_entreprise:
-                            data.etablissement.uniteLegale.denominationUniteLegale,
-                        code_postal: data.etablissement.adresseEtablissement.codePostalEtablissement,
+                            data.etablissement.uniteLegale
+                                .denominationUniteLegale,
+                        code_postal:
+                            data.etablissement.adresseEtablissement
+                                .codePostalEtablissement,
                         rue_numero:
-                            data.etablissement.adresseEtablissement.numeroVoieEtablissement +
+                            data.etablissement.adresseEtablissement
+                                .numeroVoieEtablissement +
                             ' ' +
-                            data.etablissement.adresseEtablissement.libelleVoieEtablissement,
-                        ville: data.etablissement.adresseEtablissement.libelleCommuneEtablissement,
+                            data.etablissement.adresseEtablissement
+                                .libelleVoieEtablissement,
+                        ville: data.etablissement.adresseEtablissement
+                            .libelleCommuneEtablissement,
+                        pays: 'France',
                     })
                 })
                 .catch((error) => {
+                    console.log('Error: ' + error)
                     console.error('API error:', error.message)
                     setShowError(true)
                 })
@@ -203,12 +235,27 @@ export default function ScreenOne({
                                             min: 0,
                                         }}
                                         onChange={handleChange}
+                                        onBlur={(e) =>
+                                            setIsValidNumberSiret(false)
+                                        }
                                     />
                                     {ErrorForm.siret[0] ? (
                                         <FormHelperText>
                                             {ErrorForm.siret[1]}
                                         </FormHelperText>
                                     ) : null}
+                                    {isValidNumberSiret && (
+                                        <FormHelperText
+                                            name="siret"
+                                            sx={{
+                                                color: 'red',
+                                                textAlign: 'left',
+                                            }}
+                                        >
+                                            La numéro de SIRET doit contenir au
+                                            moins 14 caractères
+                                        </FormHelperText>
+                                    )}
                                 </FormControl>
                             </Grid>
                             <Grid item xs={6}>
@@ -464,17 +511,27 @@ export default function ScreenOne({
                                         sx={{
                                             color: 'black.main',
                                         }}
-                                        name="email"
-                                        onChange={handleChange}
-                                        value={formData.email}
                                         type="email"
+                                        name="email"
                                         label="Email"
+                                        value={formData.email}
+                                        onChange={handleChange}
                                     />
                                     {ErrorForm.email[0] ? (
                                         <FormHelperText>
                                             {ErrorForm.email[1]}
                                         </FormHelperText>
                                     ) : null}
+                                    {invalidMail && (
+                                        <FormHelperText
+                                            sx={{
+                                                color: 'red',
+                                                textAlign: 'left',
+                                            }}
+                                        >
+                                            Email invalid
+                                        </FormHelperText>
+                                    )}
                                 </FormControl>
                             </Grid>
                         </Grid>
@@ -616,6 +673,18 @@ export default function ScreenOne({
                             <Grid item sx={6}>
                                 <Button
                                     variant="contained"
+                                    disabled={
+                                        formData.siret === '' ||
+                                        formData.naf === '' ||
+                                        formData.nom_entreprise === '' ||
+                                        formData.rue_numero === '' ||
+                                        formData.code_postal === '' ||
+                                        formData.ville === '' ||
+                                        formData.pays === '' ||
+                                        formData.telephone === '' ||
+                                        formData.effectif === '' ||
+                                        formData.etablissement === ''
+                                    }
                                     sx={{
                                         m: 2,
                                         width: '35ch',
@@ -640,7 +709,7 @@ export default function ScreenOne({
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >
                     <Alert onClose={handleCloseAlert} severity="error">
-                        Une erreur s'est produite lors de la connexion à l'API.
+                        SIRET inexistant ou inconnu
                     </Alert>
                 </Snackbar>
             </div>

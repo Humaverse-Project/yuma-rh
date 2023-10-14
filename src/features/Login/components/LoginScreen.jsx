@@ -20,6 +20,7 @@ import { NavLink, useNavigate } from 'react-router-dom'
 import { setCookie } from '../../../services/CoockieService'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { postcredential } from '../../../services/CompteService'
+import ModalForgotPassword from '../../Login/components/ForgotPassword'
 // logo
 import logo from '../../../assets/images/logo.png'
 // import Swal from 'sweetalert2'
@@ -32,6 +33,12 @@ export default function LoginScreen() {
     const [showPassword, setShowPassword] = React.useState(false)
     const [loading, setLoading] = React.useState(false)
     const navigate = useNavigate()
+
+    // forgot password state
+    const [open, setOpen] = React.useState(false)
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+
     const handleClickShowPassword = () => setShowPassword((show) => !show)
     const handleMouseDownPassword = (event) => {
         event.preventDefault()
@@ -89,155 +96,159 @@ export default function LoginScreen() {
     })
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid>
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <img src={logo} alt="logo" width="150px" height="150px" />
-
-                    <Typography component="h1" variant="h5">
-                        Authentification
-                    </Typography>
+        <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <Grid>
                     <Box
                         sx={{
+                            marginTop: 8,
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
-                            spacing: 2,
                         }}
                     >
-                        <FormControl
-                            variant="outlined"
-                            sx={{
-                                m: 2,
-                                width: '150%',
-                            }}
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                Email
-                            </InputLabel>
-                            <OutlinedInput
-                                sx={{
-                                    color: 'black.main',
-                                }}
-                                name="username"
-                                type="email"
-                                label="Email"
-                                error={errors.username ? true : false}
-                                {...register('username')}
-                            />
-                        </FormControl>
+                        <img
+                            src={logo}
+                            alt="logo"
+                            width="150px"
+                            height="150px"
+                        />
 
-                        <FormControl
+                        <Typography component="h1" variant="h5">
+                            Authentification
+                        </Typography>
+                        <Box
                             sx={{
-                                width: '150%',
-                            }}
-                            variant="outlined"
-                        >
-                            <InputLabel htmlFor="outlined-adornment-password">
-                                Mot de passe
-                            </InputLabel>
-                            <OutlinedInput
-                                sx={{
-                                    color: 'black.main',
-                                }}
-                                name="password"
-                                id="outlined-adornment-password"
-                                type={showPassword ? 'text' : 'password'}
-                                error={errors.password ? true : false}
-                                {...register('password')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={
-                                                handleMouseDownPassword
-                                            }
-                                            edge="end"
-                                        >
-                                            {showPassword ? (
-                                                <VisibilityOff />
-                                            ) : (
-                                                <Visibility />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Mot de passe"
-                            />
-                        </FormControl>
-                        <Button
-                            loading={loading}
-                            sx={{ height: '50px', mt: 2 }}
-                            variant="contained"
-                            fullWidth
-                            type="submit"
-                            disabled={loading}
-                        >
-                            {loading ? (
-                                <CircularProgress
-                                    size={24}
-                                    sx={{
-                                        color: 'white',
-                                    }}
-                                />
-                            ) : (
-                                'Connexion'
-                            )}
-                        </Button>
-                        <Grid
-                            container
-                            sx={{
-                                width: '150%',
                                 display: 'flex',
-                                justifyContent: 'space-between',
-                                mt: 2,
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                spacing: 2,
                             }}
                         >
-                            <Grid item xs>
-                                <NavLink
-                                    to="/passwordReminder"
-                                    style={{ textDecoration: 'none' }}
-                                >
-                                    <Typography color="primary.main">
+                            <FormControl
+                                variant="outlined"
+                                sx={{
+                                    m: 2,
+                                    width: '150%',
+                                }}
+                            >
+                                <InputLabel htmlFor="outlined-adornment-password">
+                                    Email
+                                </InputLabel>
+                                <OutlinedInput
+                                    sx={{
+                                        color: 'black.main',
+                                    }}
+                                    name="username"
+                                    type="email"
+                                    label="Email"
+                                    error={errors.username ? true : false}
+                                    {...register('username')}
+                                />
+                            </FormControl>
+
+                            <FormControl
+                                sx={{
+                                    width: '150%',
+                                }}
+                                variant="outlined"
+                            >
+                                <InputLabel htmlFor="outlined-adornment-password">
+                                    Mot de passe
+                                </InputLabel>
+                                <OutlinedInput
+                                    sx={{
+                                        color: 'black.main',
+                                    }}
+                                    name="password"
+                                    id="outlined-adornment-password"
+                                    type={showPassword ? 'text' : 'password'}
+                                    error={errors.password ? true : false}
+                                    {...register('password')}
+                                    endAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleClickShowPassword
+                                                }
+                                                onMouseDown={
+                                                    handleMouseDownPassword
+                                                }
+                                                edge="end"
+                                            >
+                                                {showPassword ? (
+                                                    <VisibilityOff />
+                                                ) : (
+                                                    <Visibility />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                    label="Mot de passe"
+                                />
+                            </FormControl>
+                            <Button
+                                loading={loading}
+                                sx={{ height: '50px', mt: 2 }}
+                                variant="contained"
+                                fullWidth
+                                type="submit"
+                                disabled={loading}
+                            >
+                                {loading ? (
+                                    <CircularProgress
+                                        size={24}
+                                        sx={{
+                                            color: 'white',
+                                        }}
+                                    />
+                                ) : (
+                                    'Connexion'
+                                )}
+                            </Button>
+                            <Grid
+                                container
+                                sx={{
+                                    width: '150%',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    mt: 2,
+                                }}
+                            >
+                                <Grid item xs>
+                                    <Typography
+                                        color="primary.main"
+                                        onClick={handleOpen}
+                                        sx={{
+                                            cursor: 'pointer',
+                                        }}
+                                    >
                                         Mot de passe oublié?
                                     </Typography>
-                                </NavLink>
+                                </Grid>
+                                <Grid item>
+                                    <NavLink
+                                        to="/register"
+                                        style={{ textDecoration: 'none' }}
+                                    >
+                                        <Typography color="primary.main">
+                                            Pas du compte? S'inscrire
+                                        </Typography>
+                                    </NavLink>
+                                </Grid>
                             </Grid>
-                            <Grid item>
-                                <NavLink
-                                    to="/register"
-                                    style={{ textDecoration: 'none' }}
-                                >
-                                    <Typography color="primary.main">
-                                        Pas du compte? S'inscrire
-                                    </Typography>
-                                </NavLink>
-                            </Grid>
-                        </Grid>
+                        </Box>
                     </Box>
-                    {/* <Box
-                        sx={{
-                            mt: 2,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <ReCAPTCHA
-                            sitekey="6LdBhYYoAAAAAK0kVuppwgM0o6fUXfW3y9z3MRpD"
-                            onChange={onChange}
-                        />
-                    </Box> */}
-                </Box>
-            </Grid>
-        </form>
+                </Grid>
+            </form>
+            {open && (
+                <ModalForgotPassword
+                    open={open}
+                    handleOpen={handleOpen}
+                    handleClose={handleClose}
+                />
+            )}
+        </>
     )
 }
