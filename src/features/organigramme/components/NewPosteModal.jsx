@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {getdatarome} from "../../../services/MetierService"
+import {filtredata} from "../../../services/OrganigrammeService"
 import { 
     Button,
     Box,
@@ -27,7 +27,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from './theme';
 import { LoadingButton } from '@mui/lab';
 
-const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, posteentreprise, titreexistant  }) => {
+const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant  }) => {
     const [loading, setLoading] = useState(false)
     const [loadingrome, setloadingrome] = useState(false);
     const [romecompetanceerreur, setromecompetanceerreur] = useState([false, ""]);
@@ -37,6 +37,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
         id: null
     })
     const [ postegenerique, setpostegenerique ] = useState([])
+    const [ posteentreprise, setposteentreprise ] = useState([])
     const [newposte, setNewPoste] = useState({
         imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
         nodeId: "K_"+Math.floor(Math.random() * 999999999999),
@@ -58,38 +59,37 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
             } else {
                 settitreerreur([false, ""])
             }
-        }
-        setNewPoste({ ...newposte, [name]: value });
-    };
-    const handleChangeRome = (e, value)=>{
-        if (value !== null) {
-            setloadingrome(true)
-            getdatarome(value.code)
-            .then((reponsemetie) => {
-                setloadingrome(false);
-                console.log(reponsemetie.poste_generique)
-                setpostegenerique(reponsemetie.poste_generique)
-                if (reponsemetie.poste_generique.length === 0) {
-                    setromecompetanceerreur([true, "Il n'y a pas de fiche de poste prédéfinie pour ce code ROME"])
+            filtredata(value).then((reponsemetie) => {
+                if (reponsemetie.length === 0) {
+                    if (postegenerique.length === 0 && posteentreprise.length === 0) {
+                        setromecompetanceerreur([true, "Il n'y a pas de fiche de poste prédéfinie pour ce code ROME"])
+                    }
                 } else {
                     setromecompetanceerreur([false, ""])
+                    setpostegenerique(reponsemetie.filter(poste=> {
+                        if(poste.entreprise === null){
+                            return true
+                        } return false
+                    }))
+                    setposteentreprise(reponsemetie.filter(poste=> {
+                        if(poste.entreprise !== null){
+                            return true
+                        } return false
+                    }))
                 }
             })
             .catch((error) => {
-                setloadingrome(false);
+                console.log(error);
             });
-        } else {
-            setromecompetanceerreur([true, "Veuillez selectionner un code rome"])
-            setpostegenerique([])
         }
-        
-    }
+        setNewPoste({ ...newposte, [name]: value });
+    };
     const submitdata = async (e)=> {
         if (newposte.titre === "") {
             settitreerreur([true, "Ce champs et obligatoire"])
             return false
         }
-        if (titreerreur[0] || romecompetanceerreur[0]){
+        if (titreerreur[0]){
             return false
         }
         if ( newposte.posteid === 0) {
@@ -131,8 +131,8 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                         >
                             <Grid
                                 item
-                                xs={6}
-                                sm={6}
+                                xs={12}
+                                sm={12}
                                 sx={{
                                 display: "flex",
                                 marginRight: "5px",
@@ -161,49 +161,13 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, datametier, post
                                     )}
                                 </FormControl>
                             </Grid>
-                            <Grid
-                                item
-                                xs={6}
-                                sm={6}
-                                sx={{
-                                    display: 'flex',
-                                    marginRight: '5px',
-                                }}
-                            >
-                                <FormControl
-                                    sx={{
-                                    width: "100%",
-                                }}
-                                    variant="outlined"
-                                    error={romecompetanceerreur[0]}
-                                >
-                                    <Autocomplete
-                                        disablePortal
-                                        options={datametier || []}
-                                        onChange={handleChangeRome}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                required
-                                                label="Code ROME" 
-                                                name="rome"
-                                                variant="outlined"
-                                            />
-                                        )}
-                                    />
-                                    {   romecompetanceerreur[0] ? (
-                                        <FormHelperText>{romecompetanceerreur[1]}</FormHelperText>
-                                    ) : (
-                                    null
-                                    )}
-                                </FormControl>
-                                
-                            </Grid>
-                            
                         </Box>
                         {
-                            // (posteentreprise.length > 0 && postegenerique.length > 0) && (
-                            ( postegenerique.length > 0) && (
+                            romecompetanceerreur[0] && 
+                            <Alert severity="warning">{romecompetanceerreur[1]}</Alert>
+                        }
+                        {
+                            (!romecompetanceerreur[0] && newposte.titre !== "") && (
                                 <>
                                     <Alert severity="info">Vous pouvez associer ce poste à une fiche de poste ou à un métier ci-dessous.</Alert>
                                     <Grid

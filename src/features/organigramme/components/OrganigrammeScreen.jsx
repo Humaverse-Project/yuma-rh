@@ -1,5 +1,6 @@
-import React, { useState, useEffect, Fragment } from 'react'
-import { OrgChartComponent } from './OrgChart'
+import React, { useState, useEffect, Fragment, useLayoutEffect, useRef } from 'react'
+import { OrgChart } from 'd3-org-chart';
+// import { OrgChartComponent } from './OrgChart'
 import HeaderInScreen from '../../header/HeaderInScreen'
 import { Button, Box, Grid, Divider, Autocomplete, TextField, CircularProgress, Backdrop } from '@mui/material'
 import './mylink.css'
@@ -8,6 +9,7 @@ import {
     loaddata,
     postdata,
     postupdate,
+    deleteNodeserveur
 } from '../../../services/OrganigrammeService'
 import theme from './theme'
 import NewPosteModal from './NewPosteModal'
@@ -16,16 +18,13 @@ function OrganigrammeScreen() {
     const [data, setData] = useState([])
     const [loadingrome, setloadingrome] = useState(true);
     const [dataPersonne, setDataPersonne] = useState([])
-    const [datametier, setDataMetier] = useState(null)
-    const [posteentreprise, setposteentreprise] = useState([])
     const [titreexistant, setTitreexistant] = useState([])
+    const d3Container = useRef(null);
+    const [mychart, setChart] = useState(null);
     //const [etat, setEtat] = useState();
     const [nodeselected, setNodeselected] = useState({
         titre: '',
     })
-    let addNodeChildFunc = null
-    let initializeChart = null
-    let deletenode = null
 
     const [open, setOpen] = useState(false)
 
@@ -69,28 +68,34 @@ function OrganigrammeScreen() {
         if (data.length === 0) {
             newnode.parentNodeId = ''
             setData([...data, newnode])
-            initializeChart()
         } else {
-            addNodeChildFunc(newnode)
+            mychart.addNode(newnode);
         }
+        setTitreexistant([...titreexistant, newnode.titre])
         return true
+    }
+    async function deleteNode(e){
+        setloadingrome(true)
+        deleteNodeserveur(nodeselected.nodeId).then((datametierexistant) => {
+            setTitreexistant(datametierexistant.organigramme.map(poste=> poste.orgIntitulePoste))
+            if(nodeselected.parentNodeId !== ""){
+                mychart.removeNode(nodeselected.nodeId)
+            } else{
+                setData([])
+            }
+            setNodeselected({titre: ''})
+            setloadingrome(false)
+        })
+        .catch((error) => {
+            console.log(error);
+            setloadingrome(false)
+        });
     }
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const datametierexistant = await loaddata()
                 const reponsemetie = await datametierexistant
-                setDataMetier(
-                    reponsemetie.rome.map((metier) => {
-                        return {
-                            label:
-                            metier.rome_coderome + ' ' + metier.nom,
-                            code: metier.rome_coderome,
-                            nom: metier.nom,
-                            id: metier.id,
-                        }
-                    })
-                )
                 setDataPersonne(
                     reponsemetie.personnelist.map((personne) => {
                         return {
@@ -102,7 +107,6 @@ function OrganigrammeScreen() {
                         }
                     })
                 )
-                setposteentreprise(reponsemetie.poste)
                 let postorg = reponsemetie.organigramme.map((poste) => {
                     let titre = poste.orgIntitulePoste
                     let nodeId = poste.id
@@ -136,7 +140,88 @@ function OrganigrammeScreen() {
         }
         fetchData()
     }, [setShowError])
-
+    useLayoutEffect(() => {
+        if (d3Container.current) {
+          const chart = new OrgChart();
+          chart
+            .container(d3Container.current)
+            .data(data)
+            .svgWidth(500)
+            .initialZoom(0.5)
+            .rootMargin(100)
+            .nodeWidth((d) => 210)
+            .nodeHeight((d) => 140)
+            .childrenMargin((d) => 130)
+            .compactMarginBetween((d) => 75)
+            .compactMarginPair((d) => 80)
+            .onNodeClick((d, i, arr) => {
+              //props.onNodeClick(d);
+                setNodeselected(d)
+                const containerHTMLElementall = d3Container.current.querySelector(".selectednodecuststype");
+                if (containerHTMLElementall !== null) {
+                    containerHTMLElementall.classList.remove("selectednodecuststype");
+                }
+                const containerHTMLElement = d3Container.current.querySelector('#circle'+d.nodeId);
+                containerHTMLElement.classList.add("selectednodecuststype");
+            //   containerHTMLElement.innerHTML = '';
+            })
+            .onNodeDrop((source, target)=>{
+              chart.removeNode(source.nodeId)
+              chart.addNode({
+                "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
+                "titre": source.titre,
+                "parentNodeId": target.nodeId,
+                "personne": source.personne,
+                "nodeId": source.nodeId,
+                "personneid": source.personneid
+              })
+              sendupdateposte(source, target)
+              //chart.render()
+            })
+            .nodeContent(function (d, i, arr, state) {
+              const colors = [
+                '#6E6B6F',
+                '#18A8B6',
+                '#F45754',
+                '#96C62C',
+                '#BD7E16',
+                '#802F74',
+              ];
+              const color = colors[d.depth % colors.length];
+              const imageDim = 80;
+              const lightCircleDim = 95;
+              const outsideCircleDim = 110;
+    
+              return (`
+                  <div style="background-color:white; position:absolute;width:${
+                    d.width
+                  }px;height:${d.height}px;"  id="circle${d.data.nodeId}"  class="contentstyle">
+                    <div style="background-color:${color};position:absolute;margin-top:-${outsideCircleDim / 2}px;margin-left:${d.width / 2 - outsideCircleDim / 2}px;border-radius:100px;width:${outsideCircleDim}px;height:${outsideCircleDim}px;"></div>
+                    <div style="background-color:#ffffff;position:absolute;margin-top:-${
+                      lightCircleDim / 2
+                    }px;margin-left:${d.width / 2 - lightCircleDim / 2}px;border-radius:100px;width:${lightCircleDim}px;height:${lightCircleDim}px;"></div>
+                    <img src=" ${
+                      d.data.imageUrl
+                    }" style="position:absolute;margin-top:-${imageDim / 2}px;margin-left:${d.width / 2 - imageDim / 2}px;border-radius:100px;width:${imageDim}px;height:${imageDim}px;" />
+                    <div class="card" style="top:${
+                      outsideCircleDim / 2 + 10
+                    }px;position:absolute;height:30px;width:${d.width}px;background-color:#3AB6E3;">
+                        <div style="background-color:${color};height:28px;text-align:center;padding-top:10px;color:#ffffff;font-weight:bold;font-size:16px">
+                            ${d.data.personne} 
+                        </div>
+                        <div style="background-color:#F0EDEF;height:28px;text-align:center;padding-top:10px;color:#424142;font-size:16px">
+                            
+                            ${d.data.titre} 
+                        </div>
+                    </div>
+                </div>
+              `);
+            })
+          .render()
+          setChart(chart)
+          
+        }
+      }, [data]);
     return (
         <Fragment>
             <Backdrop
@@ -181,9 +266,7 @@ function OrganigrammeScreen() {
                             variant="contained"
                             onClick={handleOpen}
                             md={2}
-                            disabled={
-                                datametier === null ||
-                                (data.length > 0 && nodeselected.titre === '')
+                            disabled={(data.length > 0 && nodeselected.titre === '')
                             }
                             size="large"
                             fullWidth
@@ -192,6 +275,23 @@ function OrganigrammeScreen() {
                             Ajouter un poste
                         </Button>
                         </Box>
+                        <Divider variant="middle" />
+                        {
+                            (nodeselected.titre !== "") &&
+                                <Box sx={{ my: 1, mx: 1 }}>
+                                    <Button
+                                        variant="contained"
+                                        onClick={deleteNode}
+                                        md={2}
+                                        size="large"
+                                        fullWidth
+                                        color="warning"
+                                    >
+                                        Supprimer ce poste
+                                    </Button>
+                                </Box>
+                        }
+                        
                         <Divider variant="middle" />
                         <Box sx={{ my: 1, mx: 1 }}>
                             <Autocomplete
@@ -209,12 +309,6 @@ function OrganigrammeScreen() {
                             />
                         </Box>
                         <Divider variant="middle" />
-                        {/* <Button variant="contained" color="primary" sx={{m: 2}}>
-              Importer
-            </Button> 
-            <Button variant="contained" sx={{mt: 2}} size="large" disabled={!etat} onClick={handleDeletenode} fullWidth color="blue">
-              Supprimer { nodeselected.name }
-            </Button>*/}
                     </Grid>
                     <Grid
                         item
@@ -224,20 +318,11 @@ function OrganigrammeScreen() {
                             p:0
                         }}
                     >
-                        <OrgChartComponent
-                            setClick={(click) => (addNodeChildFunc = click)}
-                            setDeletefonction={(click) => (deletenode = click)}
-                            deleteNode={(d, etat) => {
-                                //setEtat(etat)
-                                setNodeselected(d)
-                            }}
-                            initializeChart={(init) => (initializeChart = init)}
-                            onNodeDrop={(source, target) => {
-                                sendupdateposte(source, target)
-                            }}
-                            data={data}
-                            svgWidth={200}
-                        />
+                        {
+                            data.length > 0 && 
+                            <div ref={d3Container} />
+                        }
+                        
                     </Grid>
                     {
                         open && 
@@ -246,8 +331,6 @@ function OrganigrammeScreen() {
                             onClose={handleClose}
                             onSubmit={addNode}
                             dataPersonne={dataPersonne}
-                            datametier={datametier}
-                            posteentreprise={posteentreprise}
                             titreexistant={titreexistant}
                         />
                     }
