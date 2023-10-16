@@ -12,6 +12,7 @@ import {
 import * as React from 'react'
 import { NavLink } from 'react-router-dom'
 import { DynamicHeadNav, Text, Row } from '../../shared'
+import SettingAccount from '../SettingAccount/components/SettingAccount'
 
 //ICONES
 import { useTheme } from '@emotion/react'
@@ -38,6 +39,11 @@ function HeaderGlobal() {
         setAnchorElUser(null)
     }
 
+    // Modal setting
+    const [open, setOpen] = React.useState(false)
+    const handleOpen = () => setOpen(true)
+    const handleClose = () => setOpen(false)
+
     return (
         <Row justifyContent={'space-between'} px={3} height={'10vh'}>
             <DynamicHeadNav title={'ACCUEIL'} />
@@ -56,19 +62,13 @@ function HeaderGlobal() {
                     }}
                 >
                     <Row width={100} justifyContent={'space-between'}>
-                        <NavLink
-                            style={{
-                                textDecoration: 'none',
-                                marginTop: 2,
-                                color: 'black',
-                            }}
-                            to="/settingAccount"
-                        >
+                        <IconButton onClick={handleOpen} sx={{ p: 0, mr: 2 }}>
                             <Icon
                                 sx={{ fontSize: 38 }}
                                 component={SettingsIcon}
                             />
-                        </NavLink>
+                        </IconButton>
+
                         <NavLink
                             to={'/nomenclature'}
                             style={{
@@ -173,6 +173,13 @@ function HeaderGlobal() {
                         </Box>
                     </Row>
                 </Box>
+            )}
+            {open && (
+                <SettingAccount
+                    open={open}
+                    handleClose={handleClose}
+                    handleOpen={handleOpen}
+                />
             )}
         </Row>
     )
