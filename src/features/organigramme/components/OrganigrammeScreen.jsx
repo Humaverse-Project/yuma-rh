@@ -157,6 +157,11 @@ function OrganigrammeScreen() {
             .onNodeClick((d, i, arr) => {
               //props.onNodeClick(d);
                 setNodeselected(d)
+                if(d._totalSubordinates > 0){
+                    chart.expand(d)
+                }
+                // 
+                console.log(d)
                 const containerHTMLElementall = d3Container.current.querySelector(".selectednodecuststype");
                 if (containerHTMLElementall !== null) {
                     containerHTMLElementall.classList.remove("selectednodecuststype");
@@ -166,17 +171,25 @@ function OrganigrammeScreen() {
             //   containerHTMLElement.innerHTML = '';
             })
             .onNodeDrop((source, target)=>{
-              chart.removeNode(source.nodeId)
-              chart.addNode({
-                "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
-                "titre": source.titre,
-                "parentNodeId": target.nodeId,
-                "personne": source.personne,
-                "nodeId": source.nodeId,
-                "personneid": source.personneid
-              })
-              sendupdateposte(source, target)
-              //chart.render()
+            //   chart.removeNode(source.nodeId)
+            //   ()
+            //   chart.addNode()
+                let index = data.indexOf(source)
+                data[index] = {
+                    "imageUrl": "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg",
+                    "titre": source.titre,
+                    "parentNodeId": target.nodeId,
+                    "personne": source.personne,
+                    "nodeId": source.nodeId,
+                    "personneid": source.personneid
+                }
+                setData([...data])
+                // 
+                chart.setCentered(target.nodeId)
+                chart.setExpanded(target.nodeId, true)
+                sendupdateposte(source, target)
+                chart.render()
+              //
             })
             .nodeContent(function (d, i, arr, state) {
               const colors = [

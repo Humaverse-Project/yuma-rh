@@ -64,7 +64,8 @@ export default function ScreenTwo({
         setLoading(true)
         postentreprise(formData)
             .then((data) => {
-                navigate('/')
+                console.log(data)
+                // navigate('/')
             })
             .catch((error) => {
                 console.error('bakend error:', error.message)
