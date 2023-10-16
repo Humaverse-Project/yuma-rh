@@ -1,3 +1,11 @@
 .link {
     stroke: black !important;
 }
+.selectednodecuststype {
+    background-color:#fc0303 !important;
+    transition: background-color 1s;
+}
+.contentstyle:hover {
+    background-color:#fc0303 !important;
+    transition: background-color 1s;
+}
