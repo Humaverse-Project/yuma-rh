@@ -3,7 +3,7 @@ import HeaderGlobal from '../../header/HeaderGlobal'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
 import { Fragment } from 'react'
-import { Card } from '@mui/material'
+import { Card, Tooltip } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CardItem } from '../../../shared'
 
@@ -39,42 +39,50 @@ function HomeScreen() {
                     }}
                 >
                     <NavLink to={'/personnehome'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
+                        <Tooltip
+                            title="Liste de personne 
+"
+                            placement="top"
                         >
-                            {CardItem(GroupsOutlinedIcon)}
-                        </Card>
+                            <Card
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    m: 2,
+                                    [theme.breakpoints.up('lg')]: {
+                                        m: 4,
+                                    },
+                                    boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                    [theme.breakpoints.down('sm')]: {
+                                        width: '100%',
+                                        my: 1,
+                                        mx: 0,
+                                    },
+                                }}
+                            >
+                                {CardItem(GroupsOutlinedIcon)}
+                            </Card>
+                        </Tooltip>
                     </NavLink>
                     <NavLink to={'/setting'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            {CardItem(BuildOutlinedIcon)}
-                        </Card>
+                        <Tooltip title="Organigramme" placement="top">
+                            <Card
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    m: 2,
+                                    [theme.breakpoints.up('lg')]: {
+                                        m: 4,
+                                    },
+                                    boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                    [theme.breakpoints.down('sm')]: {
+                                        width: '100%',
+                                        my: 1,
+                                        mx: 0,
+                                    },
+                                }}
+                            >
+                                {CardItem(BuildOutlinedIcon)}
+                            </Card>
+                        </Tooltip>
                     </NavLink>
                 </Box>
 
@@ -90,42 +98,47 @@ function HomeScreen() {
                     }}
                 >
                     <NavLink to={'/propositionhome'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            {CardItem(CloudOutlinedIcon)}
-                        </Card>
+                        <Tooltip title="Evaluation" placement="top">
+                            <Card
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    m: 2,
+                                    [theme.breakpoints.up('lg')]: {
+                                        m: 4,
+                                    },
+                                    boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                    [theme.breakpoints.down('sm')]: {
+                                        width: '100%',
+                                        my: 1,
+                                        mx: 0,
+                                    },
+                                }}
+                            >
+                                {CardItem(CloudOutlinedIcon)}
+                            </Card>
+                        </Tooltip>
                     </NavLink>
+
                     <NavLink to={'/store'}>
-                        <Card
-                            sx={{
-                                backgroundColor: 'secondary.dark',
-                                m: 2,
-                                [theme.breakpoints.up('lg')]: {
-                                    m: 4,
-                                },
-                                boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                                [theme.breakpoints.down('sm')]: {
-                                    width: '100%',
-                                    my: 1,
-                                    mx: 0,
-                                },
-                            }}
-                        >
-                            {CardItem(ShoppingBagOutlinedIcon)}
-                        </Card>
+                        <Tooltip title="Store de formation" placement="top">
+                            <Card
+                                sx={{
+                                    backgroundColor: 'secondary.dark',
+                                    m: 2,
+                                    [theme.breakpoints.up('lg')]: {
+                                        m: 4,
+                                    },
+                                    boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                                    [theme.breakpoints.down('sm')]: {
+                                        width: '100%',
+                                        my: 1,
+                                        mx: 0,
+                                    },
+                                }}
+                            >
+                                {CardItem(ShoppingBagOutlinedIcon)}
+                            </Card>
+                        </Tooltip>
                     </NavLink>
                 </Box>
             </Box>
