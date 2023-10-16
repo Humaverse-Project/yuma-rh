@@ -412,34 +412,28 @@ export default function ScreenTwo({
                                 type={showPassword ? 'text' : 'password'}
                                 label="Confirmation mot de passe"
                             />
-                            {formData.password2 != '' &&
-                                (matchPassword ? (
-                                    <Chip
-                                        label="Les mots de passe correspondent"
-                                        sx={{
-                                            mt: 1,
-                                            color: 'white',
-                                            fontWeight: 'bold',
-                                            backgroundColor: '#00FF00',
-                                            '&:hover': {
-                                                backgroundColor: '#00FF00',
-                                            },
-                                        }}
-                                    />
-                                ) : (
-                                    <Chip
-                                        label="Les mots de passe ne correspondent pas"
-                                        sx={{
-                                            mt: 1,
-                                            color: 'white',
-                                            fontWeight: 'bold',
-                                            backgroundColor: '#FF0000',
-                                            '&:hover': {
-                                                backgroundColor: '#FF0000',
-                                            },
-                                        }}
-                                    />
-                                ))}
+                            {formData.password2 !== '' && (
+                                <Chip
+                                    label={
+                                        matchPassword
+                                            ? 'Les mots de passe correspondent'
+                                            : 'Les mots de passe ne correspondent pas'
+                                    }
+                                    sx={{
+                                        mt: 1,
+                                        color: 'white',
+                                        fontWeight: 'bold',
+                                        backgroundColor: matchPassword
+                                            ? '#00FF00'
+                                            : '#FF0000',
+                                        '&:hover': {
+                                            backgroundColor: matchPassword
+                                                ? '#00FF00'
+                                                : '#FF0000',
+                                        },
+                                    }}
+                                />
+                            )}
                         </FormControl>
                     </Grid>
                     <Grid
