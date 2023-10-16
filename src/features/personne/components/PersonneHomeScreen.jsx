@@ -3,20 +3,22 @@ import HeaderInScreen from '../../header/HeaderInScreen'
 import { useTheme } from '@mui/material/styles'
 import { Box } from '@mui/system'
 import { Fragment } from 'react'
-import { Card } from '@mui/material'
+import { Card, Typography } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { CardItem } from '../../../shared'
 
 //ICONES
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
-import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd'
+import ContentPasteSearchIcon from '@mui/icons-material/ContentPasteSearch'
 
 function PersonneHomeScreen() {
     const theme = useTheme()
     return (
         <Fragment>
             <HeaderInScreen
-                title={'Employés - gérer les employés et prévoir les évolutions'}
+                title={
+                    'Employés - gérer les employés et prévoir les évolutions'
+                }
             />
             <Box
                 backgroundColor="background.paper"
@@ -37,7 +39,13 @@ function PersonneHomeScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/gestionpersonnel'}>
+                    <NavLink
+                        to={'/gestionpersonnel'}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'black',
+                        }}
+                    >
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -54,9 +62,33 @@ function PersonneHomeScreen() {
                             }}
                         >
                             {CardItem(AssignmentIndIcon)}
+                            <Typography
+                                sx={{
+                                    mt: -4,
+                                    flex: '1 0 auto',
+                                    textAlign: 'center',
+                                    color: 'black.main',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.2rem',
+                                    [theme.breakpoints.down('sm')]: {
+                                        fontSize: '1rem',
+                                    },
+                                }}
+                                component="div"
+                                variant="h6"
+                            >
+                                Gestion du
+                                <br /> personnel
+                            </Typography>
                         </Card>
                     </NavLink>
-                    <NavLink to={'/test'}>
+                    <NavLink
+                        to={'/test'}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'black',
+                        }}
+                    >
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -73,6 +105,23 @@ function PersonneHomeScreen() {
                             }}
                         >
                             {CardItem(ContentPasteSearchIcon)}
+                            <Typography
+                                sx={{
+                                    mt: -4,
+                                    flex: '1 0 auto',
+                                    textAlign: 'center',
+                                    color: 'black.main',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.2rem',
+                                    [theme.breakpoints.down('sm')]: {
+                                        fontSize: '1rem',
+                                    },
+                                }}
+                                component="div"
+                                variant="h6"
+                            >
+                                Test
+                            </Typography>
                         </Card>
                     </NavLink>
                 </Box>

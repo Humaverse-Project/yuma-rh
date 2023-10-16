@@ -144,11 +144,6 @@ function Navigation() {
             path: '/gestionpersonnel',
             components: <PersonneGestion />,
         },
-        {
-            id: 23,
-            path: '/settingAccount',
-            components: <SettingAccount />,
-        },
     ]
 
     return (

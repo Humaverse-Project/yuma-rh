@@ -6,10 +6,10 @@ import { useTheme } from '@mui/material/styles'
 import { CardItem } from '../../../shared'
 
 //ICONES
-import WorkIcon from '@mui/icons-material/Work'
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline'
 import HeaderInScreen from '../../header/HeaderInScreen'
 import DescriptionIcon from '@mui/icons-material/Description'
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
+import AccountTreeIcon from '@mui/icons-material/AccountTree'
 function ParametreScreen() {
     const theme = useTheme()
 
@@ -25,43 +25,48 @@ function ParametreScreen() {
                 height={'88vh'}
             >
                 <Box
-                        sx={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            justifyContent: 'space-between',
-                            [theme.breakpoints.down('sm')]: {
-                                justifyContent: 'center',
-                            },
-                            alignItems: 'center',
-                            backgroundColor: 'secondary.dark',
-                            m: 2,
-                            [theme.breakpoints.up('lg')]: {
-                                m: 4,
-                                width: '60ch',
-                            },
-                            boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
-                            [theme.breakpoints.down('sm')]: {
-                                width: '100%',
-                                my: 1,
-                                mx: 0,
-                            },
-                        }}
-                    >
-                        <NavLink to={'/organigramme'}>
-                            <CardActionArea sx={{ width: 150 }}>
-                                <CardContent sx={{ p: 4 }}>
-                                    <AccountTreeIcon sx={{ fontSize: 92, color: 'black.main' }} />
-                                </CardContent>
-                            </CardActionArea>
-                        </NavLink>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }} width={"60%"}>
-                            <CardContent sx={{ flex: '1 0 auto' }}>
-                                <Typography component="div" variant="h5">
-                                    Organigramme
-                                </Typography>
+                    sx={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'space-between',
+                        [theme.breakpoints.down('sm')]: {
+                            justifyContent: 'center',
+                        },
+                        alignItems: 'center',
+                        backgroundColor: 'secondary.dark',
+                        m: 2,
+                        [theme.breakpoints.up('lg')]: {
+                            m: 4,
+                            width: '60ch',
+                        },
+                        boxShadow: '1px 2px 9px rgba(0, 0 ,0 ,0.5)',
+                        [theme.breakpoints.down('sm')]: {
+                            width: '100%',
+                            my: 1,
+                            mx: 0,
+                        },
+                    }}
+                >
+                    <NavLink to={'/organigramme'}>
+                        <CardActionArea sx={{ width: 150 }}>
+                            <CardContent sx={{ p: 4 }}>
+                                <AccountTreeIcon
+                                    sx={{ fontSize: 92, color: 'black.main' }}
+                                />
                             </CardContent>
-                        </Box>
+                        </CardActionArea>
+                    </NavLink>
+                    <Box
+                        sx={{ display: 'flex', flexDirection: 'column' }}
+                        width={'60%'}
+                    >
+                        <CardContent sx={{ flex: '1 0 auto' }}>
+                            <Typography component="div" variant="h5">
+                                Organigramme
+                            </Typography>
+                        </CardContent>
                     </Box>
+                </Box>
                 <Box
                     sx={{
                         display: 'flex',
@@ -73,7 +78,13 @@ function ParametreScreen() {
                         alignItems: 'center',
                     }}
                 >
-                    <NavLink to={'/metier'}>
+                    <NavLink
+                        to={'/metier'}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'black',
+                        }}
+                    >
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -90,9 +101,33 @@ function ParametreScreen() {
                             }}
                         >
                             {CardItem(DescriptionIcon)}
+
+                            <Typography
+                                sx={{
+                                    mt: -4,
+                                    flex: '1 0 auto',
+                                    textAlign: 'center',
+                                    color: 'black.main',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.2rem',
+                                    [theme.breakpoints.down('sm')]: {
+                                        fontSize: '1rem',
+                                    },
+                                }}
+                                component="div"
+                                variant="h6"
+                            >
+                                Metier
+                            </Typography>
                         </Card>
                     </NavLink>
-                    <NavLink to={'/poste'}>
+                    <NavLink
+                        to={'/poste'}
+                        style={{
+                            textDecoration: 'none',
+                            color: 'black',
+                        }}
+                    >
                         <Card
                             sx={{
                                 backgroundColor: 'secondary.dark',
@@ -108,7 +143,24 @@ function ParametreScreen() {
                                 },
                             }}
                         >
-                            {CardItem(WorkIcon)}
+                            {CardItem(PersonOutlineIcon)}
+                            <Typography
+                                sx={{
+                                    mt: -4,
+                                    flex: '1 0 auto',
+                                    textAlign: 'center',
+                                    color: 'black.main',
+                                    fontWeight: 'bold',
+                                    fontSize: '1.2rem',
+                                    [theme.breakpoints.down('sm')]: {
+                                        fontSize: '1rem',
+                                    },
+                                }}
+                                component="div"
+                                variant="h6"
+                            >
+                                Poste
+                            </Typography>
                         </Card>
                     </NavLink>
                 </Box>

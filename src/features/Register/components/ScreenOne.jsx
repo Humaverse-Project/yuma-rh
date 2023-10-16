@@ -9,7 +9,6 @@ import {
     TextField,
     Box,
 } from '@mui/material'
-import Select from 'react-select'
 import Card from '@mui/material/Card'
 import Grid from '@mui/material/Grid'
 import { Link } from 'react-router-dom'
@@ -114,9 +113,8 @@ export default function ScreenOne({
         setScreen(2)
     }
     const handleChange = (event) => {
-        console.log('value onchange', event.target.value)
         const { name, value } = event.target
-        console.log('name', name)
+
         if (name === 'siret') {
             if (value.length >= 14) {
                 setIsValidNumberSiret(false)
@@ -131,14 +129,11 @@ export default function ScreenOne({
             } else {
                 setInvalidMail(false)
             }
-
-            console.log('invalid pory', invalidMail)
         }
 
         setFormData({ ...formData, [name]: value })
         setErrorForm({ ...ErrorForm, [name]: [false, ''] })
         if (name === 'siret' && value.length === 14) {
-            console.log('envois')
             getInfoSirret(value)
                 .then((data) => {
                     setFormData({
@@ -674,16 +669,19 @@ export default function ScreenOne({
                                 <Button
                                     variant="contained"
                                     disabled={
-                                        formData.siret === '' ||
-                                        formData.naf === '' ||
-                                        formData.nom_entreprise === '' ||
-                                        formData.rue_numero === '' ||
-                                        formData.code_postal === '' ||
-                                        formData.ville === '' ||
-                                        formData.pays === '' ||
-                                        formData.telephone === '' ||
-                                        formData.effectif === '' ||
-                                        formData.etablissement === ''
+                                        !formData.siret ||
+                                        !formData.naf ||
+                                        !formData.nom_entreprise ||
+                                        !formData.rue_numero ||
+                                        !formData.code_postal ||
+                                        !formData.ville ||
+                                        !formData.pays ||
+                                        !formData.telephone ||
+                                        !formData.email ||
+                                        !formData.effectif ||
+                                        !formData.etablissement ||
+                                        isValidNumberSiret ||
+                                        invalidMail
                                     }
                                     sx={{
                                         m: 2,
