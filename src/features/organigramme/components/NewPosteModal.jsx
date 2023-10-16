@@ -92,10 +92,6 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant  }
         if (titreerreur[0]){
             return false
         }
-        if ( newposte.posteid === 0) {
-            seterreurposte(true)
-            return false
-        }
         setLoading(true)
         setloadingrome(true)
         await onSubmit(newposte)
