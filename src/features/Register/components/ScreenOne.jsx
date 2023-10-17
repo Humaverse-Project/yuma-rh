@@ -689,6 +689,10 @@ export default function ScreenOne({
                                         height: '50px',
                                         backgroundColor: '#3D50FF',
                                         color: '#fff',
+                                        '&:hover': {
+                                            backgroundColor: '#3D50FF',
+                                            color: '#fff',
+                                        },
                                     }}
                                     onClick={handleSubmit}
                                 >

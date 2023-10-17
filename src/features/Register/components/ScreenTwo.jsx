@@ -17,9 +17,19 @@ import {
     Switch,
     FormHelperText,
     Box,
+    IconButton,
+    InputAdornment,
     Chip,
 } from '@mui/material'
 import LoadingButton from '@mui/lab/LoadingButton'
+
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import ErrorIcon from '@mui/icons-material/Error'
+import WarningIcon from '@mui/icons-material/Warning'
+
+const MySwal = withReactContent(Swal)
 
 export default function ScreenTwo({
     formData,
@@ -64,11 +74,43 @@ export default function ScreenTwo({
         setLoading(true)
         postentreprise(formData)
             .then((data) => {
-                console.log(data)
-                // navigate('/')
+                console.log('data postentreprise', data)
+
+                setLoading(false)
+                if (data.stat === true) {
+                    navigate('/')
+                } else {
+                    MySwal.fire({
+                        title: 'Erreur!',
+                        text: data.message,
+                        icon: 'error',
+                        toast: true,
+                        timer: 5000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        showCancelButton: false,
+                        showCloseButton: true,
+                        confirmButtonText: 'Ok',
+                        position: 'top-end',
+                    })
+                }
             })
             .catch((error) => {
+                setLoading(false)
                 console.error('bakend error:', error.message)
+                MySwal.fire({
+                    title: 'Erreur!',
+                    text: error.message,
+                    icon: 'error',
+                    toast: true,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    showCancelButton: false,
+                    showCloseButton: true,
+                    confirmButtonText: 'Ok',
+                    position: 'top-end',
+                })
             })
     }
     const handleChange = (event) => {
@@ -349,36 +391,68 @@ export default function ScreenTwo({
                                 name="password"
                                 type={showPassword ? 'text' : 'password'}
                                 label="Mot de passe"
+                                endAdornment={
+                                    formData.password !== '' && (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                edge="end"
+                                            >
+                                                {passwordStrength === 'fort' ? (
+                                                    <CheckCircleIcon
+                                                        sx={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : passwordStrength ===
+                                                  'moyen' ? (
+                                                    <WarningIcon
+                                                        sx={{
+                                                            color: 'orange',
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <ErrorIcon
+                                                        sx={{
+                                                            color: 'red',
+                                                        }}
+                                                    />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }
                             />
 
                             {passwordStrength != '' ? (
-                                <Chip
-                                    label={`Mot de passe ${passwordStrength}`}
-                                    sx={{
-                                        mt: 1,
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        backgroundColor:
-                                            passwordStrength === 'faible' ||
-                                            passwordStrength === 'très faible'
-                                                ? '#FF0000'
-                                                : passwordStrength === 'moyen'
-                                                ? '#FFA500'
-                                                : '#00FF00',
-                                        '&:hover': {
-                                            backgroundColor:
-                                                passwordStrength === 'faible' ||
-                                                passwordStrength ===
-                                                    'très faible'
-                                                    ? '#FF0000'
-                                                    : passwordStrength ===
-                                                      'moyen'
-                                                    ? '#FFA500'
-                                                    : '#00FF00',
-                                            color: 'white',
-                                        },
-                                    }}
-                                />
+                                passwordStrength === 'fort' ? (
+                                    <FormHelperText
+                                        id="outlined-adornment-password"
+                                        sx={{
+                                            color: 'green',
+                                        }}
+                                    >
+                                        Mot de passe fort
+                                    </FormHelperText>
+                                ) : passwordStrength === 'moyen' ? (
+                                    <FormHelperText
+                                        id="outlined-adornment-password"
+                                        sx={{
+                                            color: 'orange',
+                                        }}
+                                    >
+                                        Mot de passe moyen
+                                    </FormHelperText>
+                                ) : (
+                                    <FormHelperText
+                                        id="outlined-adornment-password"
+                                        sx={{
+                                            color: 'red',
+                                        }}
+                                    >
+                                        Mot de passe faible
+                                    </FormHelperText>
+                                )
                             ) : (
                                 <FormHelperText
                                     id="outlined-adornment-password"
@@ -412,28 +486,42 @@ export default function ScreenTwo({
                                 name="password2"
                                 type={showPassword ? 'text' : 'password'}
                                 label="Confirmation mot de passe"
+                                endAdornment={
+                                    formData.password2 !== '' && (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                edge="end"
+                                            >
+                                                {matchPassword ? (
+                                                    <CheckCircleIcon
+                                                        sx={{
+                                                            color: 'green',
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <ErrorIcon
+                                                        sx={{
+                                                            color: 'red',
+                                                        }}
+                                                    />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }
                             />
                             {formData.password2 !== '' && (
-                                <Chip
-                                    label={
-                                        matchPassword
-                                            ? 'Les mots de passe correspondent'
-                                            : 'Les mots de passe ne correspondent pas'
-                                    }
+                                <FormHelperText
+                                    id="outlined-adornment-password"
                                     sx={{
-                                        mt: 1,
-                                        color: 'white',
-                                        fontWeight: 'bold',
-                                        backgroundColor: matchPassword
-                                            ? '#00FF00'
-                                            : '#FF0000',
-                                        '&:hover': {
-                                            backgroundColor: matchPassword
-                                                ? '#00FF00'
-                                                : '#FF0000',
-                                        },
+                                        color: matchPassword ? 'green' : 'red',
                                     }}
-                                />
+                                >
+                                    {matchPassword
+                                        ? 'Mot de passe identique'
+                                        : 'Mot de passe non identique'}
+                                </FormHelperText>
                             )}
                         </FormControl>
                     </Grid>
@@ -480,10 +568,25 @@ export default function ScreenTwo({
                                 height: '50px',
                                 backgroundColor: '#3D50FF',
                                 color: '#fff',
+                                '&:hover': {
+                                    backgroundColor: '#3D50FF',
+                                    color: '#fff',
+                                },
                             }}
                             variant="contained"
                             fullWidth
                             onClick={handlesubmit}
+                            disabled={
+                                formData.nomrh === '' ||
+                                formData.prenomrh === '' ||
+                                formData.fonctionrh === '' ||
+                                formData.servicerh === '' ||
+                                formData.telephonerh === '' ||
+                                formData.emailrh === '' ||
+                                formData.password === '' ||
+                                formData.password2 === '' ||
+                                matchPassword === false
+                            }
                         >
                             Enregistrer
                         </LoadingButton>
