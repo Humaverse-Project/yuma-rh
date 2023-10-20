@@ -10,10 +10,11 @@ import {
 import CreateNewPersonneModal from './CreateNewPersonneModal'
 import { MRT_Localization_FR } from 'material-react-table/locales/fr';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '../../organigramme/components/theme';
 import { DynamicHeadNav, Row } from '../../../shared';
+import { useTheme } from '@emotion/react';
 
 function PersonneGestion() {
+    const theme = useTheme()
     const [listpersonne, setlistpersonne] = useState([]);
     const [createModalOpen, setCreateModalOpen] = useState(false);
     useEffect(() => {

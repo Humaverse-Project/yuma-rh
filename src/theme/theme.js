@@ -3,8 +3,8 @@ import { createTheme } from '@mui/material/styles'
 const palette = {
     red: '#f46267',
     black: '#000000',
-    blue: '#317AC1',
-    grey: '#E5E7E6',
+    blue: '#004d80',
+    grey: '#e7e7e7',
     greyText: '#7E7E7E',
     greyCard: '#CACACA',
     warning: '#f29c11',
@@ -90,6 +90,26 @@ const theme = createTheme({
             xl: 1560,
         },
     },
+    overrides: {
+        MuiDialog: {
+          paper: {
+            marginTop: '10vh',
+          }
+        },
+      },
+      components: {
+        MuiDialog: {
+          styleOverrides: {
+            paper: {
+              width: '80%',
+              maxWidth: 'none',
+              color: "#000000",
+              border: '2px solid #004d80',
+              backgroundColor: "#fff"
+            },
+          },
+        },
+    }
 })
 
 export default theme

@@ -24,10 +24,11 @@ import {
     Alert
 } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles';
-import theme from './theme';
 import { LoadingButton } from '@mui/lab';
+import { useTheme } from '@emotion/react';
 
 const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant  }) => {
+    const theme = useTheme()
     const [loading, setLoading] = useState(false)
     const [loadingrome, setloadingrome] = useState(false);
     const [romecompetanceerreur, setromecompetanceerreur] = useState([false, ""]);
@@ -97,7 +98,7 @@ const NewPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant  }
         await onSubmit(newposte)
         setLoading(false)
         setNewPoste({
-            imageUrl: "https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg"
+            imageUrl: ""
         })
         setloadingrome(false)
         setpostegenerique([])
