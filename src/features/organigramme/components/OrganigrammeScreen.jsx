@@ -1,25 +1,29 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react'
-import OrganizationChart, { async } from "@dabeng/react-orgchart";
-import HeaderInScreen from '../../header/HeaderInScreen'
-import { Button, Box, Grid, Divider, Autocomplete, TextField, CircularProgress, Backdrop } from '@mui/material'
-import './mylink.css'
+import OrganizationChart from "@dabeng/react-orgchart";
+import { DynamicHeadNav, Row } from '../../../shared'
+import { Button, Box, Grid, Divider, Autocomplete, TextField, CircularProgress, Backdrop, Typography } from '@mui/material'
+import './mycss.css'
 import { Snackbar, Alert } from '@mui/material'
+import NodeTempate from './Part/NodeTempate';
 import {
     loaddata,
     postdata,
     postupdate,
     deleteNodeserveur
 } from '../../../services/OrganigrammeService'
-import theme from './theme'
 import NewPosteModal from './NewPosteModal'
 import JSONDigger from "json-digger";
+import CreationPosteModal from './Modal/CreationPosteModal';
+import { useTheme } from '@emotion/react';
 
 function OrganigrammeScreen() {
+    const theme = useTheme()
     const [data, setData] = useState({})
     let dsDigger = new JSONDigger(data, "id", "children");
     const [loadingrome, setloadingrome] = useState(true);
     const [dataPersonne, setDataPersonne] = useState([])
     const [titreexistant, setTitreexistant] = useState([])
+    const [ficheposte, setficheposte] = useState([])
     let source = {}
     let target = {}
     const orgchart = useRef();
@@ -30,7 +34,8 @@ function OrganigrammeScreen() {
             parentNodeId: target._id
         }
         const datametierexistant = await postupdate(obj)
-        await datametierexistant
+        let poste = await datametierexistant
+        setficheposte(poste)
         source = {}
         target = {}
     }
@@ -42,89 +47,25 @@ function OrganigrammeScreen() {
         '#96C62C',
         '#BD7E16',
         '#802F74',
-      ];
+    ];
       
     const TreeNode = ({ nodeData }) => {
-        var data = nodeData
         const color = colors[nodeData.postion];
-        const imageDim = 80;
-        const lightCircleDim = 95;
-        const outsideCircleDim = 110;
         return (
           <div
             style={{
               backgroundColor: 'white',
-              height: '186px'
+              border: "2px solid "+color,
+              maxWidth: "255px",
+              width: "255px"
             }}
             onDragStart={(e)=> {source = nodeData}}
             onDrop= {(e)=> {target = nodeData; sendupdateposte(e)}}
             draggable={true}
           >
-            <div
-              style={{
-                backgroundColor: color,
-                marginTop: `0`,
-                marginLeft: `21.5px`,
-                borderRadius: '100px',
-                width: `110px`,
-                height: `110px`,
-              }}
-            ></div>
-            <div
-              style={{
-                backgroundColor: '#ffffff',
-                marginTop: `-102px`,
-                marginLeft: `30px`,
-                borderRadius: '100px',
-                width: `95px`,
-                height: `95px`,
-              }}
-            >
-              <img
-                src={data.imageUrl}
-                style={{
-                  borderRadius: '100px',
-                  width: `95px`,
-                  height: `95px`,
-                }}
-              />
-            </div>
-            
-            <div
-              className="card"
-              style={{
-                marginTop:"15px",
-                height: '30px',
-                width: `153px`,
-                backgroundColor: '#3AB6E3',
-              }}
-            >
-              <div
-                style={{
-                  backgroundColor: color,
-                  height: '28px',
-                  textAlign: 'center',
-                  paddingTop: '10px',
-                  color: '#ffffff',
-                  fontWeight: 'bold',
-                  fontSize: '16px',
-                }}
-              >
-                {data.personne}
-              </div>
-              <div
-                style={{
-                  backgroundColor: '#F0EDEF',
-                  height: '28px',
-                  textAlign: 'center',
-                  paddingTop: '10px',
-                  color: '#424142',
-                  fontSize: '16px',
-                }}
-              >
-                {data.titre}
-              </div>
-            </div>
+            <NodeTempate
+                data={nodeData}
+            />
           </div>
         );
     }
@@ -156,34 +97,28 @@ function OrganigrammeScreen() {
         setShowError(false)
     }
     async function addNode(newnode) {
+        let po = "P_0"
         if (nodeselected._id !== undefined) {
             newnode.parentNodeId = nodeselected._id
-        }
-        if (data.length === 0) {
+            newnode.postion = nodeselected.postion+1
+            po = nodeselected.id
+        } else {
             newnode.parentNodeId = ''
+            newnode.postion = 1
         }
         const datametierexistant = await postdata(newnode)
         const reponsemetie = await datametierexistant
         newnode.id = "P_"+reponsemetie.id
         newnode._id = reponsemetie.id
-        if (data.titre === undefined) {
-            newnode.postion = 0
-            newnode.title = newnode.titre
-            await dsDigger.addRoot(newnode);
-            delete dsDigger.ds["children"]; 
-            setData({ ...dsDigger.ds });
-            console.log(dsDigger)
-        } else {
-            newnode.postion = nodeselected.postion+1
-            await dsDigger.addChildren(nodeselected.id, newnode);
-        }
+        await dsDigger.addChildren(po, newnode);
         setTitreexistant([...titreexistant, newnode.titre])
+        setficheposte([...ficheposte, newnode])
         return true
     }
     async function deleteNode(e){
         setloadingrome(true)
         deleteNodeserveur(nodeselected._id).then(async (datametierexistant) => {
-            setTitreexistant(datametierexistant.organigramme.map(poste=> poste.orgIntitulePoste))
+            setTitreexistant(datametierexistant.map(poste=> poste.orgIntitulePoste))
             if(nodeselected.postion !== 0){
                 await dsDigger.removeNode(nodeselected.id);
                 setData({ ...dsDigger.ds });
@@ -194,6 +129,7 @@ function OrganigrammeScreen() {
                 titre: '',
             })
             setloadingrome(false)
+            setficheposte(datametierexistant)
         })
         .catch((error) => {
             console.log(error);
@@ -202,7 +138,6 @@ function OrganigrammeScreen() {
     }
     function formatToTree(data, parentId = null, k=0) {
         const tree = [];
-        
         data.forEach(item => {
             if (item.organigrammeNplus1 === parentId) {
                 const children = formatToTree(data, item.id, (k+1));
@@ -233,19 +168,15 @@ function OrganigrammeScreen() {
                         }
                     })
                 )
+                setficheposte(reponsemetie.organigramme)
+                reponsemetie.organigramme.sort((a, b) => a.organigrammeNplus1 - b.organigrammeNplus1);
+               
                 let postorg = reponsemetie.organigramme.map((poste) => {
-                    let title = poste.orgIntitulePoste
-                    let name = ""
-                    if (poste.personnes !== null) {
-                        name = poste.personnes.personneNom
-                    }
-                    if (poste.organigrammeNplus1 !== null){
-                        poste.organigrammeNplus1 = "P_"+poste.organigrammeNplus1
-                    }
                     let titre = poste.orgIntitulePoste
-                    let parentNodeId = ''
                     if (poste.organigrammeNplus1 !== null) {
-                        parentNodeId = poste.organigrammeNplus1
+                        poste.organigrammeNplus1 = "P_"+poste.organigrammeNplus1
+                    } else {
+                        poste.organigrammeNplus1 = "P_0"
                     }
                     let personne = ""
                     let personneid = ""
@@ -254,24 +185,26 @@ function OrganigrammeScreen() {
                         personneid = poste.personnes.id
                     }
                     return {
-                        title: title,
                         titre: titre,
-                        name: name,
                         personne: personne,
                         id: "P_"+poste.id,
                         _id: poste.id,
                         organigrammeNplus1: poste.organigrammeNplus1,
-                        imageUrl:
-                            'https://raw.githubusercontent.com/bumbeishvili/Assets/master/Projects/D3/Organization%20Chart/general.jpg',
+                        imageUrl: '',
                     }
                 })
+                postorg.unshift(
+                {titre: "",
+                    id: 'P_0',
+                    _id: 0,
+                    personne: "",
+                    organigrammeNplus1: null
+                });
                 postorg = formatToTree(postorg, null)
                 console.log(postorg)
                 setTitreexistant(reponsemetie.organigramme.map(poste=> poste.orgIntitulePoste))
-                if (postorg.length>0) {
-                    setData(postorg[0])
-                }
-                // 
+                setData(postorg[0]);
+                
                 setloadingrome(false)
             } catch (error) {
                 console.error("Une erreur s'est produite :", error)
@@ -292,9 +225,42 @@ function OrganigrammeScreen() {
             >
                 <CircularProgress color="inherit" />
             </Backdrop>
-            <HeaderInScreen title={'Organigramme'} />
+            <Row
+            justifyContent={'space-between'}
+            px={3}
+            height={'10vh'}
+            backgroundColor="white"
+        >
+            <DynamicHeadNav title={"Organigramme"} />
+                <Row
+                    width={'22%'}
+                    justifyContent="space-between"
+                >
+                    <Button
+                        variant="contained"
+                        color="blue"
+                        fullWidth
+                        sx={{ px: 2, py: 1, mx: 2 }}
+                        onClick={handleOpen}
+                    >
+                        <Typography color="white">
+                            Crée un poste
+                        </Typography>
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="blue"
+                        fullWidth
+                        sx={{ px: 2, py: 1 }}
+                    >
+                        <Typography variant="button" color="white">
+                            Importer
+                        </Typography>
+                    </Button>
+                </Row>
+            </Row>
             <Box
-                backgroundColor="background.paper"
+                // backgroundColor="background.paper"
                 display="flex"
                 width="100%"
                 flexDirection="row"
@@ -323,21 +289,6 @@ function OrganigrammeScreen() {
                 </div>
                 <Grid container>
                     <Grid item xs={12} md={2} sx={{pt:2}}>
-                        <Box sx={{ my: 1, mx: 1 }}>
-                        <Button
-                            variant="contained"
-                            onClick={handleOpen}
-                            md={2}
-                            disabled={(data.titre !== undefined && nodeselected.titre === '')
-                            }
-                            size="large"
-                            fullWidth
-                            color="blue"
-                        >
-                            Ajouter un poste
-                        </Button>
-                        </Box>
-                        <Divider variant="middle" />
                         {
                             (nodeselected.titre !== "") &&
                                 <Box sx={{ my: 1, mx: 1 }}>
@@ -380,28 +331,26 @@ function OrganigrammeScreen() {
                             p:0
                         }}
                     >
-                        {
-                            data.title !== undefined &&
-                            <OrganizationChart
-                                ref={orgchart}
-                                datasource={data}
-                                draggable={true}
-                                zoom={true}
-                                NodeTemplate={(node)=> TreeNode(node)}
-                                onClickNode={onClickNode}
-                            />
-                        }
-                        
+                        <OrganizationChart
+                            ref={orgchart}
+                            datasource={data}
+                            draggable={true}
+                            zoom={true}
+                            pan={true}
+                            NodeTemplate={(node)=> TreeNode(node)}
+                            onClickNode={onClickNode}
+                            onClickChart={(e)=> setNodeselected({titre: ''})}
+                        />
                     </Grid>
                     {
                         open && 
-                        <NewPosteModal
+                        <CreationPosteModal
                             open={open}
                             onClose={handleClose}
                             onSubmit={addNode}
                             dataPersonne={dataPersonne}
                             titreexistant={titreexistant}
-                            
+                            ficheposte={ficheposte}
                         />
                     }
                 </Grid>

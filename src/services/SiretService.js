@@ -1,10 +1,24 @@
-export async function getInfoSirret(sirret) {
+import { base_url } from './BaseUrl'
+
+export async function gettokeninfo() {
+    const url = `${base_url}/entreprise/sirettoken`;
+
+    const response = await fetch(url, {
+        method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('erreur backend');
+    }
+    return await response.json();
+}
+
+export async function getInfoSirret(sirret, token) {
     const url = `https://api.insee.fr/entreprises/sirene/V3/siret/${sirret}`
 
     const response = await fetch(url, {
         method: 'GET',
         headers: {
-            'Authorization': 'Bearer 4bbd4e34-e391-349f-86ce-85c573eb80cb'
+            'Authorization': `Bearer ${token}`
         },
     })
 

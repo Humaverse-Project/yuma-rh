@@ -1,0 +1,25 @@
+.orgchart {
+    background: unset;
+}
+#P_0 {
+    display: none;
+}
+.orgchart-container {
+    background: unset;
+    border: unset;
+    height: 85vh;
+}
+#P_0,
+#P_0 + ul > li::before,
+#P_0 + ul > li > div::before {
+  display: none;
+}
+.Mui-selected {
+    background: #e7e7e7 !important;
+    border-radius: 10px 10px 0 0 !important;
+    color: unset !important;
+    border: unset !important;
+}
+.MuiTabs-indicator {
+    display: none !important;
+}
