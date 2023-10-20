@@ -67,6 +67,5 @@
   },
   "resolutions": {
     "styled-components": "^5"
-  },
-  "proxy": "https://entreprise.pole-emploi.fr"
+  }
 }

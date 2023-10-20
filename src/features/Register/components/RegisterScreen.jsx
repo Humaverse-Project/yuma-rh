@@ -7,7 +7,7 @@ export default function RegisterScreen() {
     const [screen, setScreen] = useState(1)
     const [formData, setFormData] = useState({
         siret: '',
-        naf: '',
+        naf: null,
         nom_entreprise: '',
         url: '',
         rue_numero: '',

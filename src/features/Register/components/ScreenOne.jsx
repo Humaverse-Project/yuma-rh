@@ -16,6 +16,7 @@ import Button from '@mui/material/Button'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import InputLabel from '@mui/material/InputLabel'
+import { gettokeninfo } from '../../../services/SiretService'
 import React, { useState, useEffect } from 'react'
 import FormControl from '@mui/material/FormControl'
 import Autocomplete from '@mui/material/Autocomplete'
@@ -42,6 +43,7 @@ export default function ScreenOne({
         'Autre',
     ]
     const [naflist, setNaflist] = useState([])
+    const [token, setToken] = useState([])
     const [keyDownState, setKeyDownState] = useState('')
     const [nafLoading, setNafLoading] = useState(false)
 
@@ -51,26 +53,28 @@ export default function ScreenOne({
 
     useEffect(() => {
         setNafLoading(true)
-        getNaflist(keyDownState)
-            .then((data) => {
-                setNafLoading(false)
+        const fetchData = async () => {
+            try {
+                const tokken = await gettokeninfo()
+                const nafdatalist = await getNaflist(keyDownState)
+                const montoken = await tokken
+                const mesnafdata = await nafdatalist
+                setToken(montoken.access_token)
                 setNaflist(
-                    data.results.map((data) => {
+                    mesnafdata.results.map((data) => {
                         return {
                             value: data.code_naf,
                             label: data.code_naf + ' - ' + data.intitule_naf,
                         }
                     })
                 )
-            })
-            .catch((error) => {
                 setNafLoading(false)
+            } catch (error) {
                 console.error('API error:', error.message)
                 setShowError(true)
-            })
-            .finally(() => {
-                setNafLoading(false)
-            })
+            }
+        }
+        fetchData()
     }, [keyDownState])
     const [showError, setShowError] = useState(false)
 
@@ -88,6 +92,7 @@ export default function ScreenOne({
         for (let index = 0; index < 11; index++) {
             const element = key[index]
             if (
+                formData[element] === null ||
                 formData[element] === '' ||
                 formData[element] === 0 ||
                 formData[element] === undefined
@@ -134,7 +139,7 @@ export default function ScreenOne({
         setFormData({ ...formData, [name]: value })
         setErrorForm({ ...ErrorForm, [name]: [false, ''] })
         if (name === 'siret' && value.length === 14) {
-            getInfoSirret(value)
+            getInfoSirret(value, token)
                 .then((data) => {
                     setFormData({
                         siret: value,
@@ -650,7 +655,7 @@ export default function ScreenOne({
                             </Grid>
                         </Grid>
                         <Grid container spacing={2}>
-                            <Grid item sx={6}>
+                            <Grid item xs={6}>
                                 <Link to={'/'}>
                                     <Button
                                         variant="outlined"
@@ -665,7 +670,7 @@ export default function ScreenOne({
                                     </Button>
                                 </Link>
                             </Grid>
-                            <Grid item sx={6}>
+                            <Grid item xs={6}>
                                 <Button
                                     variant="contained"
                                     disabled={
