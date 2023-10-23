@@ -12,7 +12,6 @@ import {
     FormHelperText
 } from '@mui/material'
 import { useState } from 'react';
-import "./petimodal.css"
 
 const EditPosteModal = ({ open, onClose, personnelist, submitdata, thisposte, setPosteEdition, titreexistant }) => {
     const [titreerreur, settitreerreur] = useState([false, ""]);
