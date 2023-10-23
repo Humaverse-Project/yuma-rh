@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react'
 import OrganizationChart from "@dabeng/react-orgchart";
 import { DynamicHeadNav, Row } from '../../../shared'
-import { Button, Box, Grid, Divider, Autocomplete, TextField, CircularProgress, Backdrop, Typography } from '@mui/material'
+import { Button, Box, Grid, Divider, Autocomplete, TextField, Typography } from '@mui/material'
 import './mycss.css'
 import { Snackbar, Alert } from '@mui/material'
 import NodeTempate from './Part/NodeTempate';
@@ -15,18 +15,33 @@ import NewPosteModal from './NewPosteModal'
 import JSONDigger from "json-digger";
 import CreationPosteModal from './Modal/CreationPosteModal';
 import { useTheme } from '@emotion/react';
+import { useDispatch, useSelector } from "react-redux";
+import { fetchItems } from "../../../model/reducer/Organigramme";
+import { CircularProgressElement } from "../../../shared"
 
 function OrganigrammeScreen() {
     const theme = useTheme()
-    const [data, setData] = useState({})
-    let dsDigger = new JSONDigger(data, "id", "children");
-    const [loadingrome, setloadingrome] = useState(true);
-    const [dataPersonne, setDataPersonne] = useState([])
-    const [titreexistant, setTitreexistant] = useState([])
-    const [ficheposte, setficheposte] = useState([])
+    const dispatch = useDispatch();
+    const { data, status, titrelist, ficheposte, dataPersonne } = useSelector((state) => state.organigramme);
+    const [ org, setOrg ] = useState({});
+    let dsDigger = new JSONDigger(org, "id", "children");
+    const [loadingrome, setloadingrome] = useState(false);
     let source = {}
     let target = {}
     const orgchart = useRef();
+
+    useEffect(() => {
+        dispatch(fetchItems());
+    }, [dispatch]);
+    
+    useEffect(() => {
+        if (data) {
+            setOrg(JSON.parse(JSON.stringify(data)));
+        }
+    }, [data]);
+
+
+
     const sendupdateposte = async (e) => {
         await dsDigger.updateNode({...source, postion: (target.postion+1)});
         let obj = {
@@ -35,7 +50,7 @@ function OrganigrammeScreen() {
         }
         const datametierexistant = await postupdate(obj)
         let poste = await datametierexistant
-        setficheposte(poste)
+        // setficheposte(poste)
         source = {}
         target = {}
     }
@@ -111,25 +126,25 @@ function OrganigrammeScreen() {
         newnode.id = "P_"+reponsemetie.id
         newnode._id = reponsemetie.id
         await dsDigger.addChildren(po, newnode);
-        setTitreexistant([...titreexistant, newnode.titre])
-        setficheposte([...ficheposte, newnode])
+        // setTitreexistant([...titreexistant, newnode.titre])
+        // setficheposte([...ficheposte, newnode])
         return true
     }
     async function deleteNode(e){
         setloadingrome(true)
         deleteNodeserveur(nodeselected._id).then(async (datametierexistant) => {
-            setTitreexistant(datametierexistant.map(poste=> poste.orgIntitulePoste))
+            // setTitreexistant(datametierexistant.map(poste=> poste.orgIntitulePoste))
             if(nodeselected.postion !== 0){
                 await dsDigger.removeNode(nodeselected.id);
-                setData({ ...dsDigger.ds });
+                // setData({ ...dsDigger.ds });
             } else {
-                setData({});
+                // setData({});
             }
             setNodeselected({
                 titre: '',
             })
             setloadingrome(false)
-            setficheposte(datametierexistant)
+            // setficheposte(datametierexistant)
         })
         .catch((error) => {
             console.log(error);
@@ -151,86 +166,22 @@ function OrganigrammeScreen() {
     
         return tree;
     }
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const datametierexistant = await loaddata()
-                const reponsemetie = await datametierexistant
-                console.log(reponsemetie)
-                setDataPersonne(
-                    reponsemetie.personnelist.map((personne) => {
-                        return {
-                            label:
-                                personne.personneNom +
-                                ' ' +
-                                personne.personnePrenom,
-                            id: personne.id,
-                        }
-                    })
-                )
-                setficheposte(reponsemetie.organigramme)
-                reponsemetie.organigramme.sort((a, b) => a.organigrammeNplus1 - b.organigrammeNplus1);
-               
-                let postorg = reponsemetie.organigramme.map((poste) => {
-                    let titre = poste.orgIntitulePoste
-                    if (poste.organigrammeNplus1 !== null) {
-                        poste.organigrammeNplus1 = "P_"+poste.organigrammeNplus1
-                    } else {
-                        poste.organigrammeNplus1 = "P_0"
-                    }
-                    let personne = ""
-                    let personneid = ""
-                    if (poste.personnes !== null) {
-                        personne = poste.personnes.personneNom
-                        personneid = poste.personnes.id
-                    }
-                    return {
-                        titre: titre,
-                        personne: personne,
-                        id: "P_"+poste.id,
-                        _id: poste.id,
-                        organigrammeNplus1: poste.organigrammeNplus1,
-                        imageUrl: '',
-                    }
-                })
-                postorg.unshift(
-                {titre: "",
-                    id: 'P_0',
-                    _id: 0,
-                    personne: "",
-                    organigrammeNplus1: null
-                });
-                postorg = formatToTree(postorg, null)
-                console.log(postorg)
-                setTitreexistant(reponsemetie.organigramme.map(poste=> poste.orgIntitulePoste))
-                setData(postorg[0]);
-                
-                setloadingrome(false)
-            } catch (error) {
-                console.error("Une erreur s'est produite :", error)
-                setShowError(true)
-            }
-        }
-        fetchData()
-    }, [setShowError])
+
     const onClickNode = (e) => {
         console.log(e)
         setNodeselected(e)
     } 
     return (
         <Fragment>
-            <Backdrop
-                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 255 }}
-                open={loadingrome}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            <CircularProgressElement
+                open={(status === true || loadingrome == true)}
+            />
             <Row
-            justifyContent={'space-between'}
-            px={3}
-            height={'10vh'}
-            backgroundColor="white"
-        >
+                justifyContent={'space-between'}
+                px={3}
+                height={'10vh'}
+                backgroundColor="white"
+            >
             <DynamicHeadNav title={"Organigramme"} />
                 <Row
                     width={'22%'}
@@ -331,16 +282,18 @@ function OrganigrammeScreen() {
                             p:0
                         }}
                     >
-                        <OrganizationChart
-                            ref={orgchart}
-                            datasource={data}
-                            draggable={true}
-                            zoom={true}
-                            pan={true}
-                            NodeTemplate={(node)=> TreeNode(node)}
-                            onClickNode={onClickNode}
-                            onClickChart={(e)=> setNodeselected({titre: ''})}
-                        />
+                        { org.hasOwnProperty("titre") &&
+                            <OrganizationChart
+                                ref={orgchart}
+                                datasource={org}
+                                draggable={true}
+                                zoom={true}
+                                pan={true}
+                                NodeTemplate={(node)=> TreeNode(node)}
+                                onClickNode={onClickNode}
+                                onClickChart={(e)=> setNodeselected({titre: ''})}
+                            />
+                        }
                     </Grid>
                     {
                         open && 
@@ -349,7 +302,7 @@ function OrganigrammeScreen() {
                             onClose={handleClose}
                             onSubmit={addNode}
                             dataPersonne={dataPersonne}
-                            titreexistant={titreexistant}
+                            titreexistant={titrelist}
                             ficheposte={ficheposte}
                         />
                     }

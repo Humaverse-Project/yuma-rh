@@ -32,7 +32,24 @@ export async function getdatarome(code) {
     }
     return await response.json();
   }
+export async function getfichemetierentreprise() {
+    const url = `${base_url}/fiches/postes/metier/entreprise`;
   
+    const body = new URLSearchParams();
+    body.append("entrepriseid", getCookie("entrepriseid"));
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+    });
+  
+    if (!response.ok) {
+      throw new Error('erreur backend');
+    }
+    return await response.json();
+}
 export async function postmetier(formdata) {
     const url = `${base_url}/metier/new`;
 
