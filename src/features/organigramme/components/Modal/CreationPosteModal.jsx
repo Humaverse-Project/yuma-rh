@@ -1,11 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import {filtredata} from "../../../../services/OrganigrammeService"
+import { useDispatch, useSelector } from "react-redux";
+import { fetchItems } from "../../../../model/reducer/FichesMetiers";
+import { CircularProgressElement } from "../../../../shared"
 import { datefonctiondeux } from "../../../../services/DateFormat"
+import EditPosteModal from './EditPosteModal';
 import { 
     Dialog,
     DialogContent,
-    Backdrop,
-    CircularProgress,
     Grid,
     Typography,
     InputBase,
@@ -20,6 +22,7 @@ import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 
 import PosteTable from '../Part/PosteTable'
+import { easeBackIn } from 'd3';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -68,10 +71,14 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant, ficheposte  }) => {
     const [loadingrome, setloadingrome] = useState(false);
-    const [loading, setLoading] = useState(false)
     const [value, setValue] = React.useState('1');
     const [fichenonassigne, setfichenonassigne] = useState([])
     const [ficheassigne, setficheassigne] = useState([])
+    const [editmyposte, seteditmyposte] = useState(false)
+    const [thisposte, setPosteEdition] = useState({})
+    const { fichemetierentreprise, status, fichemetieryuma } = useSelector((state) => state.fichesmetiers);
+    const dispatch = useDispatch();
+
     useEffect(() => {
         let poste = ficheposte.map(x=> parseInt(x.organigrammeNplus1.replace("P_", "")))
         let present = ficheposte.filter(data=>{
@@ -84,7 +91,17 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
         })
         setfichenonassigne(absent)
         setficheassigne(present)
-    }, [ficheposte])
+        dispatch(fetchItems());
+        
+    }, [ficheposte, dispatch])
+    useEffect(() => {
+        if (fichemetierentreprise) {
+            setloadingrome(false);
+        }
+    }, [fichemetierentreprise]);
+    const sumbitupdateposte = (e) => {
+        console.log(e)
+    }
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -119,14 +136,54 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
         ],
         [],
     );
+    const columnsmetier = useMemo(
+        () => [
+          {
+            accessorKey: 'titre',
+            header: 'Nom du poste',
+            enableColumnOrdering: true,
+            enableEditing: false,
+            enableSorting: true
+          },
+          {
+            accessorKey: 'emplois.emploiTitre',
+            header: 'Fiche métier associée',
+            enableEditing: false,
+            enableClickToCopy: true,
+          },
+          {
+            accessorKey: 'rome.code',
+            header: 'Rome',
+            enableEditing: false,
+            enableClickToCopy: true,
+          },{
+            accessorKey: 'createdAt',
+            header: 'Date de création',
+            enableEditing: false,
+            enableClickToCopy: true,
+            Cell: ({ cell }) => datefonctiondeux(cell.getValue()),
+          }
+        ],
+        [],
+    );
     return (
         <ThemeProvider theme={theme}>
-            <Backdrop
-                sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 255 }}
-                open={loadingrome}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
+            <CircularProgressElement
+                open={(status === true || loadingrome == true)}
+            />
+            {
+                editmyposte && 
+                <EditPosteModal
+                    open={editmyposte}
+                    onClose={(e)=> seteditmyposte(false)}
+                    personnelist={dataPersonne}
+                    submitdata= { sumbitupdateposte }
+                    thisposte={thisposte}
+                    setPosteEdition={setPosteEdition}
+                    titreexistant={titreexistant}
+                />
+            }
+            
             <Dialog  open={open} onClose={onClose}>
                 <DialogContent dividers={true}>
                     <Grid container>
@@ -162,13 +219,25 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                             />
                             <Typography variant='h6'>Fiches déjà assignées:</Typography>
                             <PosteTable
-                                editaction={(e)=>console.log(e)}
+                                editaction={(e)=>{setPosteEdition(e); seteditmyposte(true)}}
                                 columns={columns}
                                 data={ficheassigne}
                             />
                         </TabPanel>
-                        <TabPanel value="2" sx={{backgroundColor: "background.paper", borderRadius: "10px 10px 10px 10px", height: "65vh", minHeight:"65vh", maxHeight: "65vh", overflowX:"auto"}}>Item Two</TabPanel>
-                        <TabPanel value="3" sx={{backgroundColor: "background.paper", borderRadius: "10px 10px 10px 10px",height: "65vh", minHeight:"65vh", maxHeight: "65vh", overflowX:"auto"}}>Item Three</TabPanel>
+                        <TabPanel value="2" sx={{backgroundColor: "background.paper", borderRadius: "10px 10px 10px 10px", height: "65vh", minHeight:"65vh", maxHeight: "65vh", overflowX:"auto"}}>
+                            <PosteTable
+                                editaction={(e)=>console.log(e)}
+                                columns={columnsmetier}
+                                data={fichemetierentreprise}
+                            />
+                        </TabPanel>
+                        <TabPanel value="3" sx={{backgroundColor: "background.paper", borderRadius: "10px 10px 10px 10px",height: "65vh", minHeight:"65vh", maxHeight: "65vh", overflowX:"auto"}}>
+                            <PosteTable
+                                editaction={(e)=>console.log(e)}
+                                columns={columnsmetier}
+                                data={fichemetieryuma}
+                            />
+                        </TabPanel>
                     </TabContext>
                 </DialogContent>
             </Dialog>

@@ -1,6 +1,12 @@
 import MaterialReactTable from 'material-react-table';
 import { MRT_Localization_FR } from 'material-react-table/locales/fr';
 import "./tablestyle.css";
+import {
+    Box,
+    Tooltip,
+    IconButton,
+  } from "@mui/material";
+import EditNoteIcon from '@mui/icons-material/EditNote';
 const PosteTable = ({ editaction, columns, data}) => {
 
     return (
@@ -30,6 +36,7 @@ const PosteTable = ({ editaction, columns, data}) => {
             enableSorting={false}
             enableBottomToolbar={false}
             enableTopToolbar={false}
+            positionActionsColumn="last"
             muiTableProps={{
                 sx: {
                     border: 'unset',
@@ -47,10 +54,25 @@ const PosteTable = ({ editaction, columns, data}) => {
                     color: 'black.main',
                 }
             }}
+            enableEditing
+            enableRowActions
             localization={MRT_Localization_FR}
             muiTablePaperProps={{
                 elevation: 0
             }}
+            renderRowActions={({ row, table }) => (
+                <Box sx={{ display: "flex", gap: "1rem" }}>
+                  <Tooltip
+                    arrow
+                    placement="right"
+                    title={ row.original.titre !== undefined ? `Modifier -> ${row.original.titre }` : `Modifier -> ${row.original.orgIntitulePoste }`}
+                  >
+                    <IconButton onClick={(e) => editaction(row.original)}>
+                      <EditNoteIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+            )}
         />
     )
 }
