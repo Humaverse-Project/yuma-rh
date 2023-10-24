@@ -75,6 +75,25 @@ export async function postupdate(data) {
     return await response.json();
 }
 
+export async function postupdateposteoruser(data) {
+    const url = `${base_url}/organigramme/postupdateuser`;
+    const body = new URLSearchParams();
+    body.append("titre", data.orgIntitulePoste);
+    body.append("id", data.id);
+    body.append("personneid", data.personnesid);
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+    });
+    if (!response.ok) {
+      throw new Error('erreur backend');
+    }
+    return await response.json();
+}
+
 export async function deleteNodeserveur(id) {
     const url = `${base_url}/organigramme/delete/${id}`;
     const body = new URLSearchParams();

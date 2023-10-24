@@ -7,6 +7,7 @@ import {
     IconButton,
   } from "@mui/material";
 import EditNoteIcon from '@mui/icons-material/EditNote';
+
 const PosteTable = ({ editaction, columns, data}) => {
 
     return (

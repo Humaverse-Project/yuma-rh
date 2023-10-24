@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getfichemetierentreprise } from "../../services/MetierService"
 
-export const fetchItems = createAsyncThunk("fichesmetiers/fetchItems", async () => {
+export const fetchMetier = createAsyncThunk("fichesmetiers/fetchMetier", async () => {
     const response = await getfichemetierentreprise();
     const datareponse = await response
     return datareponse;
@@ -18,16 +18,15 @@ const fichemetierSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        .addCase(fetchItems.pending, (state) => {
+        .addCase(fetchMetier.pending, (state) => {
             state.status = true;
         })
-        .addCase(fetchItems.fulfilled, (state, action) => {
+        .addCase(fetchMetier.fulfilled, (state, action) => {
             state.status = false;
-            console.log(action.payload)
             state.fichemetierentreprise = action.payload.postelist;
             state.fichemetieryuma = action.payload.postelistyuma;
         })
-        .addCase(fetchItems.rejected, (state, action) => {
+        .addCase(fetchMetier.rejected, (state, action) => {
             state.status = false;
             state.error = action.error.message;
         });

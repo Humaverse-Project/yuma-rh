@@ -34,7 +34,6 @@ const typo = {
         fontWeight: 'bold',
     },
 }
-
 const theme = createTheme({
     palette: {
         mode: 'light',
@@ -108,7 +107,7 @@ const theme = createTheme({
               backgroundColor: "#fff"
             },
           },
-        },
+        }
     }
 })
 
