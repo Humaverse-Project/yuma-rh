@@ -16,7 +16,7 @@ import JSONDigger from "json-digger";
 import CreationPosteModal from './Modal/CreationPosteModal';
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchItems } from "../../../model/reducer/Organigramme";
+import { fetchPoste } from "../../../model/reducer/Organigramme";
 import { CircularProgressElement } from "../../../shared"
 
 function OrganigrammeScreen() {
@@ -31,7 +31,7 @@ function OrganigrammeScreen() {
     const orgchart = useRef();
 
     useEffect(() => {
-        dispatch(fetchItems());
+        dispatch(fetchPoste());
     }, [dispatch]);
     
     useEffect(() => {

@@ -51,7 +51,7 @@ const formatagedata = function(data){
     return postorg[0]
 }
 
-export const fetchItems = createAsyncThunk("organigramme/fetchItems", async () => {
+export const fetchPoste = createAsyncThunk("organigramme/fetchPoste", async () => {
     const response = await loaddata();
     const datareponse = await response
     return datareponse;
@@ -70,10 +70,10 @@ const organigrammeSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-        .addCase(fetchItems.pending, (state) => {
+        .addCase(fetchPoste.pending, (state) => {
             state.status = true;
         })
-        .addCase(fetchItems.fulfilled, (state, action) => {
+        .addCase(fetchPoste.fulfilled, (state, action) => {
             state.status = false;
             state.data = formatagedata(action.payload);
             state.titrelist = action.payload.organigramme.map(poste=> poste.orgIntitulePoste);
@@ -88,7 +88,7 @@ const organigrammeSlice = createSlice({
                 }
             })
         })
-        .addCase(fetchItems.rejected, (state, action) => {
+        .addCase(fetchPoste.rejected, (state, action) => {
             state.status = false;
             state.error = action.error.message;
         });

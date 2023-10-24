@@ -1,7 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import {filtredata} from "../../../../services/OrganigrammeService"
 import { useDispatch, useSelector } from "react-redux";
-import { fetchItems } from "../../../../model/reducer/FichesMetiers";
+import { fetchMetier } from "../../../../model/reducer/FichesMetiers";
+import { fetchPoste } from "../../../../model/reducer/Organigramme";
+import { postupdateposteoruser } from "../../../../services/OrganigrammeService"
 import { CircularProgressElement } from "../../../../shared"
 import { datefonctiondeux } from "../../../../services/DateFormat"
 import EditPosteModal from './EditPosteModal';
@@ -22,7 +23,6 @@ import { styled, alpha } from '@mui/material/styles';
 import SearchIcon from '@mui/icons-material/Search';
 
 import PosteTable from '../Part/PosteTable'
-import { easeBackIn } from 'd3';
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -91,7 +91,7 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
         })
         setfichenonassigne(absent)
         setficheassigne(present)
-        dispatch(fetchItems());
+        dispatch(fetchMetier());
         
     }, [ficheposte, dispatch])
     useEffect(() => {
@@ -100,7 +100,19 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
         }
     }, [fichemetierentreprise]);
     const sumbitupdateposte = (e) => {
-        console.log(e)
+        seteditmyposte(false)
+        console.log(thisposte)
+        setloadingrome(true)
+        postupdateposteoruser(thisposte)
+        .then((reponsemetie) => {
+            setloadingrome(false)
+            dispatch(fetchPoste())
+        })
+        .catch((error) => {
+            console.log(error);
+            setloadingrome(false)
+        });
+
     }
     const handleChange = (event, newValue) => {
         setValue(newValue);

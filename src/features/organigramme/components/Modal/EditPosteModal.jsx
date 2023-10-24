@@ -11,15 +11,38 @@ import {
     TextField,
     FormHelperText
 } from '@mui/material'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import styled from '@emotion/styled';
+
+const CustomStyledInput = styled(TextField)`
+    .MuiOutlinedInput-root {
+        color: #000000;
+    }
+    .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+        border-color: #004d80;
+    }
+    .MuiInputLabel-root.Mui-focused {
+        color: #004d80;
+    }
+    .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+        border-color: #004d80;
+    }
+`;
 
 const EditPosteModal = ({ open, onClose, personnelist, submitdata, thisposte, setPosteEdition, titreexistant }) => {
     const [titreerreur, settitreerreur] = useState([false, ""]);
-    console.log(open)
+
+    let listtitre = []
+    useEffect(() => {
+        listtitre = titreexistant.filter(titre=>{
+            return !(titre === thisposte.orgIntitulePoste)
+        })
+    }, [])
+    
     const handleChange = (event) => {
         const { name, value } = event.target;
         if (name === "titre") {
-            if (titreexistant.includes(value)) {
+            if (listtitre.includes(value)) {
                 settitreerreur([true, "Cet intitulé existe déjà dans l'organigramme"])
             } else {
                 settitreerreur([false, ""])
@@ -27,7 +50,6 @@ const EditPosteModal = ({ open, onClose, personnelist, submitdata, thisposte, se
         }
         setPosteEdition({...thisposte, orgIntitulePoste: event.target.value})
     };
-
     return ( 
         <Dialog open={open} onClose={onClose} sx={{
             width: "40%",
@@ -47,11 +69,19 @@ const EditPosteModal = ({ open, onClose, personnelist, submitdata, thisposte, se
                             }}
                             disablePortal
                             options={personnelist || []}
-                            onChange={(e, value)=> setPosteEdition({...thisposte, personnesid: value.id})}
-                            value={thisposte.personnes === null ? null : {label: thisposte.personnes.personneNom+" "+thisposte.personnes.personnePrenom, id: thisposte.personnes.id }}
+                            onChange={(e, value)=>{
+                                if (value !== null) {
+                                    setPosteEdition({...thisposte, personnesid: value.id, personnes: {personneNom: value.label, personnePrenom: ""}})
+                                } else {
+                                    setPosteEdition({...thisposte, personnesid: 0, personnes: null})
+                                }
+                            }}
+                            value={thisposte.personnes === null ? null : thisposte.personnes.personneNom+" "+thisposte.personnes.personnePrenom}
+                            isOptionEqualToValue={(option, value) => option.label === value}
                             renderInput={(params) => (
-                                <TextField
+                                <CustomStyledInput
                                     {...params}
+                                    className="subvariant-hovered"
                                     required
                                     label="Nom" 
                                     name="nom"
@@ -68,12 +98,10 @@ const EditPosteModal = ({ open, onClose, personnelist, submitdata, thisposte, se
                         required
                         error={titreerreur[0]}
                     >
-                        <InputLabel htmlFor="outlined-adornment-password">
-                            Poste
-                        </InputLabel>
-                        <OutlinedInput
+                        <CustomStyledInput
+                            className="subvariant-hovered"
                             onChange={handleChange}
-                            name="Poste"
+                            name="titre"
                             label="Poste"
                             value={thisposte.orgIntitulePoste}
                         />
@@ -88,7 +116,7 @@ const EditPosteModal = ({ open, onClose, personnelist, submitdata, thisposte, se
                 </DialogContent>
                 <DialogActions>
                 <Button
-                    variant="contained"
+                    variant="outlined"
                     onClick={onClose}
                 >
                     Annuler
