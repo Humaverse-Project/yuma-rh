@@ -6,12 +6,12 @@ import { postupdateposteoruser } from "../../../../services/OrganigrammeService"
 import { CircularProgressElement } from "../../../../shared"
 import { datefonctiondeux } from "../../../../services/DateFormat"
 import EditPosteModal from './EditPosteModal';
+import FicheMetierDetailModal from './FicheMetierDetailModal';
 import { 
     Dialog,
     DialogContent,
     Grid,
     Typography,
-    InputBase,
     Tab,
     Box
 } from '@mui/material'
@@ -19,58 +19,15 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 
 import { ThemeProvider } from '@mui/material/styles';
 import { useTheme } from '@emotion/react';
-import { styled, alpha } from '@mui/material/styles';
-import SearchIcon from '@mui/icons-material/Search';
 
 import PosteTable from '../Part/PosteTable'
-
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    border: "1px solid #7a818c",
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(1),
-        width: 'auto',
-    },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }));
-  
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('sm')]: {
-        width: '12ch',
-        '&:focus': {
-            width: '20ch',
-        },
-        },
-    },
-}));
+import SearchCustom from '../Part/SearchCustom';
 
 
-
-const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant, ficheposte  }) => {
+const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant, ficheposte, nodeselected  }) => {
     const [loadingrome, setloadingrome] = useState(false);
+    const [showficherow, setshowficherow] = useState(false);
+    const [ficherowselected, setficherowselected] = useState(false);
     const [value, setValue] = React.useState('1');
     const [fichenonassigne, setfichenonassigne] = useState([])
     const [ficheassigne, setficheassigne] = useState([])
@@ -131,18 +88,15 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
             accessorKey: 'fichesPostes.fiches_postes_titre',
             header: 'Fiche métier associée',
             enableEditing: false,
-            enableClickToCopy: true,
           },
           {
             accessorKey: 'fichesPostes.rome.code',
             header: 'Rome',
             enableEditing: false,
-            enableClickToCopy: true,
           },{
             accessorKey: 'createdAt',
             header: 'Date de création',
             enableEditing: false,
-            enableClickToCopy: true,
             Cell: ({ cell }) => datefonctiondeux(cell.getValue()),
           }
         ],
@@ -161,18 +115,15 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
             accessorKey: 'emplois.emploiTitre',
             header: 'Fiche métier associée',
             enableEditing: false,
-            enableClickToCopy: true,
           },
           {
             accessorKey: 'rome.code',
             header: 'Rome',
             enableEditing: false,
-            enableClickToCopy: true,
           },{
             accessorKey: 'createdAt',
             header: 'Date de création',
             enableEditing: false,
-            enableClickToCopy: true,
             Cell: ({ cell }) => datefonctiondeux(cell.getValue()),
           }
         ],
@@ -181,7 +132,7 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
     return (
         <ThemeProvider theme={theme}>
             <CircularProgressElement
-                open={(status === true || loadingrome == true)}
+                open={(status === true || loadingrome === true)}
             />
             {
                 editmyposte && 
@@ -195,7 +146,15 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                     titreexistant={titreexistant}
                 />
             }
-            
+            {
+                showficherow && 
+                <FicheMetierDetailModal
+                    open={showficherow}
+                    onClose={(e)=> setshowficherow(false)}
+                    ficheRow={ficherowselected}
+                    nodeselected={nodeselected}
+                />
+            }
             <Dialog  open={open} onClose={onClose}>
                 <DialogContent dividers={true}>
                     <Grid container>
@@ -203,15 +162,7 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                             <Typography variant="h5" sx={{color: "blue.main"}}>Crée un poste</Typography>
                         </Grid>
                         <Grid item xs={4}>
-                            <Search>
-                                <SearchIconWrapper>
-                                <SearchIcon />
-                                </SearchIconWrapper>
-                                <StyledInputBase
-                                    placeholder="Recherche"
-                                    inputProps={{ 'aria-label': 'Recherche' }}
-                                />
-                            </Search>
+                            <SearchCustom />
                         </Grid>
                     </Grid>
                     <TabContext value={value}>
@@ -228,12 +179,14 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                                 editaction={(e)=>console.log(e)}
                                 columns={columns}
                                 data={fichenonassigne}
+                                TableClick={(e)=>console.log(e)}
                             />
                             <Typography variant='h6'>Fiches déjà assignées:</Typography>
                             <PosteTable
                                 editaction={(e)=>{setPosteEdition(e); seteditmyposte(true)}}
                                 columns={columns}
                                 data={ficheassigne}
+                                TableClick={(e)=>console.log(e)}
                             />
                         </TabPanel>
                         <TabPanel value="2" sx={{backgroundColor: "background.paper", borderRadius: "10px 10px 10px 10px", height: "65vh", minHeight:"65vh", maxHeight: "65vh", overflowX:"auto"}}>
@@ -241,6 +194,7 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                                 editaction={(e)=>console.log(e)}
                                 columns={columnsmetier}
                                 data={fichemetierentreprise}
+                                TableClick={(e)=>{setficherowselected(e); setshowficherow(true)}}
                             />
                         </TabPanel>
                         <TabPanel value="3" sx={{backgroundColor: "background.paper", borderRadius: "10px 10px 10px 10px",height: "65vh", minHeight:"65vh", maxHeight: "65vh", overflowX:"auto"}}>
@@ -248,6 +202,7 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                                 editaction={(e)=>console.log(e)}
                                 columns={columnsmetier}
                                 data={fichemetieryuma}
+                                TableClick={(e)=>{setficherowselected(e); setshowficherow(true); console.log(e)}}
                             />
                         </TabPanel>
                     </TabContext>

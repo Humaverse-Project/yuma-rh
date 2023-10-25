@@ -8,22 +8,26 @@ import {
   } from "@mui/material";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
-const PosteTable = ({ editaction, columns, data}) => {
+const PosteTable = ({ editaction, columns, data, TableClick}) => {
 
     return (
         <MaterialReactTable
             columns={columns}
             data={data}
-            muiTableBodyRowProps={{
+            muiTableBodyRowProps={({ row }) => ({
                 sx: {
                     ':hover td': {
                         backgroundColor: 'unset',
                     },
                     backgroundColor: '#fff',
                     border: '1px solid #7a818c',
-                    color: 'black.main'
+                    color: 'black.main',
+                    cursor: "pointer"
                 },
-            }}
+                onClick: (event) => {
+                    TableClick(row.original);
+                },
+            })}
             muiTableHeadRowProps={{
                 sx: {
                     color: 'black.main',

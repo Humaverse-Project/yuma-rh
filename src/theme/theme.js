@@ -62,6 +62,7 @@ const theme = createTheme({
         },
         warning: {
             main: palette.warning,
+            default: palette.warning,
         },
         /*custom: {
       light: '#ffa726',

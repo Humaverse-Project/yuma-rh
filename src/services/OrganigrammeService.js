@@ -62,6 +62,7 @@ export async function postupdate(data) {
     const body = new URLSearchParams();
     body.append("nodeId", data.nodeId);
     body.append("parentNodeId", data.parentNodeId);
+    body.append("entrepriseid", getCookie("entrepriseid"));
     const response = await fetch(url, {
         method: 'POST',
         headers: {

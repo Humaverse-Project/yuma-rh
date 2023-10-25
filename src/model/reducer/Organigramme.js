@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loaddata, postdata, postupdate, deleteNodeserveur } from "../../services/OrganigrammeService"
+import { loaddata } from "../../services/OrganigrammeService"
 
 function formatToTree(data, parentId = null, k=0) {
     const tree = [];
@@ -18,12 +18,17 @@ function formatToTree(data, parentId = null, k=0) {
 }
 
 const formatagedata = function(data){
+    console.log(data)
     let postorg = data.organigramme.map((poste) => {
         let titre = poste.orgIntitulePoste
         if (poste.organigrammeNplus1 !== null) {
             poste.organigrammeNplus1 = "P_"+poste.organigrammeNplus1
         } else {
             poste.organigrammeNplus1 = "P_0"
+        }
+        let metiertitre = null
+        if (poste.fichesPostes !== null) {
+            metiertitre = poste.fichesPostes.fiches_postes_titre
         }
         let personne = ""
         let personneid = ""
@@ -38,6 +43,8 @@ const formatagedata = function(data){
             _id: poste.id,
             organigrammeNplus1: poste.organigrammeNplus1,
             imageUrl: '',
+            personneid: personneid,
+            metiertitre: metiertitre
         }
     })
     postorg.unshift(

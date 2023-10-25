@@ -1,23 +1,22 @@
 import React, { useState, useEffect, Fragment, useRef } from 'react'
 import OrganizationChart from "@dabeng/react-orgchart";
 import { DynamicHeadNav, Row } from '../../../shared'
-import { Button, Box, Grid, Divider, Autocomplete, TextField, Typography } from '@mui/material'
+import { Button, Box, Grid, Divider, Typography, FormControlLabel, Checkbox, ListItemText } from '@mui/material'
 import './mycss.css'
 import { Snackbar, Alert } from '@mui/material'
 import NodeTempate from './Part/NodeTempate';
 import {
-    loaddata,
     postdata,
     postupdate,
     deleteNodeserveur
 } from '../../../services/OrganigrammeService'
-import NewPosteModal from './NewPosteModal'
 import JSONDigger from "json-digger";
 import CreationPosteModal from './Modal/CreationPosteModal';
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPoste } from "../../../model/reducer/Organigramme";
 import { CircularProgressElement } from "../../../shared"
+import SearchCustom from './Part/SearchCustom';
 
 function OrganigrammeScreen() {
     const theme = useTheme()
@@ -40,8 +39,6 @@ function OrganigrammeScreen() {
         }
     }, [data]);
 
-
-
     const sendupdateposte = async (e) => {
         await dsDigger.updateNode({...source, postion: (target.postion+1)});
         let obj = {
@@ -49,20 +46,13 @@ function OrganigrammeScreen() {
             parentNodeId: target._id
         }
         const datametierexistant = await postupdate(obj)
-        let poste = await datametierexistant
-        // setficheposte(poste)
+        await datametierexistant
+        dispatch(fetchPoste());
         source = {}
         target = {}
     }
     
-    const colors = [
-        '#6E6B6F',
-        '#18A8B6',
-        '#F45754',
-        '#96C62C',
-        '#BD7E16',
-        '#802F74',
-    ];
+    const colors = ['#6E6B6F','#18A8B6','#F45754','#96C62C','#BD7E16','#802F74','#34ebeb',"#7a39e3", "#f507a6", "#ebdc0c", "#eb170c", "#0515fa", "#070921", "#29d419"];
       
     const TreeNode = ({ nodeData }) => {
         const color = colors[nodeData.postion];
@@ -80,16 +70,21 @@ function OrganigrammeScreen() {
           >
             <NodeTempate
                 data={nodeData}
+                affichepersonnelle={affichepersonnelle}
+                affichemetier={affichemetier}
+                afficheposte={afficheposte}
             />
           </div>
         );
     }
-    //const [etat, setEtat] = useState();
     const [nodeselected, setNodeselected] = useState({
         titre: '',
     })
 
     const [open, setOpen] = useState(false)
+    const [affichepersonnelle, setaffichepersonnelle] = useState(true)
+    const [affichemetier, setaffichemetier] = useState(false)
+    const [afficheposte, setafficheposte] = useState(true)
 
     const handleOpen = () => {
         setOpen(true)
@@ -98,10 +93,6 @@ function OrganigrammeScreen() {
     const handleClose = () => {
         setOpen(false)
     }
-    /*const handleDeletenode = () => {
-        deletenode(nodeselected)
-        //setEtat(false)
-    }*/
     
     const [showError, setShowError] = useState(false)
 
@@ -126,55 +117,32 @@ function OrganigrammeScreen() {
         newnode.id = "P_"+reponsemetie.id
         newnode._id = reponsemetie.id
         await dsDigger.addChildren(po, newnode);
-        // setTitreexistant([...titreexistant, newnode.titre])
-        // setficheposte([...ficheposte, newnode])
         return true
     }
     async function deleteNode(e){
         setloadingrome(true)
         deleteNodeserveur(nodeselected._id).then(async (datametierexistant) => {
-            // setTitreexistant(datametierexistant.map(poste=> poste.orgIntitulePoste))
             if(nodeselected.postion !== 0){
                 await dsDigger.removeNode(nodeselected.id);
-                // setData({ ...dsDigger.ds });
-            } else {
-                // setData({});
             }
             setNodeselected({
                 titre: '',
             })
             setloadingrome(false)
-            // setficheposte(datametierexistant)
         })
         .catch((error) => {
             console.log(error);
             setloadingrome(false)
         });
     }
-    function formatToTree(data, parentId = null, k=0) {
-        const tree = [];
-        data.forEach(item => {
-            if (item.organigrammeNplus1 === parentId) {
-                const children = formatToTree(data, item.id, (k+1));
-                if (children.length > 0) {
-                    item.children = children;
-                }
-                item.postion = k
-                tree.push(item);
-            }
-        });
-    
-        return tree;
-    }
 
     const onClickNode = (e) => {
-        console.log(e)
         setNodeselected(e)
     } 
     return (
         <Fragment>
             <CircularProgressElement
-                open={(status === true || loadingrome == true)}
+                open={(status === true || loadingrome === true)}
             />
             <Row
                 justifyContent={'space-between'}
@@ -258,19 +226,81 @@ function OrganigrammeScreen() {
                         
                         <Divider variant="middle" />
                         <Box sx={{ my: 1, mx: 1 }}>
-                            <Autocomplete
-                                disablePortal
-                                options={["Hiérarchique", "Matriciel", "Plat"]}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        required
-                                        label="Type d’organigrame" 
-                                        name="rome"
-                                        variant="outlined"
+                            <SearchCustom />
+                            <FormControlLabel
+                                checked={affichepersonnelle}
+                                control={
+                                    <Checkbox
+                                        onChange={(event) => {
+                                            const isChecked = event.target.checked;
+                                            if (isChecked) {
+                                                setaffichepersonnelle(true)
+                                            } else {
+                                                setaffichepersonnelle(false)
+                                            }
+                                        }}
                                     />
-                                )}
+                                }
+                                label={
+                                    <ListItemText
+                                        primary={"Personnel"}
+                                    />
+                                }
+                                sx={{
+                                    width: "90%",
+                                    ml:1,
+                                    mt:1
+                                }}
                             />
+                            <FormControlLabel
+                                checked={afficheposte}
+                                control={
+                                    <Checkbox
+                                        onChange={(event) => {
+                                            const isChecked = event.target.checked;
+                                            if (isChecked) {
+                                                setafficheposte(true)
+                                            } else {
+                                                setafficheposte(false)
+                                            }
+                                        }}
+                                    />
+                                }
+                                label={
+                                    <ListItemText
+                                        primary={"Poste"}
+                                    />
+                                }
+                                sx={{
+                                    width: "90%",
+                                    ml:1,
+                                }}
+                            />
+                            <FormControlLabel
+                                checked={affichemetier}
+                                control={
+                                    <Checkbox
+                                        onChange={(event) => {
+                                            const isChecked = event.target.checked;
+                                            if (isChecked) {
+                                                setaffichemetier(true)
+                                            } else {
+                                                setaffichemetier(false)
+                                            }
+                                        }}
+                                    />
+                                }
+                                label={
+                                    <ListItemText
+                                        primary={"Métier"}
+                                    />
+                                }
+                                sx={{
+                                    width: "90%",
+                                    ml:1,
+                                }}
+                            />
+                            
                         </Box>
                         <Divider variant="middle" />
                     </Grid>
@@ -304,6 +334,7 @@ function OrganigrammeScreen() {
                             dataPersonne={dataPersonne}
                             titreexistant={titrelist}
                             ficheposte={ficheposte}
+                            nodeselected={nodeselected}
                         />
                     }
                 </Grid>
