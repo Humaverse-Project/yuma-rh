@@ -143,7 +143,7 @@ function Navigation() {
             id: 23,
             path: '/gestionpersonnel',
             components: <PersonneGestion />,
-        },
+        }
     ]
 
     return (
