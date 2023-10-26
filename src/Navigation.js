@@ -22,8 +22,7 @@ import {
     GestionFormationTestScreen,
     StoreFormationetTest,
     PersonneHomeScreen,
-    PersonneGestion,
-    SettingAccount,
+    PersonneGestion
 } from './features'
 
 function Navigation() {

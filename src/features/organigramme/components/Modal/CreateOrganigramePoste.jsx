@@ -7,7 +7,8 @@ import {
     FormControl,
     Autocomplete,
     TextField,
-    FormHelperText
+    FormHelperText,
+    Typography
 } from '@mui/material'
 import { useState } from 'react';
 import styled from '@emotion/styled';
@@ -123,9 +124,9 @@ const CreateOrganigramePoste = ({ open, onClose, submitdata }) => {
                         }
                         submitdata(thisposte)
                     }}
-                    color="success"
+                    color="blue"
                 >
-                    Enregistrer
+                    <Typography color="white">Générer la fiche de poste</Typography>
                 </Button>
             </DialogActions>
         </Dialog>

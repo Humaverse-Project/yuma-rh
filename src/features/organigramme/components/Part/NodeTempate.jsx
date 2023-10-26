@@ -1,7 +1,6 @@
 import { Grid, Typography } from "@mui/material"
 
 const NodeTempate  = ({ data, affichepersonnelle, affichemetier, afficheposte  }) => {
-    console.log(data)
     return (
         <>
             <Grid container>
