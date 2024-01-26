@@ -18,7 +18,6 @@ function formatToTree(data, parentId = null, k=0) {
 }
 
 const formatagedata = function(data){
-    console.log(data)
     let postorg = data.organigramme.map((poste) => {
         let titre = poste.orgIntitulePoste
         if (poste.organigrammeNplus1 !== null) {
@@ -71,10 +70,15 @@ const organigrammeSlice = createSlice({
         titrelist: [],
         ficheposte: [],
         dataPersonne: [],
+        posteselectionner: { titre: ""},
         status: true,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        addposteselectionner: (state, action) => {
+            state.posteselectionner = action.payload
+        },
+    },
     extraReducers: (builder) => {
         builder
         .addCase(fetchPoste.pending, (state) => {
@@ -102,5 +106,6 @@ const organigrammeSlice = createSlice({
     },
 });
 
+export const { addposteselectionner } = organigrammeSlice.actions;
 
 export default organigrammeSlice.reducer;

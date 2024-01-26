@@ -24,7 +24,7 @@ import PosteTable from '../Part/PosteTable'
 import SearchCustom from '../Part/SearchCustom';
 
 
-const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexistant, ficheposte, nodeselected  }) => {
+const CreationPosteModal = ({ open, onClose, dataPersonne, titreexistant, ficheposte  }) => {
     const [loadingrome, setloadingrome] = useState(false);
     const [showficherow, setshowficherow] = useState(false);
     const [ficherowselected, setficherowselected] = useState(false);
@@ -58,7 +58,6 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
     }, [fichemetierentreprise]);
     const sumbitupdateposte = (e) => {
         seteditmyposte(false)
-        console.log(thisposte)
         setloadingrome(true)
         postupdateposteoruser(thisposte)
         .then((reponsemetie) => {
@@ -152,7 +151,6 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                     open={showficherow}
                     onClose={(e)=> setshowficherow(false)}
                     ficheRow={ficherowselected}
-                    nodeselected={nodeselected}
                 />
             }
             <Dialog  open={open} onClose={onClose}>
@@ -202,7 +200,7 @@ const CreationPosteModal = ({ open, onClose, onSubmit, dataPersonne, titreexista
                                 editaction={(e)=>console.log(e)}
                                 columns={columnsmetier}
                                 data={fichemetieryuma}
-                                TableClick={(e)=>{setficherowselected(e); setshowficherow(true); console.log(e)}}
+                                TableClick={(e)=>{setficherowselected(e); setshowficherow(true)}}
                             />
                         </TabPanel>
                     </TabContext>

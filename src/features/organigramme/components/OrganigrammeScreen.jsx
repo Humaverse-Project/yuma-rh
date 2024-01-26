@@ -6,7 +6,6 @@ import './mycss.css'
 import { Snackbar, Alert } from '@mui/material'
 import NodeTempate from './Part/NodeTempate';
 import {
-    postdata,
     postupdate,
     deleteNodeserveur
 } from '../../../services/OrganigrammeService'
@@ -14,14 +13,14 @@ import JSONDigger from "json-digger";
 import CreationPosteModal from './Modal/CreationPosteModal';
 import { useTheme } from '@emotion/react';
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPoste } from "../../../model/reducer/Organigramme";
+import { fetchPoste, addposteselectionner } from "../../../model/reducer/Organigramme";
 import { CircularProgressElement } from "../../../shared"
 import SearchCustom from './Part/SearchCustom';
 
 function OrganigrammeScreen() {
     const theme = useTheme()
     const dispatch = useDispatch();
-    const { data, status, titrelist, ficheposte, dataPersonne } = useSelector((state) => state.organigramme);
+    const { data, status, titrelist, ficheposte, dataPersonne, posteselectionner } = useSelector((state) => state.organigramme);
     const [ org, setOrg ] = useState({});
     let dsDigger = new JSONDigger(org, "id", "children");
     const [loadingrome, setloadingrome] = useState(false);
@@ -77,9 +76,6 @@ function OrganigrammeScreen() {
           </div>
         );
     }
-    const [nodeselected, setNodeselected] = useState({
-        titre: '',
-    })
 
     const [open, setOpen] = useState(false)
     const [affichepersonnelle, setaffichepersonnelle] = useState(true)
@@ -102,32 +98,15 @@ function OrganigrammeScreen() {
         }
         setShowError(false)
     }
-    async function addNode(newnode) {
-        let po = "P_0"
-        if (nodeselected._id !== undefined) {
-            newnode.parentNodeId = nodeselected._id
-            newnode.postion = nodeselected.postion+1
-            po = nodeselected.id
-        } else {
-            newnode.parentNodeId = ''
-            newnode.postion = 1
-        }
-        const datametierexistant = await postdata(newnode)
-        const reponsemetie = await datametierexistant
-        newnode.id = "P_"+reponsemetie.id
-        newnode._id = reponsemetie.id
-        await dsDigger.addChildren(po, newnode);
-        return true
-    }
     async function deleteNode(e){
         setloadingrome(true)
-        deleteNodeserveur(nodeselected._id).then(async (datametierexistant) => {
-            if(nodeselected.postion !== 0){
-                await dsDigger.removeNode(nodeselected.id);
+        deleteNodeserveur(posteselectionner._id).then(async (datametierexistant) => {
+            if(posteselectionner.postion !== 0){
+                await dsDigger.removeNode(posteselectionner.id);
             }
-            setNodeselected({
+            dispatch(addposteselectionner({
                 titre: '',
-            })
+            }))
             setloadingrome(false)
         })
         .catch((error) => {
@@ -137,8 +116,19 @@ function OrganigrammeScreen() {
     }
 
     const onClickNode = (e) => {
-        setNodeselected(e)
-    } 
+        dispatch(addposteselectionner(
+            {
+                id: e.id,
+                titre: e.titre,
+                _id: e._id,
+                metiertitre: e.metiertitre,
+                organigrammeNplus1: e.organigrammeNplus1,
+                personne: e.personne,
+                postion: e.postion
+            }
+        ))
+    }
+
     return (
         <Fragment>
             <CircularProgressElement
@@ -171,6 +161,7 @@ function OrganigrammeScreen() {
                         color="blue"
                         fullWidth
                         sx={{ px: 2, py: 1 }}
+                        onClick={onClickNode}
                     >
                         <Typography variant="button" color="white">
                             Importer
@@ -209,7 +200,7 @@ function OrganigrammeScreen() {
                 <Grid container>
                     <Grid item xs={12} md={2} sx={{pt:2}}>
                         {
-                            (nodeselected.titre !== "") &&
+                            (posteselectionner.titre !== "") &&
                                 <Box sx={{ my: 1, mx: 1 }}>
                                     <Button
                                         variant="contained"
@@ -321,7 +312,9 @@ function OrganigrammeScreen() {
                                 pan={true}
                                 NodeTemplate={(node)=> TreeNode(node)}
                                 onClickNode={onClickNode}
-                                onClickChart={(e)=> setNodeselected({titre: ''})}
+                                onClickChart={(e)=> dispatch(addposteselectionner({
+                                    titre: '',
+                                }))}
                             />
                         }
                     </Grid>
@@ -330,11 +323,9 @@ function OrganigrammeScreen() {
                         <CreationPosteModal
                             open={open}
                             onClose={handleClose}
-                            onSubmit={addNode}
                             dataPersonne={dataPersonne}
                             titreexistant={titrelist}
                             ficheposte={ficheposte}
-                            nodeselected={nodeselected}
                         />
                     }
                 </Grid>
